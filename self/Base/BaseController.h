@@ -39,6 +39,8 @@
 
 - (void) logStr:(NSString*) logStr;
 
+- (void) setDetailAmount:(UILabel *) label amount:(NSNumber *) amount;
+
 - (void) showAlert:(NSString *) title
            message:(NSString *) message
         controller:(UIViewController *) controller;

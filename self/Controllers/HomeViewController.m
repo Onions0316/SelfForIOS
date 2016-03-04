@@ -10,10 +10,15 @@
 #import "AccountInfoManager.h"
 
 #define Info_Height 100
-#define Operation_Height 200
+#define Details_Height 200
+
+#define Tag_User_Total_In 2001
+#define Tag_User_Total_Out 2002
+#define Tag_User_Total_All 2003
 @interface HomeViewController()
 
 @property (nonatomic,assign) CGFloat top;
+CREATE_TYPE_PROPERTY_TO_VIEW(UIView, detailView)
 
 @end
 
@@ -34,38 +39,111 @@
     User * user = [[AccountInfoManager sharedInstance] user];
     [self drawInfo:user];
     [self drawDetails:user];
-    [self drawOpreation];
+    [self drawOperation];
 }
 
 /*
  *  用户信息
  */
 - (void) drawInfo:(User *) user{
-    
     NSString * name = [user.real_name hasValue]?user.real_name:user.name;
-    CGRect rect = CGRectMake(Default_View_Space, self.top+Default_View_Space, Main_Screen_Width-2*Default_View_Space, 100);
+    self.top+=Default_View_Space;
+    CGFloat viewWidth = Main_Screen_Width-2*Default_View_Space;
+    CGRect rect = CGRectMake(Default_View_Space, self.top, viewWidth, Info_Height);
     UIView * view = [[UIView alloc] initWithFrame:rect];
     
     rect = CGRectMake(0, 0, 0, Default_Label_Height);
     [UIUtil addLableInView:view text:[NSString stringWithFormat:@"hello,%@",name] rect:rect tag:nil];
 
+    self.top+=Info_Height;
     [self.view addSubview:view];
+}
+
+/*
+ *  设置收支明细值
+ */
+- (void) setDetails:(User *) user{
+    UILabel * inLabel = [self.detailView viewWithTag:Tag_User_Total_In];
+    [super setDetailAmount:inLabel amount:user.totle_in];
+    UILabel * outLabel = [self.detailView viewWithTag:Tag_User_Total_Out];
+    [super setDetailAmount:outLabel amount:user.totle_out];
+    UILabel * allLabel = [self.detailView viewWithTag:Tag_User_Total_All];
+    [super setDetailAmount:allLabel amount:user.totle_all];
 }
 
 /*
  *  收支信息
  */
-- (void) drawDetails:(User *) user{}
+- (void) drawDetails:(User *) user{
+    self.top+=Default_View_Space;
+    CGFloat viewLeft = Default_View_Space*3;
+    CGFloat viewWidth = Main_Screen_Width-2*viewLeft;
+    CGRect rect = CGRectMake(viewLeft, self.top,viewWidth , Details_Height);
+    self.detailView = [[UIView alloc] initWithFrame:rect];
+    
+    NSArray * fields = @[User_Totle_In,User_Totle_Out,User_Totle_All];
+    CGFloat labelWidth = [UIUtil textMaxWidth:fields font:Default_Font];
+    UIFont * detailFont = [UIFont systemFontOfSize:25];
+    CGFloat detailHeight = [UIUtil textSizeAtString:@"0" font:detailFont].height;
+    rect.size.height = detailHeight*3;
+    //重设view高度
+    self.detailView.frame = rect;
+    CGFloat lableTop = (detailHeight - Default_Label_Height)/2;
+    CGFloat detailTop = 0;
+    CGFloat tagIndex = Tag_User_Total_In;
+    CGFloat detailX = labelWidth+Default_View_Space;
+    for(NSString * str in fields){
+        rect = CGRectMake(0, lableTop, labelWidth, Default_Label_Height);
+        [UIUtil addLableInView:self.detailView text:str rect:rect tag:nil];
+        rect = CGRectMake(detailX, detailTop, viewWidth-detailX, detailHeight);
+        [UIUtil addLableInView:self.detailView text:@"" font:detailFont rect:rect tag:[NSNumber numberWithInt:tagIndex]];
+        lableTop+=detailHeight;
+        detailTop+=detailHeight;
+        tagIndex++;
+    }
+    [self setDetails:user];
+    self.top+=self.detailView.frame.size.height;
+    [self.view addSubview:self.detailView];
+}
 
 /*
  *  操作
  */
-- (void) drawOpreation{
-    CGRect rect = CGRectMake(0, Main_Screen_Height-Operation_Height-Default_View_Space, Main_Screen_Width, Operation_Height);
+- (void) drawOperation{
+    CGFloat viewHeight = Main_Screen_Height-self.top;
+    CGFloat viewLeft = 0;
+    if(viewHeight>Main_Screen_Width){
+        viewHeight = Main_Screen_Width;
+    }else{
+        viewLeft = (Main_Screen_Width-viewHeight)/2;
+    }
+    CGRect rect = CGRectMake(viewLeft, self.top, viewHeight, viewHeight);
+    CGFloat imageLeft = Default_View_Space;
+    CGFloat imageWidth = (viewHeight-3*imageLeft)/2;
     UIView * view = [[UIView alloc] initWithFrame:rect];
-    CGFloat buttonHeight = Operation_Height - 2*Default_View_Space;
     
+    rect = CGRectMake(imageLeft, imageLeft, imageWidth, imageWidth);
+    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"add"] rect:rect sel:@selector(add) controller:self tag:nil];
+    
+    rect.origin.x +=imageWidth+imageLeft;
+    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"search"] rect:rect sel:@selector(search) controller:self tag:nil];
+    
+    rect.origin.x = (viewHeight-imageWidth)/2;
+    rect.origin.y += imageLeft+imageWidth;
+    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"refresh"] rect:rect sel:@selector(refresh) controller:self tag:nil];
+    
+    [self.view addSubview:view];
 }
+
+#pragma mark operation
+- (void) add{
+
+}
+
+- (void) search{}
+
+- (void) refresh{}
+
 
 #pragma mark navigation
 - (BOOL)slideNavigationControllerShouldDisplayRightMenu {

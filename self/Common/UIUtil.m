@@ -68,7 +68,15 @@
                         text:(NSString *) text
                         rect:(CGRect) rect
                          tag:(NSNumber *) tag{
-    CGSize size = [self textSizeAtString:text font:Default_Font];
+    return [self addLableInView:view text:text font:Default_Font rect:rect tag:tag];
+}
+
++ (UILabel *) addLableInView:(UIView *) view
+                        text:(NSString *) text
+                        font:(UIFont*) font
+                        rect:(CGRect) rect
+                         tag:(NSNumber *) tag{
+    CGSize size = [self textSizeAtString:text font:font];
     if(rect.size.width<size.width){
         rect.size.width = size.width;
     }

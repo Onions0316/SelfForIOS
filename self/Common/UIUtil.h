@@ -43,6 +43,12 @@
                         text:(NSString *) text
                         rect:(CGRect) rect
                          tag:(NSNumber *) tag;
+
++ (UILabel *) addLableInView:(UIView *) view
+                        text:(NSString *) text
+                        font:(UIFont*) font
+                        rect:(CGRect) rect
+                         tag:(NSNumber *) tag;
 /*
  *  创建文字按钮
  */

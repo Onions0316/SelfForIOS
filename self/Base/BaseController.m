@@ -149,6 +149,20 @@ nullBlocks myblocks;
     [self showAlert:title message:message controller:controller sel:nil];
 }
 
+- (void) setDetailAmount:(UILabel *) label amount:(NSNumber *) amount{
+    NSNumberFormatter * format = [[NSNumberFormatter alloc] init];
+    [format setNumberStyle:NSNumberFormatterDecimalStyle];
+    amount = [[NSNumber alloc] initWithInteger:amount.integerValue];
+    if(amount>0||amount<0){
+        label.text = [format stringFromNumber:amount];
+    }
+    if(amount>0){
+        label.textColor = [UIColor blueColor];
+    }else if(amount <0){
+        label.textColor =[UIColor redColor];
+    }
+}
+
 - (void) showAlert:(NSString *)title
            message:(NSString *)message
         controller:(UIViewController *)controller
