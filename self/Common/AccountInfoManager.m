@@ -54,6 +54,21 @@
     return result;
 }
 
+/*
+ *  统计用户数据
+ */
+- (BOOL) total{
+    BOOL result = NO;
+    if(self.home){
+        [self.home showLoading];
+        [self.userService total:self.user];
+    }
+    return result;
+}
+
+/*
+ *  登录
+ */
 - (BOOL) login:(NSString *) name password:(NSString *) password{
     self.user = [self.userService login:name password:password];
     if(self.user){

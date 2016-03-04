@@ -111,6 +111,30 @@
 }
 
 /*
+ *  通过id删除
+ */
+- (NSString *) deleteSQL:(Class) class objId:(NSNumber *) objId{
+    NSMutableString * result = [[NSMutableString alloc] init];
+    if(objId){
+        NSString * className = [NSString stringWithFormat:@"%@",class];
+        [result appendFormat:@"delete from %@ where %@_id = '%@'",className,className,objId];
+    }
+    return result;
+}
+
+/*
+ *  通过外键id删除
+ */
+- (NSString *) deleteSQL:(Class) class foreign:(Class) foreignClass objId:(NSNumber *) objId{
+    NSMutableString * result = [[NSMutableString alloc] init];
+    if(objId){
+        [result appendFormat:@"delete from %@ where %@_id = '%@'",class,foreignClass,objId];
+    }
+    return result;
+}
+
+
+/*
  *  执行查询语句
  */
 - (NSArray *) select:(Class) objClass sql:(NSString *) sql{

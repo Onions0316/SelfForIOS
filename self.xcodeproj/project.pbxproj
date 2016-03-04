@@ -33,6 +33,7 @@
 		B04CBBA21C8546E20028EFE4 /* UserService.m in Sources */ = {isa = PBXBuildFile; fileRef = B04CBBA11C8546E20028EFE4 /* UserService.m */; };
 		B04CBBA41C8547490028EFE4 /* DetailService.m in Sources */ = {isa = PBXBuildFile; fileRef = B04CBBA31C8547490028EFE4 /* DetailService.m */; };
 		B04CBBA71C859EBF0028EFE4 /* Single.m in Sources */ = {isa = PBXBuildFile; fileRef = B04CBBA61C859EBF0028EFE4 /* Single.m */; };
+		B05490C11C896974006977D6 /* AddDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B05490C01C896974006977D6 /* AddDetailViewController.m */; };
 		B05AF8841C7EA5D600EE0607 /* dbInit.txt in Resources */ = {isa = PBXBuildFile; fileRef = B05AF8831C7EA5D600EE0607 /* dbInit.txt */; };
 		B05AF8861C7EA76800EE0607 /* self.db in Resources */ = {isa = PBXBuildFile; fileRef = B05AF8851C7EA76800EE0607 /* self.db */; };
 		B05AF8891C7EE24A00EE0607 /* AccountInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B05AF8881C7EE24A00EE0607 /* AccountInfoManager.m */; };
@@ -94,6 +95,7 @@
 		B04CBBA31C8547490028EFE4 /* DetailService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailService.m; sourceTree = "<group>"; };
 		B04CBBA51C859E800028EFE4 /* Single.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Single.h; sourceTree = "<group>"; };
 		B04CBBA61C859EBF0028EFE4 /* Single.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Single.m; sourceTree = "<group>"; };
+		B05490C01C896974006977D6 /* AddDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddDetailViewController.m; path = Controllers/AddDetailViewController.m; sourceTree = "<group>"; };
 		B05AF8821C7EA49700EE0607 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		B05AF8831C7EA5D600EE0607 /* dbInit.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dbInit.txt; sourceTree = "<group>"; };
 		B05AF8851C7EA76800EE0607 /* self.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = self.db; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				B004AF911C7C600700908576 /* HomeViewController.m */,
 				B05E8CED1C84428D00AB3B66 /* AddDetailViewController.h */,
 				B05E8CEE1C8442B800AB3B66 /* SearchViewController.h */,
+				B05490C01C896974006977D6 /* AddDetailViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -512,6 +515,7 @@
 				B004AF881C7C5C3D00908576 /* UIUtil.m in Sources */,
 				B004AF8B1C7C5C3D00908576 /* GTMBase64.m in Sources */,
 				B004AF841C7C5C3D00908576 /* ApiManager.m in Sources */,
+				B05490C11C896974006977D6 /* AddDetailViewController.m in Sources */,
 				B04CBBA21C8546E20028EFE4 /* UserService.m in Sources */,
 				B004AF921C7C600700908576 /* HomeViewController.m in Sources */,
 				B004AF6E1C7C5C2500908576 /* BaseView.m in Sources */,

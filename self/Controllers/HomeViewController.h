@@ -11,4 +11,8 @@
 
 @interface HomeViewController : BaseController<SlideNavigationControllerDelegate>
 
+- (void) showLoading;
+
+- (void) hideLoading;
+
 @end

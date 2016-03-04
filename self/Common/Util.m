@@ -74,4 +74,16 @@
     return [formatter dateFromString:string];
 }
 
++ (NSNumber *) toNumber:(id) obj{
+    NSString * string = [NSString stringWithFormat:@"%@",obj];
+    NSNumberFormatter * format = [[NSNumberFormatter alloc] init];
+    return [format numberFromString:string];
+}
+
++ (NSString *) numberToString:(NSNumber *) number{
+    NSNumberFormatter * format = [[NSNumberFormatter alloc] init];
+    format.numberStyle = NSNumberFormatterDecimalStyle;
+    return [format stringFromNumber:number];
+}
+
 @end

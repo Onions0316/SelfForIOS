@@ -13,4 +13,14 @@
  */
 @implementation DetailService
 
+
+/*
+ *  新增方法
+ */
+- (BOOL) add:(Detail *) detail{
+    NSString * sql = [super insertSQL:detail];
+    return [super.db eval:sql params:nil];
+}
+
+
 @end

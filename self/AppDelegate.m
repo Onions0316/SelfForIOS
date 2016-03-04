@@ -27,17 +27,18 @@
     //装载数据库初始化语句
     NSString * path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"dbInit.txt"];
     db.dbInitSql = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    //NSLog(@"%@",db.path);
+    NSLog(@"%@",db.path);
     [db readyDatabase];
     //首页装载
     /* SlideNavigationController * home = [[SlideNavigationController alloc] initWithRootViewController:[[HomeViewController alloc] init]];
     //home.navigationBar.hidden = YES;
     //home.enableShadow = NO;
     */
-    UIViewController * home = [[HomeViewController alloc] init] ;
+    HomeViewController * home = [[HomeViewController alloc] init] ;
     UINavigationController * main = [[UINavigationController alloc] initWithRootViewController:home];
     main.navigationBarHidden = YES;
     self.window.rootViewController = main;
+    [AccountInfoManager sharedInstance].home = home;
     //设置状态栏字体颜色 需要在info plist 里设置View controller-based status bar appearance 为no
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
@@ -46,6 +47,7 @@
     //[[AccountInfoManager sharedInstance] login:@"test1" password:@"123456"];
     
     //[[AccountInfoManager sharedInstance] logout];
+    [[AccountInfoManager sharedInstance] total];
     
     return YES;
 }

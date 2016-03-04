@@ -51,4 +51,36 @@
     return [super.db eval:sql params:nil];
 }
 
+- (User *) total:(User *) user{
+    User * result;
+    if(user && user.user_id>0){
+        NSString * dtField = @"dt";
+        NSString * amountField = @"amount";
+        NSString * query = [NSString stringWithFormat:@"select detail_type as %@,sum(amount) as %@ from detail where user_id='%@' group by detail_type",dtField,amountField,user.user_id];
+        NSArray * list = [[super db] selectData:query];
+        for(id l in list){
+            if([l isMemberOfClass:[NSDictionary class]]){
+                NSDictionary * dic = (NSDictionary *)l;
+                NSNumber * key = [Util toNumber:[dic objectForKey:dtField]];
+                if(key){
+                    NSNumber * amount = [Util toNumber:[dic objectForKey:amountField]];
+                    if(amount){
+                        if(key>0){
+                            user.totle_in = amount;
+                        }
+                        else if(key<0){
+                            user.totle_out = amount;
+                        }
+                    }
+                }
+            }
+        }
+        user.totle_all = [NSNumber numberWithFloat:user.totle_in.floatValue-user.totle_out.floatValue];
+        if([self update:user]){
+            result = user;
+        }
+    }
+    return result;
+}
+
 @end

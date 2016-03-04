@@ -150,11 +150,9 @@ nullBlocks myblocks;
 }
 
 - (void) setDetailAmount:(UILabel *) label amount:(NSNumber *) amount{
-    NSNumberFormatter * format = [[NSNumberFormatter alloc] init];
-    [format setNumberStyle:NSNumberFormatterDecimalStyle];
-    amount = [[NSNumber alloc] initWithInteger:amount.integerValue];
+    amount = [Util toNumber:amount];
     if(amount>0||amount<0){
-        label.text = [format stringFromNumber:amount];
+        label.text = [Util numberToString:amount];
     }
     if(amount>0){
         label.textColor = [UIColor blueColor];

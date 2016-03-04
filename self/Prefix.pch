@@ -25,12 +25,16 @@
 #define User_Totle_Out @"支出"
 #define User_Totle_All @"剩余"
 #define Detail_Type @"收支类型"
+#define Detail_Type_Out @"支出"
+#define Detail_Type_In @"收入"
 #define Detail_Amount @"金额"
 #define Detail_Happen_Time @"发生时间"
 #define Detail_Memo @"备注"
 #define Login @"登录"
 #define Register @"注册"
 #define Logout @"注销"
+#define Add @"添加"
+#define Submit @"提交"
 
 // Size
 #define Main_Title_Height 30

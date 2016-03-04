@@ -28,6 +28,8 @@
  *  更新方法
  */
 - (BOOL) update:(User *) user;
+
+- (User *) total:(User *) user;
 @end
 
 #endif /* UserService_h */

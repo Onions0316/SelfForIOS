@@ -12,7 +12,7 @@
 #define DetailService_h
 
 @interface DetailService : BaseService
-
+- (BOOL) add:(Detail *) detail;
 @end
 
 #endif /* DetailService_h */

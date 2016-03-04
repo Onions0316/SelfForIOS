@@ -8,6 +8,7 @@
 
 #import "HomeViewController.h"
 #import "AccountInfoManager.h"
+#import "AddDetailViewController.h"
 
 #define Info_Height 100
 #define Details_Height 200
@@ -15,10 +16,14 @@
 #define Tag_User_Total_In 2001
 #define Tag_User_Total_Out 2002
 #define Tag_User_Total_All 2003
+
+#define LoadTag 2101
 @interface HomeViewController()
 
 @property (nonatomic,assign) CGFloat top;
 CREATE_TYPE_PROPERTY_TO_VIEW(UIView, detailView)
+
+CREATE_TYPE_PROPERTY_TO_VIEW(UIActivityIndicatorView, activityIndicator)
 
 @end
 
@@ -67,6 +72,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UIView, detailView)
     [super setDetailAmount:inLabel amount:user.totle_in];
     UILabel * outLabel = [self.detailView viewWithTag:Tag_User_Total_Out];
     [super setDetailAmount:outLabel amount:user.totle_out];
+    outLabel.textColor = [UIColor redColor];
     UILabel * allLabel = [self.detailView viewWithTag:Tag_User_Total_All];
     [super setDetailAmount:allLabel amount:user.totle_all];
 }
@@ -135,14 +141,51 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UIView, detailView)
     [self.view addSubview:view];
 }
 
-#pragma mark operation
-- (void) add{
+#pragma mark details
 
+- (void) showLoading{
+    //
+    UIView *view = (UIView*)[self.detailView viewWithTag:LoadTag];
+    if(view==nil){
+        CGSize size = self.detailView.frame.size;
+        //创建半透明层
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+        [view setTag:LoadTag];
+        [view setBackgroundColor:[UIColor blackColor]];
+        [view setAlpha:0.5];
+        
+        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
+        [self.activityIndicator setCenter:view.center];
+        [self.activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+        [view addSubview:self.activityIndicator];
+        
+        [self.detailView addSubview:view];
+    }
+    view.hidden = NO;
+    
+    [self.activityIndicator startAnimating];
 }
 
-- (void) search{}
+- (void) hideLoading{
+    [self.activityIndicator stopAnimating];
+    UIView *view = (UIView*)[self.detailView viewWithTag:LoadTag];
+    if(view){
+        view.hidden = YES;
+    }
+}
 
-- (void) refresh{}
+#pragma mark operation
+- (void) add{
+    [super goControllerByClass:[AddDetailViewController class]];
+}
+
+- (void) search{
+    [self hideLoading];
+}
+
+- (void) refresh{
+    [self showLoading];
+}
 
 
 #pragma mark navigation

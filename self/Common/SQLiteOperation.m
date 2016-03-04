@@ -63,66 +63,71 @@
 - (NSArray *)selectData:(NSString *) sql{
     //[self readyDatabase];
     NSMutableArray* result = [[NSMutableArray alloc] init];
-    if(sqlite3_open([self.path UTF8String], &database)==SQLITE_OK){
-        //能够使用sqlite3_step 执行的编译好的准备语句的指针
-        sqlite3_stmt * statement = nil;
-        //准备执行sql  但并没有执行
-        if(sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, NULL)== SQLITE_OK){
-            //逐条读取纪录
-            while(sqlite3_step(statement)==SQLITE_ROW){
-                //读取数据
-                int count = sqlite3_column_count(statement);
-                NSMutableDictionary * row = [[NSMutableDictionary alloc] init];
-                for(int i=0;i<count;i++){
-                    [row setObject:[NSString stringWithFormat:@"%s",sqlite3_column_text(statement, i)] forKey:[NSString stringWithFormat:@"%s",sqlite3_column_name(statement, i)]];
+    if([sql hasValue]){
+        if(sqlite3_open([self.path UTF8String], &database)==SQLITE_OK){
+            //能够使用sqlite3_step 执行的编译好的准备语句的指针
+            sqlite3_stmt * statement = nil;
+            //准备执行sql  但并没有执行
+            if(sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, NULL)== SQLITE_OK){
+                //逐条读取纪录
+                while(sqlite3_step(statement)==SQLITE_ROW){
+                    //读取数据
+                    int count = sqlite3_column_count(statement);
+                    NSMutableDictionary * row = [[NSMutableDictionary alloc] init];
+                    for(int i=0;i<count;i++){
+                        [row setObject:[NSString stringWithFormat:@"%s",sqlite3_column_text(statement, i)] forKey:[NSString stringWithFormat:@"%s",sqlite3_column_name(statement, i)]];
+                    }
+                    [result addObject:row];
                 }
-                [result addObject:row];
+            }else{
+                NSLog(@"error : failed to prepare");
             }
-        }else{
-            NSLog(@"error : failed to prepare");
+            //释放对象
+            sqlite3_finalize(statement);
         }
-        //释放对象
-        sqlite3_finalize(statement);
+        else{
+            NSLog(@"failed to open database with message '%s'",sqlite3_errmsg(database));
+        }
+        sqlite3_close(database);
     }
-    else{
-        NSLog(@"failed to open database with message '%s'",sqlite3_errmsg(database));
-    }
-    sqlite3_close(database);
     return result;
 }
 
 - (BOOL) eval:(NSString *)sql params:(NSArray *)params{
     //[self readyDatabase];
-    int success;
-    if(sqlite3_open([self.path UTF8String], &database)==SQLITE_OK){
-        //能够使用sqlite3_step 执行的编译好的准备语句的指针
-        sqlite3_stmt * statement = nil;
-        //准备执行sql  但并没有执行
-        if(sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, NULL)== SQLITE_OK){
-            if(params!=nil){
-                int count = params.count;
-                if(count>0){
-                    for(int i=0;i<count;i++){
-                        NSString * temp = params[i];
-                        sqlite3_bind_text(statement, i+1, [temp UTF8String], -1, SQLITE_TRANSIENT);
+    if([sql hasValue]){
+        int success;
+        if(sqlite3_open([self.path UTF8String], &database)==SQLITE_OK){
+            //能够使用sqlite3_step 执行的编译好的准备语句的指针
+            sqlite3_stmt * statement = nil;
+            //准备执行sql  但并没有执行
+            if(sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, NULL)== SQLITE_OK){
+                if(params!=nil){
+                    int count = params.count;
+                    if(count>0){
+                        for(int i=0;i<count;i++){
+                            NSString * temp = params[i];
+                            sqlite3_bind_text(statement, i+1, [temp UTF8String], -1, SQLITE_TRANSIENT);
+                        }
                     }
                 }
+                success = sqlite3_step(statement);
+                if(success==SQLITE_ERROR){
+                    NSLog(@"error: failed to eval sql,error code:%d",success);
+                }
+            }else{
+                NSLog(@"error : failed to prepare");
             }
-            success = sqlite3_step(statement);
-            if(success==SQLITE_ERROR){
-                NSLog(@"error: failed to eval sql,error code:%d",success);
-            }
-        }else{
-            NSLog(@"error : failed to prepare");
+            //释放对象
+            sqlite3_finalize(statement);
         }
-        //释放对象
-        sqlite3_finalize(statement);
+        else{
+            NSLog(@"failed to open database with message '%s'",sqlite3_errmsg(database));
+        }
+        sqlite3_close(database);
+        return success==SQLITE_OK || success==SQLITE_DONE;
     }
-    else{
-        NSLog(@"failed to open database with message '%s'",sqlite3_errmsg(database));
-    }
-    sqlite3_close(database);
-    return success==SQLITE_OK || success==SQLITE_DONE;
+    return NO;
 }
 
 @end

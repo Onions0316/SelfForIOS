@@ -56,6 +56,8 @@
 - (NSString *) updateSQL:(id) obj;
 - (NSString *) selectSQL:(Class) objClass params:(NSDictionary *) dic;
 - (NSArray *) select:(Class) objClass sql:(NSString *) sql;
+- (NSString *) deleteSQL:(Class) class objId:(NSNumber *) objId;
+- (NSString *) deleteSQL:(Class) class foreign:(Class) foreignClass objId:(NSNumber *) objId;
 @end
 
 #endif /* BaseService_h */
