@@ -1,0 +1,61 @@
+//
+//  BaseController.h
+//  singeViewTest
+//
+//  Created by roy on 16/1/6.
+//  Copyright © 2016年 roy. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "BaseView.h"
+#import "ApiManager.h"
+#import "UIUtil.h"
+
+
+#ifndef BaseController_h
+#define BaseController_h
+
+/*
+ *  创建类型宏
+ */
+#define CREATE_TYPE_PROPERTY_TO_VIEW(__TYPE__,__NAME__)\
+@property (nonatomic,strong) __TYPE__ * __NAME__;
+
+@interface BaseController : UIViewController
+
+{
+    NSString * logName;
+}
+@property (nonatomic,assign) CGFloat topSize;
+@property (nonatomic,strong) NSString * logName;
+@property (nonatomic,assign) BOOL showBack;
+@property (nonatomic,assign) BOOL showLogout;
+@property (nonatomic,assign) BOOL checkLogin;
+@property (nonatomic,strong) NSString * navTitle;
+
+- (void) goControllerByClass:(Class) goClass;
+
+- (void) goController:(UIViewController *) controller;
+
+- (void) logStr:(NSString*) logStr;
+
+- (void) showAlert:(NSString *) title
+           message:(NSString *) message
+        controller:(UIViewController *) controller;
+
+- (void) showAlert:(NSString *)title
+           message:(NSString *)message
+        controller:(UIViewController *)controller
+               sel:(SEL) sel;
+
+- (void) showMessage:(NSString *)title
+             message:(NSString *)message
+          controller:(UIViewController *)controller
+             actions:(NSMutableDictionary *) actions;
+- (void) showBase:(UIAlertController *) alert
+          actions:(UIViewController *) controller;
+- (void) clickBack;
+
+@end
+
+#endif /* BaseController_h */

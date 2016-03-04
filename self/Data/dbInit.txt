@@ -1,0 +1,4 @@
+create table if not exists user(user_id integer primary key autoincrement,name text unique not null,real_name text,password text,create_time real not null,sex integer default 1 check(sex in (0,1)),birthday real,totle_in real default 0,totle_out real default 0,totle_all real default 0,last_total_time real);
+create table if not exists detail(detail_id integer primary key autoincrement,user_id integer not null,detail_type integer not null default 1 check(detail_type in (1,-1)),amount real default 0,happen_time real not null,create_time real not null,memo text,constraint 'detail_user_id' foreign key (user_id) references user(user_id) on delete cascade);
+create index if not exists index_detail_happen_time on detail (happen_time);
+create index if not exists index_detail_detail_type on detail (detail_type);

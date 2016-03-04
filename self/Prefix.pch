@@ -1,0 +1,67 @@
+//
+//  Prefix.pch
+//  self
+//
+//  Created by roy on 16/2/25.
+//  Copyright © 2016年 onions. All rights reserved.
+//
+
+//定义屏幕宽度
+#define Main_Screen_Width [UIScreen mainScreen].bounds.size.width
+#define Main_Screen_Height [UIScreen mainScreen].bounds.size.height
+
+//描述
+#define User_Name @"用户名"
+#define User_Name_Memo @"请输入用户名"
+#define User_Password @"密码"
+#define User_Password_Memo @"请输入密码"
+#define User_Password_Confirm @"确认密码"
+#define User_Real_Name @"真实姓名"
+#define User_Sex @"性别"
+#define User_Sex_Man @"男"
+#define User_Sex_Woman @"女"
+#define User_Birthday @"生日"
+#define User_Totle_In @"收入"
+#define User_Totle_Out @"支出"
+#define User_Totle_All @"剩余"
+#define Detail_Type @"收支类型"
+#define Detail_Amount @"金额"
+#define Detail_Happen_Time @"发生时间"
+#define Detail_Memo @"备注"
+#define Login @"登录"
+#define Register @"注册"
+#define Logout @"注销"
+
+// Size
+#define Main_Title_Height 30
+#define Default_TextFiled_Width 200
+#define Default_Label_Height 25
+/*
+ *  视图间距
+ */
+#define Default_View_Space 10
+
+/*
+ *  默认字体大小
+ */
+#define Default_Font [UIFont systemFontOfSize:17]
+/*
+ *  默认颜色
+ */
+#define Default_Color [UIColor colorWithRed:54.0/255 green:181.0/255 blue:236.0/255 alpha:1]
+/*
+ *  默认日期格式化
+ */
+#define Default_Date_Format @"yyyy-MM-dd"
+#define Default_Date_Time_Format @"yyyy-MM-dd HH:mm:ss"
+
+#define Alert_Info @"提示"
+#define Alert_Error @"错误"
+#define Alert_Warning @"警告"
+
+//版本比较
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
