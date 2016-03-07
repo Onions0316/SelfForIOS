@@ -59,16 +59,17 @@
         NSString * query = [NSString stringWithFormat:@"select detail_type as %@,sum(amount) as %@ from detail where user_id='%@' group by detail_type",dtField,amountField,user.user_id];
         NSArray * list = [[super db] selectData:query];
         for(id l in list){
-            if([l isMemberOfClass:[NSDictionary class]]){
+            if([l isKindOfClass:[NSDictionary class]]){
                 NSDictionary * dic = (NSDictionary *)l;
                 NSNumber * key = [Util toNumber:[dic objectForKey:dtField]];
                 if(key){
                     NSNumber * amount = [Util toNumber:[dic objectForKey:amountField]];
                     if(amount){
-                        if(key>0){
+                        int keyInt = key.intValue;
+                        if(keyInt>0){
                             user.totle_in = amount;
                         }
-                        else if(key<0){
+                        else if(keyInt<0){
                             user.totle_out = amount;
                         }
                     }
@@ -76,6 +77,8 @@
             }
         }
         user.totle_all = [NSNumber numberWithFloat:user.totle_in.floatValue-user.totle_out.floatValue];
+        //更新同步时间
+        user.last_total_time = [Util nowTime];
         if([self update:user]){
             result = user;
         }

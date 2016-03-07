@@ -14,6 +14,7 @@
     if(self=[super init]){
         self.db = [[SQLiteOperation alloc] init];
         self.apiManager = [[ApiManager alloc] init];
+        self.isTotal = NO;
     }
     return self;
 }

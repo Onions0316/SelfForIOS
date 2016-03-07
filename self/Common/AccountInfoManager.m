@@ -14,6 +14,7 @@
 
 @property (nonatomic,strong) UserService * userService;
 
+
 @end
 
 @implementation AccountInfoManager
@@ -27,6 +28,7 @@
             NSDictionary * dic = [NSDictionary dictionaryWithContentsOfFile:self.infoPath];
             if(dic){
                 self.user = [DomainFactory toUser:dic];
+                [self login:self.user.name password:self.user.password];
             }
         }
     }
@@ -55,29 +57,12 @@
 }
 
 /*
- *  统计用户数据
- */
-- (BOOL) total{
-    BOOL result = NO;
-    if(self.home){
-        [self.home showLoading];
-        [self.userService total:self.user];
-    }
-    return result;
-}
-
-/*
  *  登录
  */
 - (BOOL) login:(NSString *) name password:(NSString *) password{
     self.user = [self.userService login:name password:password];
     if(self.user){
-        NSFileManager * fileManager = [NSFileManager defaultManager];
-        if([fileManager fileExistsAtPath:self.infoPath]){
-            NSError * err = nil;
-            BOOL success = [fileManager removeItemAtPath:self.infoPath error:&err];
-            NSAssert1(success, @"file remove error", [err localizedDescription]);
-        }
+        [self removeLoginFile];
         NSDictionary * dic = [DomainFactory dictionaryFromUser:self.user];
         //用户信息写入文件
         [dic writeToFile:self.infoPath atomically:YES];
@@ -86,16 +71,23 @@
     return NO;
 }
 
-/**
- * 退出登录并删除登陆信息
+/*
+ *  删除用户登录文件
  */
-- (void) logout:(UIViewController *) controller{
+- (void) removeLoginFile{
     NSFileManager * fileManager = [NSFileManager defaultManager];
     if([fileManager fileExistsAtPath:self.infoPath]){
         NSError * err = nil;
         BOOL success = [fileManager removeItemAtPath:self.infoPath error:&err];
         NSAssert1(success, @"file remove error", [err localizedDescription]);
     }
+}
+
+/**
+ * 退出登录并删除登陆信息
+ */
+- (void) logout:(UIViewController *) controller{
+    [self removeLoginFile];
     self.user = nil;
     [controller.navigationController pushViewController:[[LoginViewController alloc] init] animated:YES];
 }

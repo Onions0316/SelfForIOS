@@ -17,6 +17,7 @@
 
 @property (nonatomic,strong) ApiManager * apiManager;
 @property (nonatomic,strong) SQLiteOperation * db;
+@property (nonatomic,assign) BOOL isTotal;
 
 + (Single *) sharedInstance;
 

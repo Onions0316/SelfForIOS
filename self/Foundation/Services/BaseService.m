@@ -77,7 +77,7 @@
             tClass = [tClass superclass];
         }
         if(idValue && sets.length>0){
-            result = [NSString stringWithFormat:@"update %@ set (%@) where %@=%@;",[obj class],[sets substringToIndex:sets.length-1],classId,idValue];
+            result = [NSString stringWithFormat:@"update %@ set %@ where %@=%@;",[obj class],[sets substringToIndex:sets.length-1],classId,idValue];
         }
     }
     return result;

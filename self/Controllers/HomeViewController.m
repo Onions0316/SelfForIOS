@@ -7,15 +7,16 @@
 //
 
 #import "HomeViewController.h"
-#import "AccountInfoManager.h"
 #import "AddDetailViewController.h"
+#import "UserService.h"
 
-#define Info_Height 100
+#define Info_Height 50
 #define Details_Height 200
 
 #define Tag_User_Total_In 2001
 #define Tag_User_Total_Out 2002
 #define Tag_User_Total_All 2003
+#define Tag_User_Total_Time 2004
 
 #define LoadTag 2101
 @interface HomeViewController()
@@ -24,7 +25,7 @@
 CREATE_TYPE_PROPERTY_TO_VIEW(UIView, detailView)
 
 CREATE_TYPE_PROPERTY_TO_VIEW(UIActivityIndicatorView, activityIndicator)
-
+CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
 @end
 
 @implementation HomeViewController
@@ -39,12 +40,15 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UIActivityIndicatorView, activityIndicator)
 
 - (void) viewDidLoad{
     [super viewDidLoad];
-    
+    self.userService = [[UserService alloc] init];
     self.top = super.topSize;
     User * user = [[AccountInfoManager sharedInstance] user];
     [self drawInfo:user];
     [self drawDetails:user];
     [self drawOperation];
+    if([Single sharedInstance].isTotal){
+        [self refresh];
+    }
 }
 
 /*
@@ -57,9 +61,12 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UIActivityIndicatorView, activityIndicator)
     CGRect rect = CGRectMake(Default_View_Space, self.top, viewWidth, Info_Height);
     UIView * view = [[UIView alloc] initWithFrame:rect];
     
-    rect = CGRectMake(0, 0, 0, Default_Label_Height);
+    CGFloat nowY = 0;
+    rect = CGRectMake(0, nowY, 0, Default_Label_Height);
     [UIUtil addLableInView:view text:[NSString stringWithFormat:@"hello,%@",name] rect:rect tag:nil];
 
+    nowY += Default_Label_Height + Default_View_Space;
+    
     self.top+=Info_Height;
     [self.view addSubview:view];
 }
@@ -75,6 +82,15 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UIActivityIndicatorView, activityIndicator)
     outLabel.textColor = [UIColor redColor];
     UILabel * allLabel = [self.detailView viewWithTag:Tag_User_Total_All];
     [super setDetailAmount:allLabel amount:user.totle_all];
+    UILabel * timeLabel = [self.detailView viewWithTag:Tag_User_Total_Time];
+    if(user.last_total_time){
+        NSString * memo = [Util dateToString:[Util timeToDate:user.last_total_time] format:Default_Date_Time_Format];
+        CGRect rect = timeLabel.frame;
+        CGSize size = [UIUtil textSizeAtString:memo font:Default_Font];
+        rect.size.width = size.width;
+        timeLabel.text = memo;
+        timeLabel.frame = rect;
+    }
 }
 
 /*
@@ -98,6 +114,17 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UIActivityIndicatorView, activityIndicator)
     CGFloat detailTop = 0;
     CGFloat tagIndex = Tag_User_Total_In;
     CGFloat detailX = labelWidth+Default_View_Space;
+    //设置同步时间
+    rect = CGRectMake(0, lableTop, 0, Default_Label_Height);
+    [UIUtil addLableInView:self.detailView text:@"您上次统计时间为:" rect:rect tag:nil];
+    rect.origin.y += Default_Label_Height+Default_View_Space;
+    [UIUtil addLableInView:self.detailView text:@"" rect:rect tag:[NSNumber numberWithInt:Tag_User_Total_Time]];
+    
+    rect.origin.y +=  Default_Label_Height+Default_View_Space;
+    
+    detailTop+=rect.origin.y;
+    lableTop +=rect.origin.y;
+    
     for(NSString * str in fields){
         rect = CGRectMake(0, lableTop, labelWidth, Default_Label_Height);
         [UIUtil addLableInView:self.detailView text:str rect:rect tag:nil];
@@ -108,6 +135,9 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UIActivityIndicatorView, activityIndicator)
         tagIndex++;
     }
     [self setDetails:user];
+    rect = self.detailView.frame;
+    rect.size.height = detailTop;
+    self.detailView.frame = rect;
     self.top+=self.detailView.frame.size.height;
     [self.view addSubview:self.detailView];
 }
@@ -185,6 +215,17 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UIActivityIndicatorView, activityIndicator)
 
 - (void) refresh{
     [self showLoading];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        User * user =  [self.userService total:[AccountInfoManager sharedInstance].user];
+        if(user){
+            [AccountInfoManager sharedInstance].user =user;
+        }
+        [Single sharedInstance].isTotal = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setDetails:[AccountInfoManager sharedInstance].user];
+            [self hideLoading];
+        });
+    });
 }
 
 

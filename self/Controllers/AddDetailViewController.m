@@ -121,7 +121,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 }
 
 - (void) backHome{
-    [[AccountInfoManager sharedInstance] total];
+    //[[AccountInfoManager sharedInstance] total];
+    [Single sharedInstance].isTotal = YES;
     [super clickBack];
 }
 

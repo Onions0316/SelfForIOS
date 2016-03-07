@@ -8,11 +8,13 @@
 
 #import "BaseController.h"
 #import "SlideNavigationController.h"
+#import "AccountInfoManager.h"
 
 @interface HomeViewController : BaseController<SlideNavigationControllerDelegate>
 
 - (void) showLoading;
 
 - (void) hideLoading;
+- (void) setDetails:(User *) user;
 
 @end

@@ -151,12 +151,13 @@ nullBlocks myblocks;
 
 - (void) setDetailAmount:(UILabel *) label amount:(NSNumber *) amount{
     amount = [Util toNumber:amount];
-    if(amount>0||amount<0){
+    float amountFloat = amount.floatValue;
+    if(amountFloat>0||amountFloat<0){
         label.text = [Util numberToString:amount];
     }
-    if(amount>0){
+    if(amountFloat>0){
         label.textColor = [UIColor blueColor];
-    }else if(amount <0){
+    }else if(amountFloat <0){
         label.textColor =[UIColor redColor];
     }
 }

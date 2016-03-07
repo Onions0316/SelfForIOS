@@ -38,7 +38,7 @@
     UINavigationController * main = [[UINavigationController alloc] initWithRootViewController:home];
     main.navigationBarHidden = YES;
     self.window.rootViewController = main;
-    [AccountInfoManager sharedInstance].home = home;
+    
     //设置状态栏字体颜色 需要在info plist 里设置View controller-based status bar appearance 为no
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
@@ -47,7 +47,6 @@
     //[[AccountInfoManager sharedInstance] login:@"test1" password:@"123456"];
     
     //[[AccountInfoManager sharedInstance] logout];
-    [[AccountInfoManager sharedInstance] total];
     
     return YES;
 }

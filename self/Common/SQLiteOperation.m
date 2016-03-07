@@ -101,7 +101,8 @@
             //能够使用sqlite3_step 执行的编译好的准备语句的指针
             sqlite3_stmt * statement = nil;
             //准备执行sql  但并没有执行
-            if(sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, NULL)== SQLITE_OK){
+            int state = sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, NULL);
+            if(state == SQLITE_OK){
                 if(params!=nil){
                     int count = params.count;
                     if(count>0){
