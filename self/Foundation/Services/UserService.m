@@ -58,6 +58,8 @@
         NSString * amountField = @"amount";
         NSString * query = [NSString stringWithFormat:@"select detail_type as %@,sum(amount) as %@ from detail where user_id='%@' group by detail_type",dtField,amountField,user.user_id];
         NSArray * list = [[super db] selectData:query];
+        user.totle_in=@0;
+        user.totle_out=@0;
         for(id l in list){
             if([l isKindOfClass:[NSDictionary class]]){
                 NSDictionary * dic = (NSDictionary *)l;

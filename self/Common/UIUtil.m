@@ -99,6 +99,10 @@
                            sel:(SEL) sel
                     controller:(id) controller
                            tag:(NSNumber *) tag{
+    CGSize size = [self textSizeAtString:title font:Default_Font];
+    if(rect.size.width<size.width){
+        rect.size.width = size.width+Default_View_Space;
+    }
     UIButton * button = [self addButtonInView:view rect:rect sel:sel controller:controller tag:tag];
     if(title){
         [button setTitle:title forState:UIControlStateNormal];

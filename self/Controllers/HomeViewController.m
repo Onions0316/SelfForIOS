@@ -9,6 +9,8 @@
 #import "HomeViewController.h"
 #import "AddDetailViewController.h"
 #import "UserService.h"
+#import "DetailService.h"
+#import "SearchViewController.h"
 
 #define Info_Height 50
 #define Details_Height 200
@@ -17,15 +19,18 @@
 #define Tag_User_Total_Out 2002
 #define Tag_User_Total_All 2003
 #define Tag_User_Total_Time 2004
+#define Tag_User_Count 2005
 
 #define LoadTag 2101
 @interface HomeViewController()
 
 @property (nonatomic,assign) CGFloat top;
 CREATE_TYPE_PROPERTY_TO_VIEW(UIView, detailView)
+CREATE_TYPE_PROPERTY_TO_VIEW(UIView, infoView)
 
 CREATE_TYPE_PROPERTY_TO_VIEW(UIActivityIndicatorView, activityIndicator)
 CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
+CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 @end
 
 @implementation HomeViewController
@@ -41,6 +46,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
 - (void) viewDidLoad{
     [super viewDidLoad];
     self.userService = [[UserService alloc] init];
+    self.detailService = [[DetailService alloc] init];
     self.top = super.topSize;
     User * user = [[AccountInfoManager sharedInstance] user];
     [self drawInfo:user];
@@ -57,18 +63,41 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
 - (void) drawInfo:(User *) user{
     NSString * name = [user.real_name hasValue]?user.real_name:user.name;
     self.top+=Default_View_Space;
-    CGFloat viewWidth = Main_Screen_Width-2*Default_View_Space;
-    CGRect rect = CGRectMake(Default_View_Space, self.top, viewWidth, Info_Height);
+    CGFloat viewLeft = 3*Default_View_Space;
+    CGFloat viewWidth = Main_Screen_Width-2*viewLeft;
+    CGRect rect = CGRectMake(viewLeft, self.top, viewWidth, Info_Height);
     UIView * view = [[UIView alloc] initWithFrame:rect];
     
     CGFloat nowY = 0;
     rect = CGRectMake(0, nowY, 0, Default_Label_Height);
     [UIUtil addLableInView:view text:[NSString stringWithFormat:@"hello,%@",name] rect:rect tag:nil];
 
-    nowY += Default_Label_Height + Default_View_Space;
-    
+    nowY += Default_Label_Height;
+
+    NSNumber * count = [self.detailService count:user.user_id];
+    if(count){
+        NSString * countString = [NSString stringWithFormat:@"您当前实时数据条数为:"];
+        rect.origin.y = nowY;
+        UILabel * label = [UIUtil addLableInView:view text:countString rect:rect tag:nil];
+        rect.origin.x += label.frame.size.width;
+        [UIUtil addLableInView:view text:[Util numberToString:count] rect:rect tag:[NSNumber numberWithInt:Tag_User_Count]];
+    }
     self.top+=Info_Height;
+    self.infoView = view;
     [self.view addSubview:view];
+}
+/*
+ *  更新总数据条数
+ */
+- (void) updateCount{
+    UILabel * countLabel = [self.infoView viewWithTag:Tag_User_Count];
+    NSNumber * count = [self.detailService count:[AccountInfoManager sharedInstance].user.user_id];
+    NSString * countString = [Util numberToString:count];
+    CGSize size = [UIUtil textSizeAtString:countString font:Default_Font];
+    CGRect rect = countLabel.frame;
+    rect.size.width = size.width;
+    countLabel.frame = rect;
+    countLabel.text = countString;
 }
 
 /*
@@ -210,22 +239,25 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
 }
 
 - (void) search{
-    [self hideLoading];
+    [super goControllerByClass:[SearchViewController class]];
 }
 
 - (void) refresh{
-    [self showLoading];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        User * user =  [self.userService total:[AccountInfoManager sharedInstance].user];
-        if(user){
-            [AccountInfoManager sharedInstance].user =user;
-        }
-        [Single sharedInstance].isTotal = NO;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self setDetails:[AccountInfoManager sharedInstance].user];
-            [self hideLoading];
+    if([Single sharedInstance].isTotal){
+        [self showLoading];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            User * user =  [self.userService total:[AccountInfoManager sharedInstance].user];
+            if(user){
+                [AccountInfoManager sharedInstance].user =user;
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self setDetails:[AccountInfoManager sharedInstance].user];
+                [self updateCount];
+                [self hideLoading];
+                [Single sharedInstance].isTotal = NO;
+            });
         });
-    });
+    }
 }
 
 

@@ -60,7 +60,7 @@
     }
 }
 
-- (NSArray *)selectData:(NSString *) sql{
+- (NSArray<NSDictionary *> *)selectData:(NSString *) sql{
     //[self readyDatabase];
     NSMutableArray* result = [[NSMutableArray alloc] init];
     if([sql hasValue]){

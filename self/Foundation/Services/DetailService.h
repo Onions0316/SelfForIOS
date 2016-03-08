@@ -13,6 +13,13 @@
 
 @interface DetailService : BaseService
 - (BOOL) add:(Detail *) detail;
+- (NSArray *) search:(NSNumber *) userId start:(NSNumber *) startTime end:(NSNumber *) endTime type:(NSNumber *) type page:(int) page size:(int) size count:(int *) totalCount;
+
+- (BOOL) removeByIds:(NSArray *) ids;
+
+- (BOOL) mergeByIds:(NSArray *) ids;
+
+- (NSNumber *) count:(NSNumber *) userId;
 @end
 
 #endif /* DetailService_h */

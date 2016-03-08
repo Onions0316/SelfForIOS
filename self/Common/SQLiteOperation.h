@@ -24,7 +24,7 @@ typedef void (^sqliteDbInit) ();
 @property (nonatomic,strong) NSString * dbInitSql;
 
 - (void) readyDatabase;
-- (NSArray *)selectData:(NSString *) sql;
+- (NSArray<NSDictionary *> *)selectData:(NSString *) sql;
 - (BOOL) eval:(NSString *)sql params:(NSArray *)params;
 
 @end

@@ -57,7 +57,8 @@
 - (void) showBase:(UIAlertController *) alert
           actions:(UIViewController *) controller;
 - (void) clickBack;
-
+- (void) drawContent;
+- (void) addTitleButton:(NSString*) imageName sel:(SEL) sel;
 @end
 
 #endif /* BaseController_h */

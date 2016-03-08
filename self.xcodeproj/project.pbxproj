@@ -48,6 +48,8 @@
 		B07E6B6E1C883C8C0071812F /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = B07E6B6A1C883C8C0071812F /* edit.png */; };
 		B07E6B6F1C883C8C0071812F /* search.png in Resources */ = {isa = PBXBuildFile; fileRef = B07E6B6B1C883C8C0071812F /* search.png */; };
 		B07E6B711C8842B70071812F /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = B07E6B701C8842B70071812F /* refresh.png */; };
+		B084BA9F1C8D2C0F00BA04B5 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B084BA9E1C8D2C0F00BA04B5 /* SearchViewController.m */; };
+		B084BAA11C8D332800BA04B5 /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = B084BAA01C8D332800BA04B5 /* up.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -123,6 +125,8 @@
 		B07E6B6A1C883C8C0071812F /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
 		B07E6B6B1C883C8C0071812F /* search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search.png; sourceTree = "<group>"; };
 		B07E6B701C8842B70071812F /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
+		B084BA9E1C8D2C0F00BA04B5 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = Controllers/SearchViewController.m; sourceTree = "<group>"; };
+		B084BAA01C8D332800BA04B5 /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
 		F4C94D9B08F57E0D251A4A53 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -214,6 +218,7 @@
 				B05E8CED1C84428D00AB3B66 /* AddDetailViewController.h */,
 				B05E8CEE1C8442B800AB3B66 /* SearchViewController.h */,
 				B05490C01C896974006977D6 /* AddDetailViewController.m */,
+				B084BA9E1C8D2C0F00BA04B5 /* SearchViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -303,6 +308,7 @@
 		B004AF8D1C7C5E3600908576 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B084BAA01C8D332800BA04B5 /* up.png */,
 				B07E6B701C8842B70071812F /* refresh.png */,
 				B07E6B681C883C8C0071812F /* add.png */,
 				B07E6B691C883C8C0071812F /* bi.png */,
@@ -431,6 +437,7 @@
 				B07E6B6E1C883C8C0071812F /* edit.png in Resources */,
 				B05AF88E1C7EF9BB00EE0607 /* back.png in Resources */,
 				B05AF8861C7EA76800EE0607 /* self.db in Resources */,
+				B084BAA11C8D332800BA04B5 /* up.png in Resources */,
 				B07E6B6F1C883C8C0071812F /* search.png in Resources */,
 				B07E6B6D1C883C8C0071812F /* bi.png in Resources */,
 				B004AF8F1C7C5E3600908576 /* head.png in Resources */,
@@ -500,6 +507,7 @@
 				B004AF531C7C4E1200908576 /* AppDelegate.m in Sources */,
 				B004AF861C7C5C3D00908576 /* NSObject+Network.m in Sources */,
 				B04CBBA01C85469F0028EFE4 /* BaseService.m in Sources */,
+				B084BA9F1C8D2C0F00BA04B5 /* SearchViewController.m in Sources */,
 				B04CBB9A1C853A830028EFE4 /* BaseDomain.m in Sources */,
 				B04CBB981C8539480028EFE4 /* User.m in Sources */,
 				B07791A41C867EA700FD950C /* LoginViewController.m in Sources */,

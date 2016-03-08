@@ -35,9 +35,14 @@
 #define Logout @"注销"
 #define Add @"添加"
 #define Submit @"提交"
+#define Search @"搜索"
+#define Search_Begin_Time @"开始时间"
+#define Search_End_Time @"结束时间"
+#define Search_Type_All @"所有"
 
 // Size
 #define Main_Title_Height 30
+#define Main_Title_Button_Width 30
 #define Default_TextFiled_Width 200
 #define Default_Label_Height 25
 /*

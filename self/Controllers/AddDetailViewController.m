@@ -36,7 +36,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 
 - (id) init{
     if(self=[super init]){
-        super.navTitle = @"新增明细";
+        super.navTitle = Add;
         super.showBack = YES;
     }
     return self;
@@ -91,6 +91,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     self.happenTime.clearButtonMode = UITextFieldViewModeNever;
     //发生时间选择器
     NSDate * now = [Util nowDate];
+    self.happenTime.text = [Util dateToString:now format:Default_Date_Time_Format];
     self.datePicker = [[UIDatePicker alloc] init];
     self.datePicker.frame = CGRectMake(0, 0, 0, 100);
     self.datePicker.date = now;
@@ -179,7 +180,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 }
 
 
-#pragma mark sex picker
+#pragma mark type picker
 - (NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     return 1;
 }
