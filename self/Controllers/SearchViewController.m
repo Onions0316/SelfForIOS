@@ -14,12 +14,18 @@
 #define Tag_Top_End_Time 4002
 #define Tag_Top_Type 4003
 
+#define Tag_Detail_Info_Type 4101
+#define Tag_Detail_Info_Amount 4102
+#define Tag_Detail_Info_Happen_Time 4103
+#define Tag_Detail_Info_Create_Time 4104
+#define Tag_Detail_Info_Memo 4105
+
 #define Tag_Top_Toggle_Button 4101
 
 #define Search_Select_All @"设置全选"
 #define Search_Not_Select_All @"取消全选"
 
-@interface SearchViewController()<UITableViewDataSource, UITableViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+@interface SearchViewController()<UITableViewDataSource, UITableViewDelegate>
 
 CREATE_TYPE_PROPERTY_TO_VIEW(UITableView, table)
 CREATE_TYPE_PROPERTY_TO_VIEW(NSMutableArray<Detail*>, data)
@@ -27,15 +33,14 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSMutableArray<Detail*>, data)
 CREATE_TYPE_PROPERTY_TO_VIEW(UIView, topView)
 CREATE_TYPE_PROPERTY_TO_VIEW(UIView, coverView)
 CREATE_TYPE_PROPERTY_TO_VIEW(UIView, mainView)
+CREATE_TYPE_PROPERTY_TO_VIEW(UIView, detailInfoView)
 
 CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, start)
 CREATE_TYPE_PROPERTY_TO_VIEW(UIDatePicker, startPciker)
 CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, end)
 CREATE_TYPE_PROPERTY_TO_VIEW(UIDatePicker, endPicker)
-CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, type)
-CREATE_TYPE_PROPERTY_TO_VIEW(UIPickerView, typePicker)
-CREATE_TYPE_PROPERTY_TO_VIEW(NSDictionary, typeData)
-CREATE_TYPE_PROPERTY_TO_VIEW(NSArray, typeDataArray)
+CREATE_TYPE_PROPERTY_TO_VIEW(UISegmentedControl, type)
+CREATE_TYPE_PROPERTY_TO_VIEW(NSArray, typeData)
 
 @property (nonatomic,assign) BOOL isShowTop;
 @property (nonatomic,assign) BOOL isShowTool;
@@ -73,7 +78,9 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     //默认显示搜索条件
     [self topToggle];
 }
-
+/*
+ *  父类方法  在画title前画出部分元素
+ */
 - (void) drawContent{
     self.top = super.topSize;
     self.coverView = [[UIView alloc] initWithFrame:CGRectMake(0,self.top , Main_Screen_Width, Main_Screen_Height-self.top)];
@@ -81,11 +88,21 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     self.coverView.alpha = 0.5;
     self.coverView.hidden = YES;
     //给view添加点击事件
-    [self.coverView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topToggle)]];
+    [self.coverView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenCover)]];
     [self drawTop];
     [self drawMain];
+    [self drawDetailInfo];
     [self.view addSubview:self.coverView];
     [self.view addSubview:self.topView];
+    [self.view addSubview:self.detailInfoView];
+}
+
+- (void) hiddenCover{
+    self.detailInfoView.hidden = YES;
+    self.coverView.hidden = YES;
+    if(self.isShowTop){
+        [self topToggle];
+    }
 }
 
 - (void) drawTop{
@@ -103,6 +120,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     rect.origin.x= 0;
     rect.origin.y = viewHeight-Default_View_Space;
     rect.size.height = Default_View_Space;
+    //滑动按钮
     [UIUtil addButtonInView:self.topView image:[UIImage imageNamed:@"down"] rect:rect sel:@selector(topToggle) controller:self tag:[NSNumber numberWithInt:Tag_Top_Toggle_Button]];
     
     CGFloat tagIndex = Tag_Top_Begin_Time;
@@ -134,28 +152,63 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     self.endPicker.datePickerMode = UIDatePickerModeDateAndTime;
     [UIUtil addTextFildInputView:self.end inputView:self.endPicker controller:self done:@selector(endDoneTouch:) cancel:nil];
     //收支类型
-    self.type = [self.topView viewWithTag:Tag_Top_Type];
-    self.type.text = Search_Type_All;
-    self.type.clearButtonMode = UITextFieldViewModeNever;
-    self.typeData = @{Search_Type_All:@0,Detail_Type_In:[NSNumber numberWithInt:In],Detail_Type_Out:[NSNumber numberWithInt:Out]};
-    self.typeDataArray = self.typeData.allKeys;
-    //收支类型选择器
-    self.typePicker = [[UIPickerView alloc] init];
-    self.typePicker.showsSelectionIndicator = YES;
-    self.typePicker.delegate = self;
-    self.typePicker.dataSource = self;
-    self.typePicker.frame = CGRectMake(0, 0, 0, 100);
-    //self.sex.userInteractionEnabled = NO;
-    [UIUtil addTextFildInputView:self.type inputView:self.typePicker controller:self done:@selector(typeDoneTouch:) cancel:nil];
-    //滑动按钮
+    UIView * typeView = [self.topView viewWithTag:Tag_Top_Type];
+    CGRect typeRect = typeView.frame;
+    [typeView removeFromSuperview];
+    self.typeData = @[Detail_Type_Out,Search_Type_All,Detail_Type_In];
+    self.type = [[UISegmentedControl alloc] initWithItems:self.typeData];
+    self.type.frame = typeRect;
+    self.type.selectedSegmentIndex = 1;
+    [self.topView addSubview:self.type];
+    
+    //搜索按钮
     [UIUtil addButtonInView:self.topView title:Search rect:rect sel:@selector(search) controller:self tag:nil];
     //添加编辑按钮
     [super addTitleButton:@"bi" sel:@selector(toggleTool)];
     //self.top+=Default_View_Space;
 }
+//查看详细
+- (void) drawDetailInfo{
+    self.detailInfoView = [[UIView alloc] init];
+    NSArray * fields = @[Detail_Type,Detail_Amount,Detail_Happen_Time,Detail_Create_Time,Detail_Memo];
+    CGFloat fieldMaxWidth = [UIUtil textMaxWidth:fields font:Default_Font];
+    CGFloat viewLeft = 2*Default_View_Space;
+    CGFloat viewWidth = Main_Screen_Width-viewLeft*2;
+    CGFloat fieldValueWidth = viewWidth-fieldMaxWidth-3*Default_View_Space;
+    CGRect rect = CGRectMake(Default_View_Space, Default_View_Space, fieldMaxWidth, Default_Label_Height);
+    CGFloat tagIndex = Tag_Detail_Info_Type;
+    for(int i=0;i<fields.count;i++){
+        NSString * field = fields[i];
+        [UIUtil addLableInView:self.detailInfoView text:field rect:rect tag:nil];
+        rect.origin.x+=Default_View_Space+fieldMaxWidth;
+        rect.size.width = fieldValueWidth;
+        BOOL isLast = i==(fields.count-1);
+        if(isLast){
+            rect.size.height = 3*Default_Label_Height;
+        }
+        UILabel * label = [UIUtil addLableInView:self.detailInfoView text:@"" rect:rect tag:[NSNumber numberWithInt:tagIndex]];
+        label.textAlignment = NSTextAlignmentLeft;
+        if(isLast){
+            //label.numberOfLines = 5;
+            label.font = [UIFont systemFontOfSize:14];
+            label.lineBreakMode = NSLineBreakByCharWrapping;
+            //label.backgroundColor = [UIColor blueColor];
+        }
+        tagIndex++;
+        rect.origin.x = Default_View_Space;
+        rect.origin.y += rect.size.height;
+        rect.size.width = fieldMaxWidth;
+    }
+    CGFloat viewHeight = rect.origin.y+Default_View_Space;
+    CGFloat viewTop = (Main_Screen_Height-super.topSize-viewHeight)/2;
+    
+    self.detailInfoView.frame = CGRectMake(viewLeft, viewTop, viewWidth, viewHeight);
+    self.detailInfoView.hidden = YES;
+    self.detailInfoView.backgroundColor = [UIColor whiteColor];
+    //[self.view addSubview:self.detailInfoView];
+}
 
 - (void) drawMain{
-    
     CGFloat viewTop = self.top;
     CGFloat viewHeight = Main_Screen_Height-viewTop;
     CGFloat viewLeft = 0;
@@ -168,6 +221,11 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     rect.origin.y = -1*Default_Label_Height;
     rect.size.height+=Default_Label_Height;
     self.table = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
+    //设置表格长按事件
+    UILongPressGestureRecognizer * longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+    longPress.minimumPressDuration = 0.5;
+    [self.table addGestureRecognizer:longPress];
+
     //设置多选按钮
     [self.table setAllowsMultipleSelectionDuringEditing:YES];
     
@@ -194,10 +252,19 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
 }
 
 #pragma mark operation
+/*
+ *  显示/隐藏工具栏
+ */
 - (void) toggleTool{
     if(self.data.count==0 && !self.isShowTool){
         [super showAlert:Alert_Warning message:@"无数据,无法编辑" controller:nil];
     }else{
+        // 开始设置动画
+        [UIView beginAnimations:nil context:nil];
+        // 动画执行时间
+        [UIView setAnimationDuration:0.7];
+        [UIView setAnimationDelegate:self];
+        
         self.table.tableHeaderView.hidden = self.isShowTool;
         CGRect rect = self.table.frame;
         self.isShowTool = !self.isShowTool;
@@ -210,9 +277,10 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
         }
         self.table.frame = rect;
         [self.table setEditing:self.isShowTool];
+        [UIView commitAnimations];
     }
 }
-
+//全选/取消全选
 - (void) toggleSelectAll:(UIButton *) sender{
     NSString * title = @"";
     if([sender.titleLabel.text isEqualToString:Search_Select_All]){
@@ -231,7 +299,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     }
     [sender setTitle:title forState:UIControlStateNormal];
 }
-
+//删除选中项
 - (void) removeSelected{
     NSArray * ids = [self selectedData];
     if(ids.count>0){
@@ -241,7 +309,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
         [Single sharedInstance].isTotal = YES;
     }
 }
-
+//合并选中项
 - (void) mergeSelected{
     NSArray * ids = [self selectedData];
     if(ids.count>0){
@@ -251,7 +319,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
         [Single sharedInstance].isTotal = YES;
     }
 }
-
+//获取被选择的数据
 - (NSArray *) selectedData{
     NSMutableArray * ids = [[NSMutableArray alloc] init];
     if(self.data.count>0){
@@ -279,15 +347,69 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     [self searchData:true];
 }
 
+/*
+ *  表格长按事件
+ */
+- ( void) longPress:(UILongPressGestureRecognizer *) sender{
+    if(!self.isShowTool && self.data.count>0 && sender.state == UIGestureRecognizerStateBegan){
+        CGPoint point = [sender locationInView:self.table];
+        NSIndexPath * index = [self.table indexPathForRowAtPoint:point];
+        if(index){
+            //NSLog(@"%d",index.row);
+            Detail * detail = self.data[index.row];
+            if(detail){
+                [self showDetailInfo:detail.detail_id];
+            }
+        }
+    }
+}
+/*
+ *  显示详细信息
+ */
+- (void) showDetailInfo:(NSNumber *) detailId{
+    Detail * detail = [self.detailService find:detailId];
+    if(detail){
+        NSString * type = detail.detail_type==In?Detail_Type_In:Detail_Type_Out;
+        NSString * happenTime = [Util dateToString:[Util timeToDate:detail.happen_time] format:Default_Date_Time_Format];
+        NSString * createTime = [Util dateToString:[Util timeToDate:detail.create_time] format:Default_Date_Time_Format];
+        NSString * amount = [Util numberToString:detail.amount];
+        NSString * memo = detail.memo;
+        NSArray * fields =[NSArray arrayWithObjects:type,amount,happenTime,createTime,memo,nil];
+        CGFloat tagIndex = Tag_Detail_Info_Type;
+        for(NSString * field in fields){
+            UILabel * label = [self.detailInfoView viewWithTag:tagIndex];
+            label.text = field;
+            tagIndex++;
+        }
+        UILabel * label = [self.detailInfoView viewWithTag:Tag_Detail_Info_Memo];
+        CGSize size = [UIUtil textSizeAtString:memo font:label.font];
+        CGRect rect = label.frame;
+        int num = (rect.size.width+size.width-1)/rect.size.width;
+        if(num<1){
+            num = 1;
+        }
+        label.numberOfLines = num;
+        CGFloat labelHeightChange = num*Default_Label_Height - rect.size.height;
+        rect.size.height+=labelHeightChange;
+        label.frame = rect;
+        rect = self.detailInfoView.frame;
+        rect.size.height+=labelHeightChange;
+        self.detailInfoView.frame = rect;
+        
+        self.coverView.hidden = NO;
+        self.detailInfoView.hidden = NO;
+    }
+}
 
 #pragma mark search
+//搜索
 - (void) search{
     self.page = 0;
     if([self searchData:false]){
         [self topToggle];
     }
 }
-
+//搜索具体实现
 - (BOOL) searchData:(BOOL) isAppend{
     NSString * startString = self.start.text;
     NSNumber * startNumber = nil;
@@ -303,11 +425,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
         [super showAlert:Alert_Error message:@"开始时间不能大于结束时间" controller:nil];
         return NO;
     }else{
-        NSString * typeString = [self.type.text stringByCutEmpty];
-        NSNumber * typeNumber = nil;
-        if([typeString hasValue]){
-            typeNumber = [self.typeData objectForKey:typeString];
-        }
+        int typeIndex = [self.type selectedSegmentIndex];
+        NSNumber * typeNumber = [NSNumber numberWithInt:typeIndex-1];
         
         NSArray * list = [self.detailService search:self.userId start:startNumber end:endNumber type:typeNumber page:self.page size:self.size count:&_totalCount];
         if(isAppend){
@@ -321,36 +440,16 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     }
     return YES;
 }
-
+//填充开始时间
 - (void) startDoneTouch:(UIBarButtonItem *) sender{
     self.start.text =[Util dateToString:[self.startPciker date] format:Default_Date_Time_Format];
     [self.start resignFirstResponder];
 }
-
+//填充结束时间
 - (void) endDoneTouch:(UIBarButtonItem *) sender{
     self.end.text =[Util dateToString:[self.endPicker date] format:Default_Date_Time_Format];
     [self.end resignFirstResponder];
 }
-
-- (void) typeDoneTouch:(UIBarButtonItem *) sender{
-    self.type.text = [self.typeDataArray objectAtIndex:[self.typePicker selectedRowInComponent:0]];
-    [self.type resignFirstResponder];
-}
-
-
-#pragma mark type picker
-- (NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-    return [self.typeDataArray count];
-}
-
-- (NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
-    return [self.typeDataArray objectAtIndex:row];
-}
-
 
 #pragma mark top toggle
 - (void) topToggle{
@@ -405,6 +504,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
             [super setDetailAmount:cell.textLabel amount:rowData.amount];
             cell.detailTextLabel.text = [Util dateToString:[Util timeToDate:rowData.happen_time] format:Default_Date_Time_Format];
         }
+        //UITapGestureRecognizer * doubleTab = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+        //[doubleTab setNumberOfTapsRequired:2];
     }
     return cell;
 }

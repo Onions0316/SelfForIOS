@@ -30,6 +30,7 @@
 #define Detail_Amount @"金额"
 #define Detail_Happen_Time @"发生时间"
 #define Detail_Memo @"备注"
+#define Detail_Create_Time @"创建时间"
 #define Login @"登录"
 #define Register @"注册"
 #define Logout @"注销"
@@ -61,6 +62,7 @@
 /*
  *  默认日期格式化
  */
+#define Default_Day_Format @"MM-dd"
 #define Default_Date_Format @"yyyy-MM-dd"
 #define Default_Date_Time_Format @"yyyy-MM-dd HH:mm:ss"
 

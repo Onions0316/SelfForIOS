@@ -83,7 +83,7 @@
 + (NSString *) numberToString:(NSNumber *) number{
     NSNumberFormatter * format = [[NSNumberFormatter alloc] init];
     format.numberStyle = NSNumberFormatterDecimalStyle;
-    return [format stringFromNumber:number];
+    return [format stringFromNumber:[self toNumber:number]];
 }
 
 @end

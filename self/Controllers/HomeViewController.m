@@ -11,6 +11,7 @@
 #import "UserService.h"
 #import "DetailService.h"
 #import "SearchViewController.h"
+#import "RegisterViewController.h"
 
 #define Info_Height 50
 #define Details_Height 200
@@ -20,6 +21,7 @@
 #define Tag_User_Total_All 2003
 #define Tag_User_Total_Time 2004
 #define Tag_User_Count 2005
+#define Tag_User_Hello 2006
 
 #define LoadTag 2101
 @interface HomeViewController()
@@ -31,6 +33,9 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UIView, infoView)
 CREATE_TYPE_PROPERTY_TO_VIEW(UIActivityIndicatorView, activityIndicator)
 CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
 CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
+
+@property (nonatomic,assign) BOOL totaling;
+
 @end
 
 @implementation HomeViewController
@@ -45,6 +50,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 
 - (void) viewDidLoad{
     [super viewDidLoad];
+    self.totaling = NO;
     self.userService = [[UserService alloc] init];
     self.detailService = [[DetailService alloc] init];
     self.top = super.topSize;
@@ -52,16 +58,50 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     [self drawInfo:user];
     [self drawDetails:user];
     [self drawOperation];
-    if([Single sharedInstance].isTotal){
-        [self refresh];
+    [super addTitleButton:@"edit" sel:@selector(updateUser)];
+}
+/*
+ *  编辑用户信息
+ */
+- (void) updateUser{
+    RegisterViewController * controller = [[RegisterViewController alloc] init];
+    controller.updateUser = [AccountInfoManager sharedInstance].user;
+    [super goController:controller];
+}
+//获取欢迎语并设置标题
+- (NSString *) helloString:(User *) user{
+    NSMutableString * result = [[NSMutableString alloc] init];
+    NSString * name = [user.real_name hasValue]?user.real_name:user.name;
+    [result appendFormat:@"您好,%@%@",name,user.sex==Man?@"先生":@"女士"];
+    NSString * navTitle = @"";
+    if(user.birthday){
+        NSString * today = [Util dateToString:[Util nowDate] format:Default_Day_Format];
+        NSString * birthday = [Util dateToString:[Util timeToDate:user.birthday] format:Default_Day_Format];
+        if([birthday isEqualToString:today]){
+            navTitle = @"生日快乐";
+        }
     }
+    if(navTitle.length==0){
+        NSInteger times = [Util nowTime].integerValue-user.create_time.integerValue;
+        int timeToDay = 24*60*60;
+        int days = (times+timeToDay-1)/timeToDay;
+        navTitle = [NSString stringWithFormat:@"第%d天",days];
+    }
+    if(navTitle.length>0){
+        [super updateTitle:navTitle];
+    }
+    return result;
+}
+
+- (void) updateHello:(User *) user{
+    UILabel * label = [self.infoView viewWithTag:Tag_User_Hello];
+    label.text = [self helloString:user];
 }
 
 /*
  *  用户信息
  */
 - (void) drawInfo:(User *) user{
-    NSString * name = [user.real_name hasValue]?user.real_name:user.name;
     self.top+=Default_View_Space;
     CGFloat viewLeft = 3*Default_View_Space;
     CGFloat viewWidth = Main_Screen_Width-2*viewLeft;
@@ -69,16 +109,18 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     UIView * view = [[UIView alloc] initWithFrame:rect];
     
     CGFloat nowY = 0;
-    rect = CGRectMake(0, nowY, 0, Default_Label_Height);
-    [UIUtil addLableInView:view text:[NSString stringWithFormat:@"hello,%@",name] rect:rect tag:nil];
-
+    rect = CGRectMake(0, nowY, viewWidth, Default_Label_Height);
+    UILabel * hello = [UIUtil addLableInView:view text:[self helloString:user] rect:rect tag:[NSNumber numberWithInt:Tag_User_Hello]];
+    hello.textAlignment = NSTextAlignmentLeft;
     nowY += Default_Label_Height;
 
     NSNumber * count = [self.detailService count:user.user_id];
     if(count){
         NSString * countString = [NSString stringWithFormat:@"您当前实时数据条数为:"];
         rect.origin.y = nowY;
+        rect.size.width = 0;
         UILabel * label = [UIUtil addLableInView:view text:countString rect:rect tag:nil];
+        //rect = label.frame;
         rect.origin.x += label.frame.size.width;
         [UIUtil addLableInView:view text:[Util numberToString:count] rect:rect tag:[NSNumber numberWithInt:Tag_User_Count]];
     }
@@ -146,7 +188,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     //设置同步时间
     rect = CGRectMake(0, lableTop, 0, Default_Label_Height);
     [UIUtil addLableInView:self.detailView text:@"您上次统计时间为:" rect:rect tag:nil];
-    rect.origin.y += Default_Label_Height+Default_View_Space;
+    rect.origin.y += Default_Label_Height;
     [UIUtil addLableInView:self.detailView text:@"" rect:rect tag:[NSNumber numberWithInt:Tag_User_Total_Time]];
     
     rect.origin.y +=  Default_Label_Height+Default_View_Space;
@@ -195,13 +237,13 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     
     rect.origin.x = (viewHeight-imageWidth)/2;
     rect.origin.y += imageLeft+imageWidth;
-    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"refresh"] rect:rect sel:@selector(refresh) controller:self tag:nil];
+    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"refresh"] rect:rect sel:@selector(totalData) controller:self tag:nil];
     
     [self.view addSubview:view];
 }
 
 #pragma mark details
-
+//显示统计遮罩
 - (void) showLoading{
     //
     UIView *view = (UIView*)[self.detailView viewWithTag:LoadTag];
@@ -224,7 +266,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     
     [self.activityIndicator startAnimating];
 }
-
+//影藏遮罩
 - (void) hideLoading{
     [self.activityIndicator stopAnimating];
     UIView *view = (UIView*)[self.detailView viewWithTag:LoadTag];
@@ -234,6 +276,9 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 }
 
 #pragma mark operation
+/*
+ *  添加明细
+ */
 - (void) add{
     [super goControllerByClass:[AddDetailViewController class]];
 }
@@ -242,8 +287,9 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     [super goControllerByClass:[SearchViewController class]];
 }
 
-- (void) refresh{
-    if([Single sharedInstance].isTotal){
+- (void) totalData{
+    if(!self.totaling){
+        self.totaling = YES;
         [self showLoading];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             User * user =  [self.userService total:[AccountInfoManager sharedInstance].user];
@@ -252,12 +298,19 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self setDetails:[AccountInfoManager sharedInstance].user];
-                [self updateCount];
                 [self hideLoading];
-                [Single sharedInstance].isTotal = NO;
+                self.totaling = NO;
             });
         });
     }
+}
+
+- (void) refresh{
+    if([Single sharedInstance].isTotal){
+        [self updateCount];
+        [Single sharedInstance].isTotal = NO;
+    }
+    [self updateHello:[AccountInfoManager sharedInstance].user];
 }
 
 

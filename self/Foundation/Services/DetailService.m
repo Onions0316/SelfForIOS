@@ -13,6 +13,17 @@
  */
 @implementation DetailService
 
+/*
+ *  查询单条数据
+ */
+- (Detail *) find:(NSNumber *) detailId{
+    NSString * sql =[super selectSQL:[Detail class] params:@{@"detail_id":detailId}];
+    NSArray* list = [super select:[Detail class] sql:sql];
+    if(list && list.count==1){
+        return (Detail *)list[0];
+    }
+    return nil;
+}
 
 /*
  *  新增方法

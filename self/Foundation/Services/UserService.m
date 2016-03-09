@@ -51,6 +51,9 @@
     return [super.db eval:sql params:nil];
 }
 
+/*
+ *  统计方法
+ */
 - (User *) total:(User *) user{
     User * result;
     if(user && user.user_id>0){

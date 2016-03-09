@@ -104,7 +104,11 @@ nullBlocks myblocks;
  */
 - (void) addTitleButton:(NSString*) imageName sel:(SEL) sel{
     CGFloat width = Main_Title_Button_Width;
-    CGRect rect = CGRectMake(Main_Screen_Width-width-(self.titleButtonCount*(width+Default_View_Space)), self.titleTop, width, Main_Title_Height);
+    CGFloat x = Main_Screen_Width-width-(self.titleButtonCount*(width+Default_View_Space));
+    if(self.titleButtonCount==0){
+        x-=Default_View_Space;
+    }
+    CGRect rect = CGRectMake(x, self.titleTop, width, Main_Title_Height);
     [UIUtil addButtonInView:self.navView image:[UIImage imageNamed:imageName] rect:rect sel:sel controller:self tag:nil];
     self.titleButtonCount++;
 }
@@ -116,7 +120,9 @@ nullBlocks myblocks;
         if(lblTitle){
             CGRect rect = lblTitle.frame;
             rect.size.width = titleTextSize.width;
+            rect.origin.x = (Main_Screen_Width-titleTextSize.width)/2;
             lblTitle.frame = rect;
+            lblTitle.text = navTitle;
         }else{
             CGRect rect = CGRectMake((Main_Screen_Width-titleTextSize.width)/2, self.topSize, titleTextSize.width, Main_Title_Height);
             lblTitle = [UIUtil addLableInView:self.navView text:navTitle rect:rect tag:[NSNumber numberWithInt:TitleTag]];
@@ -142,6 +148,10 @@ nullBlocks myblocks;
             }
         }
         if(controller){
+            SEL sel = @selector(refresh);
+            if([controller respondsToSelector:sel]){
+                [controller performSelector:sel];
+            }
             [self.navigationController popToViewController:controller animated:YES];
         }else{
             controller = [[goClass alloc] init];
@@ -157,9 +167,19 @@ nullBlocks myblocks;
  *  返回
  */
 - (void) clickBack{
+    int count = self.navigationController.viewControllers.count;
+    if(count>1){
+        UIViewController * controller = self.navigationController.viewControllers[count-2];
+        if(controller){
+            SEL sel = @selector(refresh);
+            if([controller respondsToSelector:sel]){
+                [controller performSelector:sel];
+            }
+        }
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
-
+//注销
 - (void) logout{
     [[AccountInfoManager sharedInstance] logout:self];
 }
@@ -172,6 +192,7 @@ nullBlocks myblocks;
     [self showAlert:title message:message controller:controller sel:nil];
 }
 
+//设置金额
 - (void) setDetailAmount:(UILabel *) label amount:(NSNumber *) amount{
     amount = [Util toNumber:amount];
     float amountFloat = amount.floatValue;
@@ -189,11 +210,32 @@ nullBlocks myblocks;
                sel:(SEL) sel{
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction * action = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action){
-        if(self && [self respondsToSelector:sel]){
+        if(sel && [self respondsToSelector:sel]){
             [self performSelector:sel];
         }
     }];
     [alert addAction:action];
+    [self showBase:alert actions:controller];
+}
+
+- (void) showConfirm:(NSString *) title
+             message:(NSString *) message
+          controller:(UIViewController *) controller
+               okSel:(SEL) okSel
+           cancelSel:(SEL) cancelSel{
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * okAction = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action){
+        if(okSel && [self respondsToSelector:okSel]){
+            [self performSelector:okSel];
+        }
+    }];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action){
+        if(cancelSel && [self respondsToSelector:cancelSel]){
+            [self performSelector:cancelSel];
+        }
+    }];
+    [alert addAction:cancelAction];
+    [alert addAction:okAction];
     [self showBase:alert actions:controller];
 }
 

@@ -75,7 +75,10 @@
                     int count = sqlite3_column_count(statement);
                     NSMutableDictionary * row = [[NSMutableDictionary alloc] init];
                     for(int i=0;i<count;i++){
-                        [row setObject:[NSString stringWithFormat:@"%s",sqlite3_column_text(statement, i)] forKey:[NSString stringWithFormat:@"%s",sqlite3_column_name(statement, i)]];
+                        const unsigned char * value = sqlite3_column_text(statement, i);
+                        if(value){
+                            [row setObject:[NSString stringWithUTF8String:value] forKey:[NSString stringWithFormat:@"%s",sqlite3_column_name(statement, i)]];
+                        }
                     }
                     [result addObject:row];
                 }

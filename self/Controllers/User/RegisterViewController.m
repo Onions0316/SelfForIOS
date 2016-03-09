@@ -10,6 +10,7 @@
 #import "DomainFactory.h"
 #import "UserService.h"
 #import "LoginViewController.h"
+#import "AccountInfoManager.h"
 
 #define Register_Name_Tag 1001
 #define Register_Password_Tag 1002
@@ -34,6 +35,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSArray, data)
 
 CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
 
+@property (nonatomic,assign) BOOL isUpdate;
+
 @end
 
 @implementation RegisterViewController
@@ -44,6 +47,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
         super.navTitle = Register;
         super.showBack = YES;
         super.checkLogin = NO;
+        
     }
     return self;
 }
@@ -52,6 +56,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
     [super viewDidLoad];
     
     self.userService = [[UserService alloc] init];
+    self.isUpdate = self.updateUser!=nil;
     
     CGFloat top = super.topSize;
     NSArray * fileds = @[User_Name,User_Password,User_Password_Confirm,User_Real_Name,User_Sex,User_Birthday];
@@ -107,11 +112,28 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
     self.birthdayDatePicker.maximumDate = now;
     self.birthdayDatePicker.datePickerMode = UIDatePickerModeDate;
     [UIUtil addTextFildInputView:self.birthday inputView:self.birthdayDatePicker controller:self done:@selector(birthdayDoneTouch:) cancel:nil];
+    if(self.isUpdate){
+        self.name.text = self.updateUser.name;
+        [self.name setEnabled:NO];
+        self.password.text = self.updateUser.password;
+        self.passwordConfirm.text = self.updateUser.password;
+        self.realName.text = self.updateUser.real_name;
+        self.sex.text = self.updateUser.sex==Man?User_Sex_Man:User_Sex_Woman;
+        if(self.updateUser.birthday){
+            NSDate * birthdayDate = [Util timeToDate:self.updateUser.birthday];
+            self.birthday.text = [Util dateToString:birthdayDate format:Default_Date_Format];
+            self.birthdayDatePicker.date = birthdayDate;
+        }
+    }
     //提交按钮
     CGFloat btnWidth = viewWidth/2;
     viewRect.size.width = btnWidth;
     viewRect.origin.x = btnWidth/2;
-    [UIUtil addButtonInView:view title:Register rect:viewRect sel:@selector(submitRegister) controller:self tag:nil];
+    NSString * submitString = Register;
+    if(self.isUpdate){
+        submitString = Submit;
+    }
+    [UIUtil addButtonInView:view title:Submit rect:viewRect sel:@selector(submitRegister) controller:self tag:nil];
     
     [self.view addSubview:view];
 }
@@ -123,21 +145,22 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
     sender.text = [[sender.text stringByCutEmpty] lowercaseString];
 }
 
-- (void) backLogin{
-    [super goControllerByClass:[LoginViewController class]];
-}
-
 - (void) submitRegister{
     NSString * nameString = [self.name.text stringByCutEmpty];
     if([nameString hasValue]){
-        if(![self.userService checkName:nameString]){
+        if(self.isUpdate || ![self.userService checkName:nameString]){
             NSString * passwrodString = [self.password.text stringByCutEmpty];
             if([passwrodString hasValue]){
                 NSString * passwrodConfirmString = [self.passwordConfirm.text stringByCutEmpty];
                 if([passwrodString hasValue]){
                     if([passwrodString isEqualToString:passwrodConfirmString]){
-                        User * user = [DomainFactory initUser];
-                        user.name = nameString;
+                        User * user = nil;
+                        if(self.isUpdate){
+                            user = self.updateUser;
+                        }else{
+                            user = [DomainFactory initUser];
+                            user.name = nameString;
+                        }
                         user.password = passwrodString;
                         user.real_name = self.realName.text;
                         NSString * sexString = [self.sex.text stringByCutEmpty];
@@ -152,10 +175,19 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
                                 user.birthday = [NSNumber numberWithInt:[date timeIntervalSince1970]];
                             }
                         }
-                        if([self.userService add:user]){
-                            [super showAlert:Alert_Info message:@"注册成功,请点击确定返回登录" controller:nil sel:@selector(backLogin)];
+                        BOOL success = NO;
+                        if(self.isUpdate){
+                            success = [self.userService update:user];
                         }else{
-                            [super showAlert:Alert_Error message:@"注册失败,请重新检查参数" controller:nil];
+                            success = [self.userService add:user];
+                        }
+                        if(success){
+                            if(self.isUpdate){
+                                [AccountInfoManager sharedInstance].user = user;
+                            }
+                            [super showAlert:Alert_Info message:@"成功,请点击确定返回" controller:nil sel:@selector(clickBack)];
+                        }else{
+                            [super showAlert:Alert_Error message:@"失败,请重新检查参数" controller:nil];
                         }
                     }else{
                         [super showAlert:Alert_Warning message:@"2次密码不同,请重新输入" controller:nil];
@@ -173,12 +205,16 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
         [super showAlert:Alert_Warning message:@"请输入用户名" controller:nil];
     }
 }
-
+/*
+ *  性别填充
+ */
 - (void) sexDoneTouch:(UIBarButtonItem *) sender{
     self.sex.text = [self.data objectAtIndex:[self.sexPicker selectedRowInComponent:0]];
     [self.sex resignFirstResponder];
 }
-
+/*
+ *  生日填充
+ */
 - (void) birthdayDoneTouch:(UIBarButtonItem *) sender{
     self.birthday.text =[Util dateToString:[self.birthdayDatePicker date] format:Default_Date_Format];
     [self.birthday resignFirstResponder];

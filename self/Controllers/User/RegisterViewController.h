@@ -7,10 +7,13 @@
 //
 
 #import "BaseController.h"
+#import "User.h"
 #ifndef RegisterViewController_h
 #define RegisterViewController_h
 
 @interface RegisterViewController : BaseController
+
+CREATE_TYPE_PROPERTY_TO_VIEW(User, updateUser);
 
 @end
 

@@ -37,6 +37,8 @@
 
 - (void) goController:(UIViewController *) controller;
 
+- (void) updateTitle:(NSString *) navTitle;
+
 - (void) logStr:(NSString*) logStr;
 
 - (void) setDetailAmount:(UILabel *) label amount:(NSNumber *) amount;
@@ -49,6 +51,12 @@
            message:(NSString *)message
         controller:(UIViewController *)controller
                sel:(SEL) sel;
+
+- (void) showConfirm:(NSString *) title
+             message:(NSString *) message
+          controller:(UIViewController *) controller
+               okSel:(SEL) okSel
+           cancelSel:(SEL) cancelSel;
 
 - (void) showMessage:(NSString *)title
              message:(NSString *)message
