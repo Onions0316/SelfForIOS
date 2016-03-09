@@ -133,7 +133,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
     if(self.isUpdate){
         submitString = Submit;
     }
-    [UIUtil addButtonInView:view title:Submit rect:viewRect sel:@selector(submitRegister) controller:self tag:nil];
+    [UIUtil addButtonInView:view title:submitString rect:viewRect sel:@selector(submitRegister) controller:self tag:nil];
     
     [self.view addSubview:view];
 }

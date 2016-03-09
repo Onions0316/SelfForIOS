@@ -436,6 +436,9 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
             self.data = [NSMutableArray arrayWithArray:list];
         }
         self.table.tableFooterView.hidden = self.data.count>=self.totalCount;
+        if(self.data.count==0 && self.isShowTool){
+            [self toggleTool];
+        }
         [self.table reloadData];
     }
     return YES;

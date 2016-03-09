@@ -27,7 +27,7 @@
     //装载数据库初始化语句
     NSString * path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"dbInit.txt"];
     db.dbInitSql = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    NSLog(@"%@",db.path);
+    //NSLog(@"%@",db.path);
     [db readyDatabase];
     //首页装载
     /* SlideNavigationController * home = [[SlideNavigationController alloc] initWithRootViewController:[[HomeViewController alloc] init]];
