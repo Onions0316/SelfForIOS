@@ -18,7 +18,6 @@
 @property (nonatomic,strong) UIView * navView;
 @property (nonatomic,assign) int titleButtonCount;
 @property (nonatomic,assign) int titleTop;
-@property (nonatomic,assign) BOOL isOld;
 @property (nonatomic,assign) SEL oldSel;
 
 @end

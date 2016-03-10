@@ -117,7 +117,7 @@
         if(result.count>0){
             [self removeByIds:ids];
             for(Detail * d in result){
-                d.memo = [NSString stringWithFormat:@"%@~%@数据合并",[Util dateToString:[Util timeToDate:d.create_time] format:Default_Date_Time_Format],[Util dateToString:[Util timeToDate:d.happen_time] format:Default_Date_Time_Format]];
+                d.memo = [NSString stringWithFormat:@"%@ ~ %@数据合并",[Util dateToString:[Util timeToDate:d.create_time] format:Default_Date_Time_Format],[Util dateToString:[Util timeToDate:d.happen_time] format:Default_Date_Time_Format]];
                 d.create_time = [Util nowTime];
                 [self add:d];
             }

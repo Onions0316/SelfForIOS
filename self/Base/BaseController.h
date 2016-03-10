@@ -32,6 +32,7 @@
 @property (nonatomic,assign) BOOL showLogout;
 @property (nonatomic,assign) BOOL checkLogin;
 @property (nonatomic,strong) NSString * navTitle;
+@property (nonatomic,assign) BOOL isOld;
 
 - (void) goControllerByClass:(Class) goClass;
 

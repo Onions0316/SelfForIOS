@@ -191,6 +191,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
         if(isLast){
             //label.numberOfLines = 5;
             label.font = [UIFont systemFontOfSize:14];
+            label.numberOfLines = 0;
             label.lineBreakMode = NSLineBreakByCharWrapping;
             //label.backgroundColor = [UIColor blueColor];
         }
@@ -388,7 +389,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
         if(num<1){
             num = 1;
         }
-        label.numberOfLines = num;
+        num++;
+        //label.numberOfLines = num;
         CGFloat labelHeightChange = num*Default_Label_Height - rect.size.height;
         rect.size.height+=labelHeightChange;
         label.frame = rect;
