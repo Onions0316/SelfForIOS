@@ -76,7 +76,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     
     //金额
     self.amount = [view viewWithTag:Tag_Detail_Amount];
-    self.amount.keyboardType = UIKeyboardTypeNumberPad;
+    self.amount.keyboardType = UIKeyboardTypeDecimalPad;
     self.amount.clearButtonMode = UITextFieldViewModeNever;
     
     //发生时间
@@ -117,7 +117,11 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 - (void) backHome{
     //[[AccountInfoManager sharedInstance] total];
     [Single sharedInstance].isTotal = YES;
-    [super clickBack];
+    //[super clickBack];
+    self.amount.text = @"";
+    NSDate * now = [Util nowDate];
+    self.datePicker.date = now;
+    self.happenTime.text = [Util dateToString:now format:Default_Date_Time_Format];
 }
 
 - (void) submitAdd{
@@ -140,10 +144,10 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
                         detail.memo = self.memo.text;
                         detail.user_id = [[AccountInfoManager sharedInstance] user].user_id;
                         if([self.detailService add:detail]){
-                            [super showAlert:Alert_Info message:@"添加成功,请点击确定返回" controller:nil sel:@selector(backHome)];
+                            [super showAlert:Alert_Info message:@"添加成功" controller:nil sel:@selector(backHome)];
                         }
                         else{
-                            [super showAlert:Alert_Error message:@"注册失败,请重新检查参数" controller:nil];
+                            [super showAlert:Alert_Error message:@"添加失败,请重新检查参数" controller:nil];
                         }
                     }else{
                         [super showAlert:Alert_Warning message:@"日期格式错误" controller:nil];

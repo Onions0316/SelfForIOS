@@ -12,12 +12,14 @@
 
 #define TitleTag 9001
 
-@interface BaseController()
+@interface BaseController()<UIAlertViewDelegate>
 
 @property (nonatomic,assign) BOOL showState;
 @property (nonatomic,strong) UIView * navView;
 @property (nonatomic,assign) int titleButtonCount;
 @property (nonatomic,assign) int titleTop;
+@property (nonatomic,assign) BOOL isOld;
+@property (nonatomic,assign) SEL oldSel;
 
 @end
 
@@ -36,6 +38,7 @@ nullBlocks myblocks;
         self.checkLogin = YES;
         self.showLogout = [[AccountInfoManager sharedInstance] hasLogin];
         self.showState = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0");
+        self.isOld = SYSTEM_VERSION_LESS_THAN(@"9.0");
         self.titleButtonCount = 0;
     }
     return self;
@@ -203,19 +206,45 @@ nullBlocks myblocks;
         label.textColor =[UIColor redColor];
     }
 }
+#pragma mark ~9.0 alert
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex==0){//确定
+        if(self.oldSel && [self respondsToSelector:self.oldSel]){
+            [self performSelector:self.oldSel];
+            self.oldSel = nil;
+        }
+    }
+}
 
+- (void) showAlertOld:(NSString *)title
+              message:(NSString *)message
+           controller:(UIViewController *)controller
+                  sel:(SEL) sel{
+    if(!controller){
+        controller = self;
+    }
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:controller cancelButtonTitle:@"ok" otherButtonTitles: nil];
+    self.oldSel = sel;
+    [alert show];
+}
+
+#pragma mark 9.0~ alert
 - (void) showAlert:(NSString *)title
            message:(NSString *)message
         controller:(UIViewController *)controller
                sel:(SEL) sel{
-    UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * action = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action){
-        if(sel && [self respondsToSelector:sel]){
-            [self performSelector:sel];
-        }
-    }];
-    [alert addAction:action];
-    [self showBase:alert actions:controller];
+    if(self.isOld){
+        [self showAlertOld:title message:message controller:controller sel:sel];
+    }else{
+        UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * action = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action){
+            if(sel && [self respondsToSelector:sel]){
+                [self performSelector:sel];
+            }
+        }];
+        [alert addAction:action];
+        [self showBase:alert actions:controller];
+    }
 }
 
 - (void) showConfirm:(NSString *) title
