@@ -77,7 +77,6 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     //金额
     self.amount = [view viewWithTag:Tag_Detail_Amount];
     self.amount.keyboardType = UIKeyboardTypeDecimalPad;
-    self.amount.clearButtonMode = UITextFieldViewModeNever;
     
     //发生时间
     self.happenTime = [view viewWithTag:Tag_Detail_Happen_Time];
@@ -122,10 +121,11 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     NSDate * now = [Util nowDate];
     self.datePicker.date = now;
     self.happenTime.text = [Util dateToString:now format:Default_Date_Time_Format];
+    self.memo.text = @"";
 }
 
 - (void) submitAdd{
-    int typeIndex = [self.type selectedSegmentIndex];
+    NSInteger typeIndex = [self.type selectedSegmentIndex];
     NSString * typeString = self.typeData[typeIndex];
     if([typeString hasValue]){
         EDetailType eType = [typeString isEqualToString:Detail_Type_Out]?Out:In;
