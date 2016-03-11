@@ -83,7 +83,7 @@
     UILabel * label = [[UILabel alloc] initWithFrame:rect];
     if(text){
         label.text = text;
-        label.font = Default_Font;
+        label.font = font;
         label.textAlignment = NSTextAlignmentRight;
     }
     [self addViewInView:view subview:label tag:tag];

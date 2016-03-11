@@ -36,7 +36,7 @@
 /*
  *  查询收支明细
  */
-- (NSArray<Detail*> *) search:(NSNumber *) userId start:(NSNumber *) startTime end:(NSNumber *) endTime type:(NSNumber *) type page:(int) page size:(int) size count:(int *) totalCount{
+- (NSArray<Detail*> *) search:(NSNumber *) userId start:(NSNumber *) startTime end:(NSNumber *) endTime type:(NSNumber *) type page:(int) page size:(int) size count:(int *) totalCount title:(NSMutableString*) title{
     NSMutableString * query = [NSMutableString stringWithFormat:@"from detail where user_id = %@",userId];
     NSMutableString * where = [[NSMutableString alloc] init];
     if(startTime){
@@ -64,6 +64,31 @@
         }
     }
     *totalCount = count;
+    if(page==0){
+        NSString * dtField = @"detail_type";
+        NSString * amountField = @"amount";
+        NSString * total = [NSString stringWithFormat:@"select detail_type as %@,sum(amount) as %@ %@ group by detail_type",dtField,amountField,query];
+        NSArray<NSDictionary *> * list = [[super db] selectData:total];
+        NSNumber * totalIn = @0;
+        NSNumber * totalOut = @0;
+        for(NSDictionary * dic in list){
+            NSNumber * key = [Util toNumber:[dic objectForKey:dtField]];
+            if(key){
+                NSNumber * amount = [Util toNumber:[dic objectForKey:amountField]];
+                if(amount){
+                    int keyInt = key.intValue;
+                    if(keyInt>0){
+                        totalIn = amount;
+                    }
+                    else if(keyInt<0){
+                        totalOut = amount;
+                    }
+                }
+            }
+        }
+        NSNumber * totalAll = [NSNumber numberWithFloat:totalIn.floatValue-totalOut.floatValue];
+        [title appendFormat:@"总数:%d 合计:%@-%@=%@" ,count,[Util numberToString:totalIn],[Util numberToString:totalOut],[Util numberToString:totalAll]];
+    }
     if(count>0){
         int start = page*size;
         if(start<=count){

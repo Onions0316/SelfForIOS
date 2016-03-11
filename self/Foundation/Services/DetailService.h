@@ -14,7 +14,7 @@
 @interface DetailService : BaseService
 - (Detail *) find:(NSNumber *) detailId;
 - (BOOL) add:(Detail *) detail;
-- (NSArray *) search:(NSNumber *) userId start:(NSNumber *) startTime end:(NSNumber *) endTime type:(NSNumber *) type page:(int) page size:(int) size count:(int *) totalCount;
+- (NSArray *) search:(NSNumber *) userId start:(NSNumber *) startTime end:(NSNumber *) endTime type:(NSNumber *) type page:(int) page size:(int) size count:(int *) totalCount title:(NSMutableString*) title;
 
 - (BOOL) removeByIds:(NSArray *) ids;
 
