@@ -142,7 +142,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     self.startPciker = [[UIDatePicker alloc] init];
     self.startPciker.frame = CGRectMake(0, 0, 0, 100);
     self.startPciker.maximumDate = now;
-    self.startPciker.datePickerMode = UIDatePickerModeDateAndTime;
+    self.startPciker.datePickerMode = UIDatePickerModeDate;
     [UIUtil addTextFildInputView:self.start inputView:self.startPciker controller:self done:@selector(startDoneTouch:) cancel:nil];
 
     //结束时间
@@ -153,7 +153,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     self.endPicker.frame = CGRectMake(0, 0, 0, 100);
     self.endPicker.date = now;
     self.endPicker.maximumDate = now;
-    self.endPicker.datePickerMode = UIDatePickerModeDateAndTime;
+    self.endPicker.datePickerMode = UIDatePickerModeDate;
     [UIUtil addTextFildInputView:self.end inputView:self.endPicker controller:self done:@selector(endDoneTouch:) cancel:nil];
     //收支类型
     UIView * typeView = [self.topView viewWithTag:Tag_Top_Type];
@@ -166,6 +166,9 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     [self.topView addSubview:self.type];
     
     //搜索按钮
+    CGFloat searchLeft = 3*Default_View_Space;
+    rect.origin.x = searchLeft;
+    rect.size.width = (viewWidth-2*searchLeft);
     [UIUtil addButtonInView:self.topView title:Search rect:rect sel:@selector(search) controller:self tag:nil];
     //添加编辑按钮
     [super addTitleButton:@"bi" sel:@selector(toggleTool)];
@@ -441,14 +444,14 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     NSString * startString = self.start.text;
     NSNumber * startNumber = nil;
     if([startString hasValue]){
-        startNumber =[NSNumber numberWithInt:[Util stringToDate:startString format:Default_Date_Time_Format].timeIntervalSince1970];
+        startNumber =[NSNumber numberWithInt:[Util stringToDate:startString format:Default_Date_Format].timeIntervalSince1970-1];
     }
     NSString * endString = self.end.text;
     NSNumber * endNumber = nil;
     if([endString hasValue]){
-        endNumber =[NSNumber numberWithInt:[Util stringToDate:endString format:Default_Date_Time_Format].timeIntervalSince1970];
+        endNumber =[NSNumber numberWithInt:[Util stringToDate:endString format:Default_Date_Format].timeIntervalSince1970+24*60*60-1];
     }
-    if(startNumber && endNumber && startNumber>endNumber){
+    if(startNumber && endNumber && startNumber.integerValue>endNumber.integerValue){
         [super showAlert:Alert_Error message:@"开始时间不能大于结束时间" controller:nil];
         return NO;
     }else{
@@ -475,12 +478,12 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
 }
 //填充开始时间
 - (void) startDoneTouch:(UIBarButtonItem *) sender{
-    self.start.text =[Util dateToString:[self.startPciker date] format:Default_Date_Time_Format];
+    self.start.text =[Util dateToString:[self.startPciker date] format:Default_Date_Format];
     [self.start resignFirstResponder];
 }
 //填充结束时间
 - (void) endDoneTouch:(UIBarButtonItem *) sender{
-    self.end.text =[Util dateToString:[self.endPicker date] format:Default_Date_Time_Format];
+    self.end.text =[Util dateToString:[self.endPicker date] format:Default_Date_Format];
     [self.end resignFirstResponder];
 }
 
