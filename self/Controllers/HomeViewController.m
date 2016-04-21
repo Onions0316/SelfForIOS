@@ -59,6 +59,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     [self drawDetails:user];
     [self drawOperation];
     [super addTitleButton:@"edit" sel:@selector(updateUser)];
+    //创建更新数据通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeNotification:) name:NotificationHomeUpdate object:nil];
 }
 /*
  *  编辑用户信息
@@ -110,19 +112,19 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     
     CGFloat nowY = 0;
     rect = CGRectMake(0, nowY, viewWidth, Default_Label_Height);
-    UILabel * hello = [UIUtil addLableInView:view text:[self helloString:user] rect:rect tag:[NSNumber numberWithInt:Tag_User_Hello]];
+    UILabel * hello = [UIUtil addLableInView:view text:[self helloString:user] rect:rect tag:Tag_User_Hello];
     hello.textAlignment = NSTextAlignmentLeft;
     nowY += Default_Label_Height;
 
     NSNumber * count = [self.detailService count:user.user_id];
     if(count){
-        NSString * countString = [NSString stringWithFormat:@"您当前实时数据条数为:"];
+        NSString * countString = [NSString stringWithFormat:@"您实时数据条数为:"];
         rect.origin.y = nowY;
         rect.size.width = 0;
-        UILabel * label = [UIUtil addLableInView:view text:countString rect:rect tag:nil];
+        UILabel * label = [UIUtil addLableInView:view text:countString rect:rect tag:0];
         //rect = label.frame;
         rect.origin.x += label.frame.size.width;
-        [UIUtil addLableInView:view text:[Util numberToString:count] rect:rect tag:[NSNumber numberWithInt:Tag_User_Count]];
+        [UIUtil addLableInView:view text:[Util numberToString:count.floatValue formatter:NSNumberFormatterDecimalStyle] rect:rect tag:Tag_User_Count];
     }
     self.top+=Info_Height;
     self.infoView = view;
@@ -134,7 +136,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 - (void) updateCount{
     UILabel * countLabel = [self.infoView viewWithTag:Tag_User_Count];
     NSNumber * count = [self.detailService count:[AccountInfoManager sharedInstance].user.user_id];
-    NSString * countString = [Util numberToString:count];
+    NSString * countString = [Util numberToString:count.floatValue];
     CGSize size = [UIUtil textSizeAtString:countString font:Default_Font];
     CGRect rect = countLabel.frame;
     rect.size.width = size.width;
@@ -147,12 +149,12 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
  */
 - (void) setDetails:(User *) user{
     UILabel * inLabel = [self.detailView viewWithTag:Tag_User_Total_In];
-    [super setDetailAmount:inLabel amount:user.totle_in];
+    [super setDetailAmount:inLabel amount:user.totle_in.floatValue];
     UILabel * outLabel = [self.detailView viewWithTag:Tag_User_Total_Out];
-    [super setDetailAmount:outLabel amount:user.totle_out];
+    [super setDetailAmount:outLabel amount:user.totle_out.floatValue];
     outLabel.textColor = [UIColor redColor];
     UILabel * allLabel = [self.detailView viewWithTag:Tag_User_Total_All];
-    [super setDetailAmount:allLabel amount:user.totle_all];
+    [super setDetailAmount:allLabel amount:user.totle_all.floatValue];
     UILabel * timeLabel = [self.detailView viewWithTag:Tag_User_Total_Time];
     if(user.last_total_time){
         NSString * memo = [Util dateToString:[Util timeToDate:user.last_total_time] format:Default_Date_Time_Format];
@@ -187,9 +189,9 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     CGFloat detailX = labelWidth+Default_View_Space;
     //设置同步时间
     rect = CGRectMake(0, lableTop, 0, Default_Label_Height);
-    [UIUtil addLableInView:self.detailView text:@"您上次统计时间为:" rect:rect tag:nil];
+    [UIUtil addLableInView:self.detailView text:@"您上次统计时间为:" rect:rect tag:0];
     rect.origin.y += Default_Label_Height;
-    [UIUtil addLableInView:self.detailView text:@"" rect:rect tag:[NSNumber numberWithInt:Tag_User_Total_Time]];
+    [UIUtil addLableInView:self.detailView text:@"" rect:rect tag:Tag_User_Total_Time];
     
     rect.origin.y +=  Default_Label_Height+Default_View_Space;
     
@@ -198,9 +200,9 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     
     for(NSString * str in fields){
         rect = CGRectMake(0, lableTop, labelWidth, Default_Label_Height);
-        [UIUtil addLableInView:self.detailView text:str rect:rect tag:nil];
+        [UIUtil addLableInView:self.detailView text:str rect:rect tag:0];
         rect = CGRectMake(detailX, detailTop, viewWidth-detailX, detailHeight);
-        [UIUtil addLableInView:self.detailView text:@"" font:detailFont rect:rect tag:[NSNumber numberWithInt:tagIndex]];
+        [UIUtil addLableInView:self.detailView text:@"" font:detailFont rect:rect tag:tagIndex];
         lableTop+=detailHeight;
         detailTop+=detailHeight;
         tagIndex++;
@@ -230,14 +232,14 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     UIView * view = [[UIView alloc] initWithFrame:rect];
     
     rect = CGRectMake(imageLeft, imageLeft, imageWidth, imageWidth);
-    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"add"] rect:rect sel:@selector(add) controller:self tag:nil];
+    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"add"] rect:rect sel:@selector(add) controller:self tag:0];
     
     rect.origin.x +=imageWidth+imageLeft;
-    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"search"] rect:rect sel:@selector(search) controller:self tag:nil];
+    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"search"] rect:rect sel:@selector(search) controller:self tag:0];
     
     rect.origin.x = (viewHeight-imageWidth)/2;
     rect.origin.y += imageLeft+imageWidth;
-    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"refresh"] rect:rect sel:@selector(totalData) controller:self tag:nil];
+    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"refresh"] rect:rect sel:@selector(totalData) controller:self tag:0];
     
     [self.view addSubview:view];
 }
@@ -280,11 +282,22 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
  *  添加明细
  */
 - (void) add{
-    [super goControllerByClass:[AddDetailViewController class]];
+    
+    [super goController:[[AddDetailViewController alloc] init]];
 }
 
 - (void) search{
-    [super goControllerByClass:[SearchViewController class]];
+    [super goController:[[SearchViewController alloc] init]];
+}
+
+//更新数据通知
+- (void) updateHomeNotification:(NSNotification*)notification{
+    if([Single sharedInstance].isTotal){
+        [self updateCount];
+        [self totalData];
+        [Single sharedInstance].isTotal = NO;
+    }
+    [self updateHello:[AccountInfoManager sharedInstance].user];
 }
 
 - (void) totalData{
@@ -304,23 +317,5 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
         });
     }
 }
-
-- (void) refresh{
-    if([Single sharedInstance].isTotal){
-        [self updateCount];
-        [Single sharedInstance].isTotal = NO;
-    }
-    [self updateHello:[AccountInfoManager sharedInstance].user];
-}
-
-
-#pragma mark navigation
-- (BOOL)slideNavigationControllerShouldDisplayRightMenu {
-    return NO;
-}
-- (BOOL)slideNavigationControllerShouldDisplayLeftMenu {
-    return YES;
-}
-
 
 @end

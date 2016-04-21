@@ -71,7 +71,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
     viewRect = CGRectMake(0, 0, maxLabelWidth, Default_Label_Height);
     CGFloat tagStart = Register_Name_Tag;
     for(NSString * str in fileds){
-        [UIUtil addLabelTextFiledInView:view text:str rect:viewRect tag:[[NSNumber alloc] initWithInt:tagStart]];
+        [UIUtil addLabelTextFiledInView:view text:str rect:viewRect tag:tagStart];
         tagStart ++;
         viewRect.origin.y +=Default_Label_Height + Default_View_Space;
     }
@@ -133,7 +133,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
     if(self.isUpdate){
         submitString = Submit;
     }
-    [UIUtil addButtonInView:view title:submitString rect:viewRect sel:@selector(submitRegister) controller:self tag:nil];
+    [UIUtil addButtonInView:view title:submitString rect:viewRect sel:@selector(submitRegister) controller:self tag:0];
     
     [self.view addSubview:view];
 }

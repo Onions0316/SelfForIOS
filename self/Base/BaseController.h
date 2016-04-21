@@ -42,7 +42,7 @@
 
 - (void) logStr:(NSString*) logStr;
 
-- (void) setDetailAmount:(UILabel *) label amount:(NSNumber *) amount;
+- (void) setDetailAmount:(UILabel *) label amount:(float) amount;
 
 - (void) showAlert:(NSString *) title
            message:(NSString *) message

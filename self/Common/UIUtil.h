@@ -21,13 +21,13 @@
 + (UITextField *) addLabelTextFiledInView:(UIView *) view
                                      text:(NSString *) text
                                      rect:(CGRect) rect
-                                      tag:(NSNumber *) tag;
+                                      tag:(NSInteger) tag;
 /*
  *  创建文本输入框
  */
 + (UITextField *) addTextFiledInView:(UIView *) view
                                 rect:(CGRect) rect
-                                 tag:(NSNumber *) tag;
+                                 tag:(NSInteger) tag;
 /*
  *  添加文本框自定义视图
  */
@@ -42,13 +42,13 @@
 + (UILabel *) addLableInView:(UIView *) view
                         text:(NSString *) text
                         rect:(CGRect) rect
-                         tag:(NSNumber *) tag;
+                         tag:(NSInteger) tag;
 
 + (UILabel *) addLableInView:(UIView *) view
                         text:(NSString *) text
                         font:(UIFont*) font
                         rect:(CGRect) rect
-                         tag:(NSNumber *) tag;
+                         tag:(NSInteger) tag;
 /*
  *  创建文字按钮
  */
@@ -57,7 +57,7 @@
                           rect:(CGRect) rect
                            sel:(SEL) sel
                     controller:(id) controller
-                           tag:(NSNumber *) tag;
+                           tag:(NSInteger) tag;
 /*
  *  创建图片按钮
  */
@@ -66,7 +66,7 @@
                           rect:(CGRect) rect
                            sel:(SEL) sel
                     controller:(id) controller
-                           tag:(NSNumber *) tag;
+                           tag:(NSInteger) tag;
 /*
  *  创建按钮
  */
@@ -74,11 +74,11 @@
                           rect:(CGRect) rect
                            sel:(SEL) sel
                     controller:(id) controller
-                           tag:(NSNumber *) tag;
+                           tag:(NSInteger) tag;
 /*
  *  添加视图到视图
  */
 +(void) addViewInView:(UIView *) view
               subview:(UIView *) subview
-                  tag:(NSNumber *) tag;
+                  tag:(NSInteger) tag;
 @end

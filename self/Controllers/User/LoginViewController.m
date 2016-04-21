@@ -50,23 +50,23 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
     UIView * view = [[UIView alloc] initWithFrame:viewRect];
     //用户名输入框坐标
     viewRect = CGRectMake(0, 0, maxLableWidth, Default_Label_Height);
-    self.name=[UIUtil addLabelTextFiledInView:view text:User_Name rect:viewRect tag:nil];
+    self.name=[UIUtil addLabelTextFiledInView:view text:User_Name rect:viewRect tag:0];
     self.name.placeholder = User_Name_Memo;
     [self.name addTarget:self action:@selector(textFiledDidEdit:) forControlEvents:UIControlEventEditingDidEnd];
     //密码输入框坐标
     viewRect.origin.y +=Default_Label_Height + Default_View_Space;
-    self.password = [UIUtil addLabelTextFiledInView:view text:User_Password rect:viewRect tag:nil];
+    self.password = [UIUtil addLabelTextFiledInView:view text:User_Password rect:viewRect tag:0];
     self.password.placeholder = User_Password_Memo;
     self.password.secureTextEntry = YES;
     //登录按钮坐标
     viewRect.origin.y+=Default_Label_Height+Default_View_Space;
     viewRect.size.width = (viewWidth-Default_View_Space)/2;
-    [UIUtil addButtonInView:view title:Login rect:viewRect sel:@selector(login) controller:self tag:nil];
+    [UIUtil addButtonInView:view title:Login rect:viewRect sel:@selector(login) controller:self tag:0];
     //注册按钮坐标
     viewRect.origin.x += viewRect.size.width+Default_View_Space;
-    [UIUtil addButtonInView:view title:Register rect:viewRect sel:@selector(goRegister) controller:self tag:nil];
+    [UIUtil addButtonInView:view title:Register rect:viewRect sel:@selector(goRegister) controller:self tag:0];
     
-    [UIUtil addViewInView:self.view subview:view tag:nil];
+    [UIUtil addViewInView:self.view subview:view tag:0];
 }
 
 /*

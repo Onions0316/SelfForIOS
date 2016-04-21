@@ -60,7 +60,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     viewRect = CGRectMake(0, 0, maxLabelWidth, Default_Label_Height);
     for(int i=0;i<fileds.count;i++){
         NSString * str = fileds[i];
-        [UIUtil addLabelTextFiledInView:view text:str rect:viewRect tag:[[NSNumber alloc] initWithInt:tagIndex]];
+        [UIUtil addLabelTextFiledInView:view text:str rect:viewRect tag:tagIndex];
         tagIndex ++;
         viewRect.origin.y +=Default_Label_Height + Default_View_Space;
     }
@@ -100,7 +100,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     self.memo.layer.borderWidth = 0.5;
     self.memo.layer.cornerRadius = 8.0;
     [self.memo.layer setMasksToBounds:YES];
-    [UIUtil addViewInView:view subview:self.memo tag:[NSNumber numberWithInt:Tag_Detail_Memo]];
+    [UIUtil addViewInView:view subview:self.memo tag:Tag_Detail_Memo];
     
     //提交按钮
     CGFloat btnWidth = viewWidth/2;
@@ -108,9 +108,14 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     viewRect.size.width = btnWidth;
     viewRect.origin.x = btnWidth/2;
     viewRect.size.height = Default_Label_Height;
-    [UIUtil addButtonInView:view title:Submit rect:viewRect sel:@selector(submitAdd) controller:self tag:nil];
+    [UIUtil addButtonInView:view title:Submit rect:viewRect sel:@selector(submitAdd) controller:self tag:0];
 
     [super.view addSubview:view];
+}
+
+- (void)clickBack{
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationHomeUpdate object:nil userInfo:nil];
+    [super clickBack];
 }
 
 - (void) backHome{

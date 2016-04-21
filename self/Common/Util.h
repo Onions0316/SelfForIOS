@@ -18,5 +18,6 @@
 + (NSString *) dateToString:(NSDate *) date format:(NSString *) format;
 + (NSDate *) stringToDate:(NSString *) string format:(NSString *) format;
 + (NSNumber *) toNumber:(id) obj;
-+ (NSString *) numberToString:(NSNumber *) number;
++ (NSString *) numberToString:(float) number;
++ (NSString *) numberToString:(float) number formatter:(NSNumberFormatterStyle) formatter;
 @end

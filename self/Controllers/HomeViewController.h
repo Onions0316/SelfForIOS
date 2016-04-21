@@ -10,7 +10,7 @@
 #import "SlideNavigationController.h"
 #import "AccountInfoManager.h"
 
-@interface HomeViewController : BaseController<SlideNavigationControllerDelegate>
+@interface HomeViewController : BaseController
 
 - (void) showLoading;
 

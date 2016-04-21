@@ -7,7 +7,6 @@
 //
 
 #import "BaseController.h"
-#import "BaseObjects.m"
 #import "AccountInfoManager.h"
 
 #define TitleTag 9001
@@ -26,13 +25,14 @@
 
 @synthesize logName;
 
-
-nullBlocks myblocks;
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (id) init{
     if(self=[super init]){
         self.logName = @"Base";
-        myblocks = ^(UIAlertAction * _Nonnull action){};
         self.showBack = YES;
         self.checkLogin = YES;
         self.showLogout = [[AccountInfoManager sharedInstance] hasLogin];
@@ -45,11 +45,9 @@ nullBlocks myblocks;
 
 -(void) viewDidLoad{
     [super viewDidLoad];
-    
     self.view = [[BaseView alloc] initWithFrame:self.view.frame];
-    
-    //白色背景
-    self.view.backgroundColor = [UIColor whiteColor];// [[UIColor alloc] initWithRed:1 green:1 blue:1 alpha:1];
+    self.view.backgroundColor = [UIColor whiteColor];
+    // [[UIColor alloc] initWithRed:1 green:1 blue:1 alpha:1];
     
     if (self.showState){
         self.topSize = 20;
@@ -83,7 +81,7 @@ nullBlocks myblocks;
         if(self.showBack){
             CGFloat backWidth = Main_Title_Button_Width;
             CGRect backRect = CGRectMake(0, self.titleTop, backWidth, Main_Title_Height);
-            [UIUtil addButtonInView:self.navView image:[UIImage imageNamed:@"back"] rect:backRect sel:@selector(clickBack) controller:self tag:nil];
+            [UIUtil addButtonInView:self.navView image:[UIImage imageNamed:@"back"] rect:backRect sel:@selector(clickBack) controller:self tag:0];
             /*
             UIButton * back = [UIButton buttonWithType:UIButtonTypeCustom];
             back.frame= CGRectMake(0, 0, backWidth, Main_Title_height);
@@ -95,7 +93,7 @@ nullBlocks myblocks;
             self.titleButtonCount++;
             CGFloat logoutWidth = Main_Title_Button_Width;
             CGRect backRect = CGRectMake(Main_Screen_Width-logoutWidth-Default_View_Space, self.titleTop, logoutWidth, Main_Title_Height);
-            [UIUtil addButtonInView:self.navView image:[UIImage imageNamed:@"logout"] rect:backRect sel:@selector(logout) controller:self tag:nil];
+            [UIUtil addButtonInView:self.navView image:[UIImage imageNamed:@"logout"] rect:backRect sel:@selector(logout) controller:self tag:0];
         }
         [self updateTitle:self.navTitle];
         self.topSize+=Main_Title_Height;
@@ -111,7 +109,7 @@ nullBlocks myblocks;
         x-=Default_View_Space;
     }
     CGRect rect = CGRectMake(x, self.titleTop, width, Main_Title_Height);
-    [UIUtil addButtonInView:self.navView image:[UIImage imageNamed:imageName] rect:rect sel:sel controller:self tag:nil];
+    [UIUtil addButtonInView:self.navView image:[UIImage imageNamed:imageName] rect:rect sel:sel controller:self tag:0];
     self.titleButtonCount++;
 }
 //更新页面title
@@ -127,7 +125,7 @@ nullBlocks myblocks;
             lblTitle.text = navTitle;
         }else{
             CGRect rect = CGRectMake((Main_Screen_Width-titleTextSize.width)/2, self.topSize, titleTextSize.width, Main_Title_Height);
-            lblTitle = [UIUtil addLableInView:self.navView text:navTitle rect:rect tag:[NSNumber numberWithInt:TitleTag]];
+            lblTitle = [UIUtil addLableInView:self.navView text:navTitle rect:rect tag:TitleTag];
         }
         lblTitle.textColor = [UIColor whiteColor];
         /*
@@ -142,23 +140,8 @@ nullBlocks myblocks;
 
 - (void) goControllerByClass:(Class) goClass{
     if([goClass isSubclassOfClass:[UIViewController class]]){
-        UIViewController * controller;
-        for(UIViewController * obj in self.navigationController.viewControllers){
-            if([obj isMemberOfClass: goClass]){
-                controller = obj;
-                break;
-            }
-        }
-        if(controller){
-            SEL sel = @selector(refresh);
-            if([controller respondsToSelector:sel]){
-                [controller performSelector:sel];
-            }
-            [self.navigationController popToViewController:controller animated:YES];
-        }else{
-            controller = [[goClass alloc] init];
-            [self goController:controller];
-        }
+        UIViewController * controller = [[goClass alloc] init];
+        [self goController:controller];
     }
 }
 
@@ -169,16 +152,6 @@ nullBlocks myblocks;
  *  返回
  */
 - (void) clickBack{
-    int count = self.navigationController.viewControllers.count;
-    if(count>1){
-        UIViewController * controller = self.navigationController.viewControllers[count-2];
-        if(controller){
-            SEL sel = @selector(refresh);
-            if([controller respondsToSelector:sel]){
-                [controller performSelector:sel];
-            }
-        }
-    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 //注销
@@ -195,13 +168,11 @@ nullBlocks myblocks;
 }
 
 //设置金额
-- (void) setDetailAmount:(UILabel *) label amount:(NSNumber *) amount{
-    amount = [Util toNumber:amount];
-    float amountFloat = amount.floatValue;
-    label.text = [Util numberToString:amount];
-    if(amountFloat>0){
+- (void) setDetailAmount:(UILabel *) label amount:(float) amount{
+    label.text = [Util numberToString:fabsf(amount)];
+    if(amount>0){
         label.textColor = [UIColor blueColor];
-    }else if(amountFloat <0){
+    }else if(amount <0){
         label.textColor =[UIColor redColor];
     }
 }
@@ -272,11 +243,11 @@ nullBlocks myblocks;
           controller:(UIViewController *)controller
              actions:(NSMutableDictionary *) actions{
     UIAlertController * alert =[UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
-    [alert addAction:[UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:myblocks]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:nil]];
     if(actions!=nil){
         for(id key in actions.allKeys){
             id value = [actions objectForKey:key];
-            UIAlertAction * action = [UIAlertAction actionWithTitle:key style:UIAlertActionStyleDestructive handler:(nullBlocks)value];
+            UIAlertAction * action = [UIAlertAction actionWithTitle:key style:UIAlertActionStyleDestructive handler:value];
             [alert addAction:action];
         }
     }

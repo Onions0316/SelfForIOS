@@ -41,8 +41,8 @@
 + (UITextField *) addLabelTextFiledInView:(UIView *) view
                                      text:(NSString *) text
                                      rect:(CGRect) rect
-                                      tag:(NSNumber *) tag{
-    [self addLableInView:view text:text rect:rect tag:nil];
+                                      tag:(NSInteger) tag{
+    [self addLableInView:view text:text rect:rect tag:0];
     rect.origin.x+=Default_View_Space+rect.size.width;
     rect.size.width = Default_TextFiled_Width;
     return [self addTextFiledInView:view rect:rect tag:tag];
@@ -53,7 +53,7 @@
  */
 + (UITextField *) addTextFiledInView:(UIView *) view
                                 rect:(CGRect) rect
-                                 tag:(NSNumber *) tag{
+                                 tag:(NSInteger) tag{
     UITextField * field = [[UITextField alloc] initWithFrame:rect];
     field.borderStyle = UITextBorderStyleRoundedRect;
     field.clearButtonMode = UITextFieldViewModeAlways;
@@ -67,7 +67,7 @@
 + (UILabel *) addLableInView:(UIView *) view
                         text:(NSString *) text
                         rect:(CGRect) rect
-                         tag:(NSNumber *) tag{
+                         tag:(NSInteger) tag{
     return [self addLableInView:view text:text font:Default_Font rect:rect tag:tag];
 }
 
@@ -75,7 +75,7 @@
                         text:(NSString *) text
                         font:(UIFont*) font
                         rect:(CGRect) rect
-                         tag:(NSNumber *) tag{
+                         tag:(NSInteger) tag{
     CGSize size = [self textSizeAtString:text font:font];
     if(rect.size.width<size.width){
         rect.size.width = size.width;
@@ -98,7 +98,7 @@
                           rect:(CGRect) rect
                            sel:(SEL) sel
                     controller:(id) controller
-                           tag:(NSNumber *) tag{
+                           tag:(NSInteger) tag{
     CGSize size = [self textSizeAtString:title font:Default_Font];
     if(rect.size.width<size.width){
         rect.size.width = size.width+Default_View_Space;
@@ -118,7 +118,7 @@
                           rect:(CGRect) rect
                            sel:(SEL) sel
                     controller:(id) controller
-                           tag:(NSNumber *) tag{
+                           tag:(NSInteger) tag{
     UIButton * button = [self addButtonInView:view rect:rect sel:sel controller:controller tag:tag];
     if(image){
         [button setImage:image forState:UIControlStateNormal];
@@ -134,7 +134,7 @@
                           rect:(CGRect) rect
                            sel:(SEL) sel
                     controller:(id) controller
-                           tag:(NSNumber *) tag{
+                           tag:(NSInteger) tag{
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = rect;
     if(view){
@@ -180,12 +180,12 @@
  */
 +(void) addViewInView:(UIView *) view
                subview:(UIView *) subview
-                   tag:(NSNumber *) tag{
+                   tag:(NSInteger) tag{
     if(view && subview){
         if(tag){
             //替换以前的tag控件
-            [[view viewWithTag:tag.intValue] removeFromSuperview];
-            subview.tag = tag.intValue;
+            [[view viewWithTag:tag] removeFromSuperview];
+            subview.tag = tag;
         }
         [view addSubview:subview];
     }

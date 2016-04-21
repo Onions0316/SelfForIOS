@@ -69,6 +69,11 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     return self;
 }
 
+- (void)clickBack{
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationHomeUpdate object:nil userInfo:nil];
+    [super clickBack];
+}
+
 - (void) viewDidLoad{
     [super viewDidLoad];
     self.isShowTop = NO;
@@ -125,12 +130,12 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     
     self.top += rect.size.height;
     //滑动按钮
-    [UIUtil addButtonInView:self.topView image:[UIImage imageNamed:@"down"] rect:rect sel:@selector(topToggle) controller:self tag:[NSNumber numberWithInt:Tag_Top_Toggle_Button]];
+    [UIUtil addButtonInView:self.topView image:[UIImage imageNamed:@"down"] rect:rect sel:@selector(topToggle) controller:self tag:Tag_Top_Toggle_Button];
     
     CGFloat tagIndex = Tag_Top_Begin_Time;
     rect = CGRectMake(Default_View_Space, Default_View_Space, maxLabelWidth, Default_Label_Height);
     for(NSString * str in fileds){
-        [UIUtil addLabelTextFiledInView:self.topView text:str rect:rect tag:[NSNumber numberWithInt:tagIndex]];
+        [UIUtil addLabelTextFiledInView:self.topView text:str rect:rect tag:tagIndex];
         tagIndex++;
         rect.origin.y+=Default_Label_Height+Default_View_Space;
     }
@@ -169,7 +174,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     CGFloat searchLeft = 3*Default_View_Space;
     rect.origin.x = searchLeft;
     rect.size.width = (viewWidth-2*searchLeft);
-    [UIUtil addButtonInView:self.topView title:Search rect:rect sel:@selector(search) controller:self tag:nil];
+    [UIUtil addButtonInView:self.topView title:Search rect:rect sel:@selector(search) controller:self tag:0];
     //添加编辑按钮
     [super addTitleButton:@"bi" sel:@selector(toggleTool)];
     //self.top+=Default_View_Space;
@@ -186,22 +191,16 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     CGFloat tagIndex = Tag_Detail_Info_Type;
     for(int i=0;i<fields.count;i++){
         NSString * field = fields[i];
-        [UIUtil addLableInView:self.detailInfoView text:field rect:rect tag:nil];
+        [UIUtil addLableInView:self.detailInfoView text:field rect:rect tag:0];
         rect.origin.x+=Default_View_Space+fieldMaxWidth;
         rect.size.width = fieldValueWidth;
         BOOL isLast = i==(fields.count-1);
         if(isLast){
             rect.size.height = 3*Default_Label_Height;
         }
-        UILabel * label = [UIUtil addLableInView:self.detailInfoView text:@"" rect:rect tag:[NSNumber numberWithInt:tagIndex]];
+        UILabel * label = [UIUtil addLableInView:self.detailInfoView text:@"" rect:rect tag:tagIndex];
         label.textAlignment = NSTextAlignmentLeft;
-        if(isLast){
-            //label.numberOfLines = 5;
-            label.font = [UIFont systemFontOfSize:14];
-            label.numberOfLines = 0;
-            label.lineBreakMode = NSLineBreakByCharWrapping;
-            //label.backgroundColor = [UIColor blueColor];
-        }
+        label.lineBreakMode = NSLineBreakByCharWrapping;
         tagIndex++;
         rect.origin.x = Default_View_Space;
         rect.origin.y += rect.size.height;
@@ -227,7 +226,6 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     self.data =[[NSMutableArray<Detail *> alloc] init];
     rect.origin.x=0;
     rect.origin.y = 0;
-    rect.size.height-=Default_View_Space;
     self.table = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
     //设置表格长按事件
     UILongPressGestureRecognizer * longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
@@ -243,7 +241,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     rect = CGRectMake(0, 0, viewWidth, Default_Label_Height);
     self.table.tableFooterView = [[UIView alloc] initWithFrame:rect];
     CGFloat moreLeft = 3*Default_View_Space;
-    [UIUtil addButtonInView:self.table.tableFooterView title:@"加载更多" rect:CGRectMake(moreLeft, 0, viewWidth-2*moreLeft, Default_Label_Height) sel:@selector(loadMore) controller:self tag:nil];
+    [UIUtil addButtonInView:self.table.tableFooterView title:@"加载更多" rect:CGRectMake(moreLeft, 0, viewWidth-2*moreLeft, Default_Label_Height) sel:@selector(loadMore) controller:self tag:0];
     self.table.tableFooterView.hidden = YES;
     //设置表格头
     
@@ -251,7 +249,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     CGSize headerSize = [UIUtil textSizeAtString:@"" font:headerFont];
     rect.size.height = headerSize.height;
     self.table.tableHeaderView = [[UIView alloc] initWithFrame:rect];
-    UILabel * headerLabel = [UIUtil addLableInView:self.table.tableHeaderView text:@"这里是表格头" font:headerFont rect:rect tag:[NSNumber numberWithInt:Tag_Table_Header]];
+    UILabel * headerLabel = [UIUtil addLableInView:self.table.tableHeaderView text:@"这里是表格头" font:headerFont rect:rect tag:Tag_Table_Header];
     headerLabel.textAlignment = NSTextAlignmentCenter;
     headerLabel.textColor = [UIColor grayColor];
     
@@ -260,14 +258,14 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     CGFloat headerButtonLeft = 2*Default_View_Space;
     CGFloat headerButtonWidth = (viewWidth-4*headerButtonLeft)/3;
     rect = CGRectMake(headerButtonLeft, 0, headerButtonWidth, Default_Label_Height);
-    [UIUtil addButtonInView:self.toolView title:Search_Select_All rect:rect sel:@selector(toggleSelectAll:) controller:self tag:nil];
+    [UIUtil addButtonInView:self.toolView title:Search_Select_All rect:rect sel:@selector(toggleSelectAll:) controller:self tag:0];
     rect.origin.x += headerButtonLeft+headerButtonWidth;
-    [UIUtil addButtonInView:self.toolView title:@"合并数据" rect:rect sel:@selector(mergeSelected) controller:self tag:nil];
+    [UIUtil addButtonInView:self.toolView title:@"合并数据" rect:rect sel:@selector(mergeSelected) controller:self tag:0];
     rect.origin.x += headerButtonLeft+headerButtonWidth;
-    [UIUtil addButtonInView:self.toolView title:@"删除数据" rect:rect sel:@selector(removeSelected) controller:self tag:nil];
+    [UIUtil addButtonInView:self.toolView title:@"删除数据" rect:rect sel:@selector(removeSelected) controller:self tag:0];
     
-    [UIUtil addViewInView:self.mainView subview:self.toolView tag:nil];
-    [UIUtil addViewInView:self.mainView subview:self.table tag:nil];
+    [UIUtil addViewInView:self.mainView subview:self.toolView tag:0];
+    [UIUtil addViewInView:self.mainView subview:self.table tag:0];
     [self.view addSubview:self.mainView];
 }
 
@@ -288,14 +286,15 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
         CGRect toolRect = self.toolView.frame;
         CGRect rect = self.table.frame;
         self.isShowTool = !self.isShowTool;
+        CGFloat changeHeight = Default_Label_Height + 10;
         if(self.isShowTool){
-            rect.origin.y+=Default_Label_Height;
-            rect.size.height-=Default_Label_Height;
-            toolRect.size.height += Default_Label_Height;
+            rect.origin.y+=changeHeight;
+            rect.size.height-=changeHeight;
+            toolRect.size.height += changeHeight;
         }else{
-            rect.size.height+=Default_Label_Height;
-            rect.origin.y-=Default_Label_Height;
-            toolRect.size.height -= Default_Label_Height;
+            rect.size.height+=changeHeight;
+            rect.origin.y-=changeHeight;
+            toolRect.size.height -= changeHeight;
         }
         self.table.frame = rect;
         self.toolView.frame = toolRect;
@@ -395,7 +394,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
         NSString * type = detail.detail_type==In?Detail_Type_In:Detail_Type_Out;
         NSString * happenTime = [Util dateToString:[Util timeToDate:detail.happen_time] format:Default_Date_Time_Format];
         NSString * createTime = [Util dateToString:[Util timeToDate:detail.create_time] format:Default_Date_Time_Format];
-        NSString * amount = [Util numberToString:detail.amount];
+        NSString * amount = [Util numberToString:detail.amount.floatValue];
         NSString * memo = detail.memo;
         NSArray * fields =[NSArray arrayWithObjects:type,amount,happenTime,createTime,memo,nil];
         CGFloat tagIndex = Tag_Detail_Info_Type;
@@ -411,8 +410,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
         if(num<1){
             num = 1;
         }
-        num++;
-        //label.numberOfLines = num;
+        label.adjustsFontSizeToFitWidth = YES;
+        label.numberOfLines = num;
         CGFloat labelHeightChange = num*Default_Label_Height - rect.size.height;
         rect.size.height+=labelHeightChange;
         label.frame = rect;
@@ -455,8 +454,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
         [super showAlert:Alert_Error message:@"开始时间不能大于结束时间" controller:nil];
         return NO;
     }else{
-        int typeIndex = [self.type selectedSegmentIndex];
-        NSNumber * typeNumber = [NSNumber numberWithInt:typeIndex-1];
+        NSInteger typeIndex = [self.type selectedSegmentIndex];
+        NSNumber * typeNumber = [NSNumber numberWithInteger:typeIndex-1];
         NSMutableString * titleString = [[NSMutableString alloc] init];
         NSArray * list = [self.detailService search:self.userId start:startNumber end:endNumber type:typeNumber page:self.page size:self.size count:&_totalCount title:titleString];
         if([titleString hasValue]){
@@ -468,7 +467,10 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
             [self.data removeAllObjects];
             self.data = [NSMutableArray arrayWithArray:list];
         }
-        self.table.tableFooterView.hidden = self.data.count>=self.totalCount;
+        BOOL isHiddenFooter = self.data.count>=self.totalCount;
+        if(self.table.tableFooterView.hidden!=isHiddenFooter){
+            self.table.tableFooterView.hidden = isHiddenFooter;
+        }
         if(self.data.count==0 && self.isShowTool){
             [self toggleTool];
         }
@@ -519,7 +521,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
  *  行数
  */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    int count = self.data.count;
+    NSInteger count = self.data.count;
     if(count==0){
         count = 1;
     }
@@ -530,14 +532,21 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
  *  table行
  */
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+    static NSString * cellStatic = @"cellStatic";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellStatic];
+    if(indexPath.row==0){
+        cell = nil;
+    }
+    if(!cell){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellStatic];
+    }
     if(self.data.count==0){
         cell.textLabel.text = @"无";
     }else{
         NSUInteger row = [indexPath row];
         Detail * rowData = [self.data objectAtIndex:row];
         if(rowData){
-            [super setDetailAmount:cell.textLabel amount:rowData.amount];
+            [super setDetailAmount:cell.textLabel amount:rowData.amount.floatValue];
             cell.detailTextLabel.text = [Util dateToString:[Util timeToDate:rowData.happen_time] format:Default_Date_Time_Format];
         }
         //UITapGestureRecognizer * doubleTab = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];

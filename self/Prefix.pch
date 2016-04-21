@@ -41,6 +41,9 @@
 #define Search_End_Time @"结束时间"
 #define Search_Type_All @"所有"
 
+// 消息
+#define NotificationHomeUpdate @"NotificationHomeUpdate"
+
 // Size
 #define Main_Title_Height 30
 #define Main_Title_Button_Width 30

@@ -80,10 +80,16 @@
     return [format numberFromString:string];
 }
 
-+ (NSString *) numberToString:(NSNumber *) number{
++ (NSString *) numberToString:(float) number{
     NSNumberFormatter * format = [[NSNumberFormatter alloc] init];
-    format.numberStyle = NSNumberFormatterDecimalStyle;
-    return [format stringFromNumber:[self toNumber:number]];
+    format.numberStyle = NSNumberFormatterCurrencyStyle;
+    return [format stringFromNumber:[NSNumber numberWithFloat:number]];
+}
+
++ (NSString *) numberToString:(float) number formatter:(NSNumberFormatterStyle) formatter{
+    NSNumberFormatter * format = [[NSNumberFormatter alloc] init];
+    format.numberStyle = formatter;
+    return [format stringFromNumber:[NSNumber numberWithFloat:number]];
 }
 
 @end

@@ -12,7 +12,6 @@
 		B004AF531C7C4E1200908576 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF521C7C4E1200908576 /* AppDelegate.m */; };
 		B004AF5B1C7C4E1200908576 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B004AF5A1C7C4E1200908576 /* Assets.xcassets */; };
 		B004AF6C1C7C5C2500908576 /* BaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF681C7C5C2500908576 /* BaseController.m */; };
-		B004AF6D1C7C5C2500908576 /* BaseObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF691C7C5C2500908576 /* BaseObjects.m */; };
 		B004AF6E1C7C5C2500908576 /* BaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF6B1C7C5C2500908576 /* BaseView.m */; };
 		B004AF841C7C5C3D00908576 /* ApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF711C7C5C3D00908576 /* ApiManager.m */; };
 		B004AF851C7C5C3D00908576 /* ApiResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF731C7C5C3D00908576 /* ApiResponse.m */; };
@@ -63,7 +62,6 @@
 		B004AF5F1C7C4E1200908576 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B004AF671C7C5C2500908576 /* BaseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseController.h; sourceTree = "<group>"; };
 		B004AF681C7C5C2500908576 /* BaseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseController.m; sourceTree = "<group>"; };
-		B004AF691C7C5C2500908576 /* BaseObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseObjects.m; sourceTree = "<group>"; };
 		B004AF6A1C7C5C2500908576 /* BaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseView.h; sourceTree = "<group>"; };
 		B004AF6B1C7C5C2500908576 /* BaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseView.m; sourceTree = "<group>"; };
 		B004AF701C7C5C3D00908576 /* ApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiManager.h; sourceTree = "<group>"; };
@@ -228,7 +226,6 @@
 			children = (
 				B004AF671C7C5C2500908576 /* BaseController.h */,
 				B004AF681C7C5C2500908576 /* BaseController.m */,
-				B004AF691C7C5C2500908576 /* BaseObjects.m */,
 				B004AF6A1C7C5C2500908576 /* BaseView.h */,
 				B004AF6B1C7C5C2500908576 /* BaseView.m */,
 			);
@@ -516,7 +513,6 @@
 				B05AF88C1C7EE4E900EE0607 /* Util.m in Sources */,
 				B04CBB961C8539180028EFE4 /* Detail.m in Sources */,
 				B004AF871C7C5C3D00908576 /* SQLiteOperation.m in Sources */,
-				B004AF6D1C7C5C2500908576 /* BaseObjects.m in Sources */,
 				B04CBB9D1C853D2C0028EFE4 /* DomainFactory.m in Sources */,
 				B07791A61C86CAB400FD950C /* RegisterViewController.m in Sources */,
 				B04CBBA71C859EBF0028EFE4 /* Single.m in Sources */,
