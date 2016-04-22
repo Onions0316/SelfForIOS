@@ -10,6 +10,7 @@
 #import "HomeViewController.h"
 #import "AccountInfoManager.h"
 #import "Single.h"
+#import "MyExceptionCrash.h"
 
 @interface AppDelegate ()
 
@@ -20,6 +21,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    //异常捕捉
+    InstallUncaughtExceptionHandler();
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];

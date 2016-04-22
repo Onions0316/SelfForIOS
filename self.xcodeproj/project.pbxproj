@@ -24,6 +24,7 @@
 		B004AF921C7C600700908576 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF911C7C600700908576 /* HomeViewController.m */; };
 		B004AF941C7C632F00908576 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B004AF931C7C632F00908576 /* libsqlite3.tbd */; };
 		B004AF961C7C635300908576 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B004AF951C7C635300908576 /* SystemConfiguration.framework */; };
+		B03E84371CCA0C03003D6E4F /* MyExceptionCrash.m in Sources */ = {isa = PBXBuildFile; fileRef = B03E84361CCA0C03003D6E4F /* MyExceptionCrash.m */; };
 		B04CBB961C8539180028EFE4 /* Detail.m in Sources */ = {isa = PBXBuildFile; fileRef = B04CBB951C8539180028EFE4 /* Detail.m */; };
 		B04CBB981C8539480028EFE4 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B04CBB971C8539480028EFE4 /* User.m */; };
 		B04CBB9A1C853A830028EFE4 /* BaseDomain.m in Sources */ = {isa = PBXBuildFile; fileRef = B04CBB991C853A830028EFE4 /* BaseDomain.m */; };
@@ -84,6 +85,8 @@
 		B004AF911C7C600700908576 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Controllers/HomeViewController.m; sourceTree = "<group>"; };
 		B004AF931C7C632F00908576 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		B004AF951C7C635300908576 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B03E84351CCA0BAE003D6E4F /* MyExceptionCrash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyExceptionCrash.h; sourceTree = "<group>"; };
+		B03E84361CCA0C03003D6E4F /* MyExceptionCrash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyExceptionCrash.m; sourceTree = "<group>"; };
 		B04CBB951C8539180028EFE4 /* Detail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Detail.m; sourceTree = "<group>"; };
 		B04CBB971C8539480028EFE4 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		B04CBB991C853A830028EFE4 /* BaseDomain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseDomain.m; sourceTree = "<group>"; };
@@ -253,6 +256,8 @@
 				B04CBBA61C859EBF0028EFE4 /* Single.m */,
 				B07E6B631C87DCD60071812F /* NSString+.h */,
 				B07E6B641C87DD630071812F /* NSString+.m */,
+				B03E84351CCA0BAE003D6E4F /* MyExceptionCrash.h */,
+				B03E84361CCA0C03003D6E4F /* MyExceptionCrash.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -517,6 +522,7 @@
 				B07791A61C86CAB400FD950C /* RegisterViewController.m in Sources */,
 				B04CBBA71C859EBF0028EFE4 /* Single.m in Sources */,
 				B004AF881C7C5C3D00908576 /* UIUtil.m in Sources */,
+				B03E84371CCA0C03003D6E4F /* MyExceptionCrash.m in Sources */,
 				B004AF8B1C7C5C3D00908576 /* GTMBase64.m in Sources */,
 				B004AF841C7C5C3D00908576 /* ApiManager.m in Sources */,
 				B05490C11C896974006977D6 /* AddDetailViewController.m in Sources */,

@@ -86,8 +86,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     if(navTitle.length==0){
         NSInteger times = [Util nowTime].integerValue-user.create_time.integerValue;
         int timeToDay = 24*60*60;
-        int days = (times+timeToDay-1)/timeToDay;
-        navTitle = [NSString stringWithFormat:@"第%d天",days];
+        NSInteger days = (times+timeToDay-1)/timeToDay;
+        navTitle = [NSString stringWithFormat:@"第%ld天",(long)days];
     }
     if(navTitle.length>0){
         [super updateTitle:navTitle];
