@@ -136,7 +136,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 - (void) updateCount{
     UILabel * countLabel = [self.infoView viewWithTag:Tag_User_Count];
     NSNumber * count = [self.detailService count:[AccountInfoManager sharedInstance].user.user_id];
-    NSString * countString = [Util numberToString:count.floatValue];
+    NSString * countString = [Util numberToString:count.floatValue formatter:NSNumberFormatterDecimalStyle];
     CGSize size = [UIUtil textSizeAtString:countString font:Default_Font];
     CGRect rect = countLabel.frame;
     rect.size.width = size.width;
@@ -282,7 +282,6 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
  *  添加明细
  */
 - (void) add{
-    
     [super goController:[[AddDetailViewController alloc] init]];
 }
 
