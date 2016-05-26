@@ -6,6 +6,10 @@
 //  Copyright © 2016年 onions. All rights reserved.
 //
 
+#import "UIView+.h"
+#import "UIColor+.h"
+#import "NSString+.h"
+
 //定义屏幕宽度
 #define Main_Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Main_Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -53,6 +57,15 @@
  *  视图间距
  */
 #define Default_View_Space 10
+
+///深色字体颜色
+#define TITLE_COLOR [UIColor colorWithHex:0x323232 alpha:1]
+///中等字体颜色
+#define NAME_COLOR [UIColor colorWithHex:0x707070 alpha:1]
+///浅色字体颜色
+#define DETAIL_COLOR [UIColor colorWithHex:0xa3a3a3 alpha:1]
+///分隔线颜色
+#define LINE_COLOR [UIColor colorWithHex:0xeaeaea alpha:1]
 
 /*
  *  默认字体大小

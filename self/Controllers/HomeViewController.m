@@ -12,6 +12,7 @@
 #import "DetailService.h"
 #import "SearchViewController.h"
 #import "RegisterViewController.h"
+#import "StatisticViewController.h"
 
 #define Info_Height 50
 #define Details_Height 200
@@ -23,14 +24,12 @@
 #define Tag_User_Count 2005
 #define Tag_User_Hello 2006
 
-#define LoadTag 2101
 @interface HomeViewController()
 
 @property (nonatomic,assign) CGFloat top;
 CREATE_TYPE_PROPERTY_TO_VIEW(UIView, detailView)
 CREATE_TYPE_PROPERTY_TO_VIEW(UIView, infoView)
 
-CREATE_TYPE_PROPERTY_TO_VIEW(UIActivityIndicatorView, activityIndicator)
 CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
 CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 
@@ -227,55 +226,38 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
         viewLeft = (Main_Screen_Width-viewHeight)/2;
     }
     CGRect rect = CGRectMake(viewLeft, self.top, viewHeight, viewHeight);
+    int cols = 2;
     CGFloat imageLeft = Default_View_Space;
-    CGFloat imageWidth = (viewHeight-3*imageLeft)/2;
+    CGFloat imageWidth = (viewHeight-(cols+1)*imageLeft)/cols;
     UIView * view = [[UIView alloc] initWithFrame:rect];
     
-    rect = CGRectMake(imageLeft, imageLeft, imageWidth, imageWidth);
-    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"add"] rect:rect sel:@selector(add) controller:self tag:0];
+    NSString * name = @"name";
+    NSString * select = @"selector";
     
-    rect.origin.x +=imageWidth+imageLeft;
-    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"search"] rect:rect sel:@selector(search) controller:self tag:0];
+    NSArray * arr = @[@{name:@"add",select:@"add"},
+                      @{name:@"search",select:@"search"},
+                      @{name:@"refresh",select:@"totalData"},
+                      @{name:@"refresh",select:@"statistic"}];
     
-    rect.origin.x = (viewHeight-imageWidth)/2;
-    rect.origin.y += imageLeft+imageWidth;
-    [UIUtil addButtonInView:view image:[UIImage imageNamed:@"refresh"] rect:rect sel:@selector(totalData) controller:self tag:0];
+    CGFloat left = 0;
+    CGFloat top = imageLeft;
+    
+    for(int i=0;i<arr.count;i++){
+        if(i%cols==0){
+            left = imageLeft;
+            if(i>0){
+                top += imageLeft + imageWidth;
+            }
+        }
+        rect = CGRectMake(left, top, imageWidth, imageWidth);
+        NSDictionary * dic = arr[i];
+        [UIUtil addButtonInView:view image:[UIImage imageNamed:dic[name]] rect:rect sel:NSSelectorFromString(dic[select]) controller:self tag:0];
+        left+=imageLeft+imageWidth;
+    }
     
     [self.view addSubview:view];
 }
 
-#pragma mark details
-//显示统计遮罩
-- (void) showLoading{
-    //
-    UIView *view = (UIView*)[self.detailView viewWithTag:LoadTag];
-    if(view==nil){
-        CGSize size = self.detailView.frame.size;
-        //创建半透明层
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-        [view setTag:LoadTag];
-        [view setBackgroundColor:[UIColor blackColor]];
-        [view setAlpha:0.5];
-        
-        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
-        [self.activityIndicator setCenter:view.center];
-        [self.activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-        [view addSubview:self.activityIndicator];
-        
-        [self.detailView addSubview:view];
-    }
-    view.hidden = NO;
-    
-    [self.activityIndicator startAnimating];
-}
-//影藏遮罩
-- (void) hideLoading{
-    [self.activityIndicator stopAnimating];
-    UIView *view = (UIView*)[self.detailView viewWithTag:LoadTag];
-    if(view){
-        view.hidden = YES;
-    }
-}
 
 #pragma mark operation
 /*
@@ -302,7 +284,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 - (void) totalData{
     if(!self.totaling){
         self.totaling = YES;
-        [self showLoading];
+        [self.detailView showLoading];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             User * user =  [self.userService total:[AccountInfoManager sharedInstance].user];
             if(user){
@@ -310,11 +292,15 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self setDetails:[AccountInfoManager sharedInstance].user];
-                [self hideLoading];
+                [self.detailView hideLoading];
                 self.totaling = NO;
             });
         });
     }
+}
+
+- (void) statistic{
+    [super goController:[[StatisticViewController alloc] init]];
 }
 
 @end

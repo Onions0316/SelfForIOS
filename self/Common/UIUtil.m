@@ -89,7 +89,37 @@
     [self addViewInView:view subview:label tag:tag];
     return label;
 }
+//设置行间距
++ (UILabel *) labelLineSpace:(UILabel *) label lineSpace:(CGFloat) lineSpace{
+    NSString * string = label.text;
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc] initWithString:string];
+    NSMutableParagraphStyle * style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineSpacing:lineSpace];
+    [attr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, [string length])];
+    [label setAttributedText:attr];
+    int num = MAX(label.numberOfLines, 1);
+    label.height = num * (label.height + lineSpace);
+    return label;
+}
 
++ (UILabel *)labelManyNumberOfLines:(UILabel *)label maxWidth: (CGFloat) maxWidth{
+    return [self labelManyNumberOfLines:label maxWidth:maxWidth maxNum:0];
+}
+
++ (UILabel *)labelManyNumberOfLines:(UILabel *)label maxWidth: (CGFloat) maxWidth maxNum:(int) maxNum{
+    int num = (label.width+maxWidth-1)/maxWidth;
+    num = MAX(num, 1);
+    if(maxNum>0){
+        num = MIN(num, maxNum);
+    }
+    label.numberOfLines = num;
+    label.height*=num;
+    label.width = maxWidth;
+    label.adjustsFontSizeToFitWidth = YES;
+    //以字符为边界显示内容
+    label.lineBreakMode = NSLineBreakByCharWrapping;
+    return label;
+}
 /*
  *  创建文字按钮
  */

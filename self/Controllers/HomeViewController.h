@@ -12,9 +12,6 @@
 
 @interface HomeViewController : BaseController
 
-- (void) showLoading;
-
-- (void) hideLoading;
 - (void) setDetails:(User *) user;
 
 @end

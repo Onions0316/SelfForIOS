@@ -22,6 +22,12 @@
                                      text:(NSString *) text
                                      rect:(CGRect) rect
                                       tag:(NSInteger) tag;
+
++ (UILabel *) labelLineSpace:(UILabel *) label lineSpace:(CGFloat) lineSpace;
+
++ (UILabel *)labelManyNumberOfLines:(UILabel *)label maxWidth: (CGFloat) maxWidth;
+
++ (UILabel *)labelManyNumberOfLines:(UILabel *)label maxWidth: (CGFloat) maxWidth maxNum:(int) maxNum;
 /*
  *  创建文本输入框
  */

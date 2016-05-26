@@ -24,6 +24,13 @@
 		B004AF921C7C600700908576 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF911C7C600700908576 /* HomeViewController.m */; };
 		B004AF941C7C632F00908576 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B004AF931C7C632F00908576 /* libsqlite3.tbd */; };
 		B004AF961C7C635300908576 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B004AF951C7C635300908576 /* SystemConfiguration.framework */; };
+		B01385371CF6D2E60066A65C /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01385361CF6D2E60066A65C /* Charts.framework */; };
+		B01385381CF6D2ED0066A65C /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01385361CF6D2E60066A65C /* Charts.framework */; };
+		B01385391CF6D2ED0066A65C /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B01385361CF6D2E60066A65C /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B013853D1CF6D8D40066A65C /* UIView+.m in Sources */ = {isa = PBXBuildFile; fileRef = B013853C1CF6D8D40066A65C /* UIView+.m */; };
+		B01385401CF6DF6E0066A65C /* StatisticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B013853F1CF6DF6E0066A65C /* StatisticViewController.m */; };
+		B01385431CF6EEA20066A65C /* UIColor+.m in Sources */ = {isa = PBXBuildFile; fileRef = B01385421CF6EEA20066A65C /* UIColor+.m */; };
+		B01385461CF6F1FC0066A65C /* Chart.m in Sources */ = {isa = PBXBuildFile; fileRef = B01385451CF6F1FC0066A65C /* Chart.m */; };
 		B03E84371CCA0C03003D6E4F /* MyExceptionCrash.m in Sources */ = {isa = PBXBuildFile; fileRef = B03E84361CCA0C03003D6E4F /* MyExceptionCrash.m */; };
 		B04CBB961C8539180028EFE4 /* Detail.m in Sources */ = {isa = PBXBuildFile; fileRef = B04CBB951C8539180028EFE4 /* Detail.m */; };
 		B04CBB981C8539480028EFE4 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B04CBB971C8539480028EFE4 /* User.m */; };
@@ -51,6 +58,20 @@
 		B084BA9F1C8D2C0F00BA04B5 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B084BA9E1C8D2C0F00BA04B5 /* SearchViewController.m */; };
 		B084BAA11C8D332800BA04B5 /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = B084BAA01C8D332800BA04B5 /* up.png */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B013853A1CF6D2ED0066A65C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B01385391CF6D2ED0066A65C /* Charts.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		120268EAC8DBA19715BD35AB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -85,6 +106,15 @@
 		B004AF911C7C600700908576 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Controllers/HomeViewController.m; sourceTree = "<group>"; };
 		B004AF931C7C632F00908576 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		B004AF951C7C635300908576 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B01385361CF6D2E60066A65C /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = self/Third/Charts.framework; sourceTree = "<group>"; };
+		B013853B1CF6D8830066A65C /* UIView+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+.h"; sourceTree = "<group>"; };
+		B013853C1CF6D8D40066A65C /* UIView+.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+.m"; sourceTree = "<group>"; };
+		B013853E1CF6DF450066A65C /* StatisticViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StatisticViewController.h; path = Controllers/StatisticViewController.h; sourceTree = "<group>"; };
+		B013853F1CF6DF6E0066A65C /* StatisticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatisticViewController.m; path = Controllers/StatisticViewController.m; sourceTree = "<group>"; };
+		B01385411CF6EE960066A65C /* UIColor+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+.h"; sourceTree = "<group>"; };
+		B01385421CF6EEA20066A65C /* UIColor+.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+.m"; sourceTree = "<group>"; };
+		B01385441CF6F1F00066A65C /* Chart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Chart.h; sourceTree = "<group>"; };
+		B01385451CF6F1FC0066A65C /* Chart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Chart.m; sourceTree = "<group>"; };
 		B03E84351CCA0BAE003D6E4F /* MyExceptionCrash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyExceptionCrash.h; sourceTree = "<group>"; };
 		B03E84361CCA0C03003D6E4F /* MyExceptionCrash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyExceptionCrash.m; sourceTree = "<group>"; };
 		B04CBB951C8539180028EFE4 /* Detail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Detail.m; sourceTree = "<group>"; };
@@ -136,7 +166,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B01385371CF6D2E60066A65C /* Charts.framework in Frameworks */,
 				B004AF961C7C635300908576 /* SystemConfiguration.framework in Frameworks */,
+				B01385381CF6D2ED0066A65C /* Charts.framework in Frameworks */,
 				B004AF941C7C632F00908576 /* libsqlite3.tbd in Frameworks */,
 				365FC0C8A9B974EA26F63316 /* libPods.a in Frameworks */,
 			);
@@ -148,6 +180,7 @@
 		039C85409CEB9E9F106776B6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B01385361CF6D2E60066A65C /* Charts.framework */,
 				B004AF951C7C635300908576 /* SystemConfiguration.framework */,
 				B004AF931C7C632F00908576 /* libsqlite3.tbd */,
 				1EE9104ED81B91F31ED16FF0 /* libPods.a */,
@@ -220,6 +253,8 @@
 				B05E8CEE1C8442B800AB3B66 /* SearchViewController.h */,
 				B05490C01C896974006977D6 /* AddDetailViewController.m */,
 				B084BA9E1C8D2C0F00BA04B5 /* SearchViewController.m */,
+				B013853E1CF6DF450066A65C /* StatisticViewController.h */,
+				B013853F1CF6DF6E0066A65C /* StatisticViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -258,6 +293,12 @@
 				B07E6B641C87DD630071812F /* NSString+.m */,
 				B03E84351CCA0BAE003D6E4F /* MyExceptionCrash.h */,
 				B03E84361CCA0C03003D6E4F /* MyExceptionCrash.m */,
+				B013853B1CF6D8830066A65C /* UIView+.h */,
+				B013853C1CF6D8D40066A65C /* UIView+.m */,
+				B01385411CF6EE960066A65C /* UIColor+.h */,
+				B01385421CF6EEA20066A65C /* UIColor+.m */,
+				B01385441CF6F1F00066A65C /* Chart.h */,
+				B01385451CF6F1FC0066A65C /* Chart.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -385,6 +426,7 @@
 				B004AF491C7C4E1200908576 /* Resources */,
 				5E65A94BBEB13C8F05D60FCC /* Embed Pods Frameworks */,
 				0A858BFB8536A9BB03BAD715 /* Copy Pods Resources */,
+				B013853A1CF6D2ED0066A65C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -505,6 +547,7 @@
 			files = (
 				B04CBBA41C8547490028EFE4 /* DetailService.m in Sources */,
 				B004AF851C7C5C3D00908576 /* ApiResponse.m in Sources */,
+				B013853D1CF6D8D40066A65C /* UIView+.m in Sources */,
 				B05AF8891C7EE24A00EE0607 /* AccountInfoManager.m in Sources */,
 				B004AF531C7C4E1200908576 /* AppDelegate.m in Sources */,
 				B004AF861C7C5C3D00908576 /* NSObject+Network.m in Sources */,
@@ -517,9 +560,12 @@
 				B004AF8A1C7C5C3D00908576 /* Reachability.m in Sources */,
 				B05AF88C1C7EE4E900EE0607 /* Util.m in Sources */,
 				B04CBB961C8539180028EFE4 /* Detail.m in Sources */,
+				B01385431CF6EEA20066A65C /* UIColor+.m in Sources */,
+				B01385401CF6DF6E0066A65C /* StatisticViewController.m in Sources */,
 				B004AF871C7C5C3D00908576 /* SQLiteOperation.m in Sources */,
 				B04CBB9D1C853D2C0028EFE4 /* DomainFactory.m in Sources */,
 				B07791A61C86CAB400FD950C /* RegisterViewController.m in Sources */,
+				B01385461CF6F1FC0066A65C /* Chart.m in Sources */,
 				B04CBBA71C859EBF0028EFE4 /* Single.m in Sources */,
 				B004AF881C7C5C3D00908576 /* UIUtil.m in Sources */,
 				B03E84371CCA0C03003D6E4F /* MyExceptionCrash.m in Sources */,
@@ -624,6 +670,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/self/Third",
+				);
 				GCC_PREFIX_HEADER = self/Prefix.pch;
 				INFOPLIST_FILE = self/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -641,6 +692,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/self/Third",
+				);
 				GCC_PREFIX_HEADER = self/Prefix.pch;
 				INFOPLIST_FILE = self/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
