@@ -9,6 +9,7 @@
 #import "UIView+.h"
 #import "UIColor+.h"
 #import "NSString+.h"
+#import "Util.h"
 
 //定义屏幕宽度
 #define Main_Screen_Width [UIScreen mainScreen].bounds.size.width
@@ -78,6 +79,7 @@
 /*
  *  默认日期格式化
  */
+#define Default_Year_Month_Format @"yyyy年MM月"
 #define Default_Day_Format @"MM-dd"
 #define Default_Date_Format @"yyyy-MM-dd"
 #define Default_Date_Time_Format @"yyyy-MM-dd HH:mm:ss"

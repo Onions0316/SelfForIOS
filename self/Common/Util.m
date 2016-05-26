@@ -81,9 +81,10 @@
 }
 
 + (NSString *) numberToString:(float) number{
-    NSNumberFormatter * format = [[NSNumberFormatter alloc] init];
-    format.numberStyle = NSNumberFormatterCurrencyStyle;
-    return [format stringFromNumber:[NSNumber numberWithFloat:number]];
+    //NSNumberFormatter * format = [[NSNumberFormatter alloc] init];
+    //format.numberStyle = NSNumberFormatterCurrencyStyle;
+    //return [format stringFromNumber:[NSNumber numberWithFloat:number]];
+    return [[NSString stringWithFormat:@"%f",number] thousandNumber];
 }
 
 + (NSString *) numberToString:(float) number formatter:(NSNumberFormatterStyle) formatter{
