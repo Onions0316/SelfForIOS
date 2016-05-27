@@ -55,6 +55,7 @@
 		B07E6B6E1C883C8C0071812F /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = B07E6B6A1C883C8C0071812F /* edit.png */; };
 		B07E6B6F1C883C8C0071812F /* search.png in Resources */ = {isa = PBXBuildFile; fileRef = B07E6B6B1C883C8C0071812F /* search.png */; };
 		B07E6B711C8842B70071812F /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = B07E6B701C8842B70071812F /* refresh.png */; };
+		B07ED4941CF7EB1700EFF32D /* NSDate+.m in Sources */ = {isa = PBXBuildFile; fileRef = B07ED4931CF7EB1700EFF32D /* NSDate+.m */; };
 		B084BA9F1C8D2C0F00BA04B5 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B084BA9E1C8D2C0F00BA04B5 /* SearchViewController.m */; };
 		B084BAA11C8D332800BA04B5 /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = B084BAA01C8D332800BA04B5 /* up.png */; };
 /* End PBXBuildFile section */
@@ -156,6 +157,8 @@
 		B07E6B6A1C883C8C0071812F /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
 		B07E6B6B1C883C8C0071812F /* search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search.png; sourceTree = "<group>"; };
 		B07E6B701C8842B70071812F /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
+		B07ED4921CF7EAEE00EFF32D /* NSDate+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+.h"; sourceTree = "<group>"; };
+		B07ED4931CF7EB1700EFF32D /* NSDate+.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+.m"; sourceTree = "<group>"; };
 		B084BA9E1C8D2C0F00BA04B5 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = Controllers/SearchViewController.m; sourceTree = "<group>"; };
 		B084BAA01C8D332800BA04B5 /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
 		F4C94D9B08F57E0D251A4A53 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -299,6 +302,8 @@
 				B01385421CF6EEA20066A65C /* UIColor+.m */,
 				B01385441CF6F1F00066A65C /* Chart.h */,
 				B01385451CF6F1FC0066A65C /* Chart.m */,
+				B07ED4921CF7EAEE00EFF32D /* NSDate+.h */,
+				B07ED4931CF7EB1700EFF32D /* NSDate+.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -556,6 +561,7 @@
 				B04CBB9A1C853A830028EFE4 /* BaseDomain.m in Sources */,
 				B04CBB981C8539480028EFE4 /* User.m in Sources */,
 				B07791A41C867EA700FD950C /* LoginViewController.m in Sources */,
+				B07ED4941CF7EB1700EFF32D /* NSDate+.m in Sources */,
 				B07E6B651C87DD630071812F /* NSString+.m in Sources */,
 				B004AF8A1C7C5C3D00908576 /* Reachability.m in Sources */,
 				B05AF88C1C7EE4E900EE0607 /* Util.m in Sources */,

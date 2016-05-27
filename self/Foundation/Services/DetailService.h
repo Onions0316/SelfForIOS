@@ -17,7 +17,7 @@
 - (NSArray *) search:(NSNumber *) userId start:(NSNumber *) startTime end:(NSNumber *) endTime type:(NSNumber *) type page:(int) page size:(int) size count:(int *) totalCount title:(NSMutableString*) title;
 
 - (void) totalAll:(NSString *) query rin:(float *) rin rout:(float *) rout;
-
+- (void) search:(NSNumber *) userId year:(int) year month:(int) month tin:(float *) tin tout:(float*) tout;
 - (BOOL) removeByIds:(NSArray *) ids;
 
 - (BOOL) mergeByIds:(NSArray *) ids;

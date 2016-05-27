@@ -8,16 +8,45 @@
 
 #import "StatisticViewController.h"
 #import "Chart.h"
+#import "DetailService.h"
+#import "AccountInfoManager.h"
 
 @interface StatisticViewController ()
 
 CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, year)
 CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, month)
 CREATE_TYPE_PROPERTY_TO_VIEW(PieChartView, chartView)
+CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
+CREATE_TYPE_PROPERTY_TO_VIEW(NSMutableArray, years)
+CREATE_TYPE_PROPERTY_TO_VIEW(NSArray, months)
+CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
 
 @end
 
 @implementation StatisticViewController
+
+- (User *)user{
+    return [AccountInfoManager sharedInstance].user;
+}
+
+-(NSMutableArray *)years{
+    if(!_years){
+        _years = [[NSMutableArray alloc] init];
+        NSDate * date = [Util timeToDate:[self user].create_time];
+        NSDate * now = [NSDate date];
+        for(int i=date.year;i<now.year+1;i++){
+            [_years addObject:@(i)];
+        }
+    }
+    return _years;
+}
+
+- (NSArray *) months{
+    if(!_months){
+        _months = @[@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12];
+    }
+    return _months;
+}
 
 - (PieChartView *)chartView{
     if(!_chartView){
@@ -35,6 +64,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(PieChartView, chartView)
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    self.detailService = [[DetailService alloc] init];
 }
 
 - (void)drawContent{
@@ -101,13 +131,18 @@ CREATE_TYPE_PROPERTY_TO_VIEW(PieChartView, chartView)
         self.chartView.data = nil;
         return;
     }
+    CGFloat totalIn = 0;
+    CGFloat totalOut = 0;
+    [self.detailService search:self.user.user_id year:self.year.text.intValue month:self.month.text.intValue tin:&totalIn tout:&totalOut];
+    
     NSMutableArray * xVals = [[NSMutableArray alloc] init];
+    [xVals addObject:[NSString stringWithFormat:@"收入:%@",[[NSString stringWithFormat:@"%f",totalIn] thousandNumber]]];
+    [xVals addObject:[NSString stringWithFormat:@"支出:%@",[[NSString stringWithFormat:@"%f",totalOut] thousandNumber]]];
+    
     NSMutableArray * yVals = [[NSMutableArray alloc] init];
-    for(int i=0;i<count;i++){
-        [xVals addObject:[NSString stringWithFormat:@"name%c",i+'A']];
-        BarChartDataEntry * entry = [[BarChartDataEntry alloc] initWithValue:(i+1) xIndex:i];
-        [yVals addObject:entry];
-    }
+    [yVals addObject:[[BarChartDataEntry alloc] initWithValue:totalIn xIndex:0]];
+    [yVals addObject:[[BarChartDataEntry alloc] initWithValue:totalOut xIndex:1]];
+    
     [Chart showPieData:self.chartView xVals:xVals yVals:yVals];
 }
 

@@ -79,6 +79,36 @@
     *rout = totalOut;
 }
 
+///图表统计数据
+- (void) search:(NSNumber *) userId year:(int) year month:(int) month tin:(float *) tin tout:(float*) tout{
+    NSMutableString * start = [[NSMutableString alloc] init];
+    NSMutableString * end = [[NSMutableString alloc] init];
+    if(year>0){
+        if(month>0){
+            [start appendFormat:@"%d-%2d-01 00:00:00",year,month];
+            if(month==12){
+                [end appendFormat:@"%d-01-01 00:00:00",(year+1)];
+            }else{
+                [end appendFormat:@"%d-%2d-01 00:00:00",year,(month+1)];
+            }
+        }else{
+            [start appendFormat:@"%d-01-01 00:00:00",year];
+            [end appendFormat:@"%d-01-01 00:00:00",(year+1)];
+        }
+    }
+    NSNumber * startNum;
+    NSNumber * endNum;
+    if(start.length>0){
+        NSDate * startDate = [Util stringToDate:start format:Default_Date_Time_Format];
+        startNum = @([startDate timeIntervalSince1970]-1);
+    }
+    if(end.length>0){
+        NSDate * endDate = [Util stringToDate:end format:Default_Date_Time_Format];
+        endNum = @([endDate timeIntervalSince1970]);
+    }
+    [self totalAll:[self createQuery:userId start:startNum end:endNum type:nil] rin:tin rout:tout];
+}
+
 /*
  *  查询收支明细
  */

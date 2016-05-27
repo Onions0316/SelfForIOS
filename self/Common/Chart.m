@@ -43,7 +43,7 @@
     //每个块之间间距
     dataSet.sliceSpace = 2;
     //块的颜色数组，当块很多时颜色会重用
-    dataSet.colors = @[[UIColor redColor],[UIColor blueColor],[UIColor greenColor]];
+    dataSet.colors = @[[UIColor greenColor],[UIColor redColor],[UIColor blueColor]];
     //指示线点在内容块上的位置1为外边上  0为内边
     dataSet.valueLinePart1OffsetPercentage = 1;
     //指示线第一条线长度比例
