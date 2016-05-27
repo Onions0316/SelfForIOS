@@ -11,14 +11,18 @@
 #import "DetailService.h"
 #import "AccountInfoManager.h"
 
-@interface StatisticViewController ()
+#define TagStatisticYearPicker 1000
+
+@interface StatisticViewController ()<UIPickerViewDelegate,UIPickerViewDataSource>
 
 CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, year)
+CREATE_TYPE_PROPERTY_TO_VIEW(UIPickerView, yearPicker)
 CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, month)
+CREATE_TYPE_PROPERTY_TO_VIEW(UIPickerView, monthPicker)
 CREATE_TYPE_PROPERTY_TO_VIEW(PieChartView, chartView)
 CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
 CREATE_TYPE_PROPERTY_TO_VIEW(NSMutableArray, years)
-CREATE_TYPE_PROPERTY_TO_VIEW(NSArray, months)
+CREATE_TYPE_PROPERTY_TO_VIEW(NSMutableArray, months)
 CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
 
 @end
@@ -35,15 +39,18 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
         NSDate * date = [Util timeToDate:[self user].create_time];
         NSDate * now = [NSDate date];
         for(int i=date.year;i<now.year+1;i++){
-            [_years addObject:@(i)];
+            [_years addObject:@(i).stringValue];
         }
     }
     return _years;
 }
 
-- (NSArray *) months{
+- (NSMutableArray *) months{
     if(!_months){
-        _months = @[@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12];
+        _months = [[NSMutableArray alloc] init];
+        for(int i=1;i<13;i++){
+            [_months addObject:@(i).stringValue];
+        }
     }
     return _months;
 }
@@ -51,6 +58,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
 - (PieChartView *)chartView{
     if(!_chartView){
         _chartView = [Chart initPieChart];
+        //_chartView.drawHoleEnabled = NO;
+        _chartView.noDataTextDescription = @"暂无数据";
     }
     return _chartView;
 }
@@ -95,12 +104,29 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
     year.width = (inputView.width - Default_View_Space)/2;
     year.height = inputView.height;
     year.placeholder = @"请选择年份";
+    self.year = year;
+    //年份选择器
+    self.yearPicker = [[UIPickerView alloc] init];
+    self.yearPicker.tag = TagStatisticYearPicker;
+    self.yearPicker.showsSelectionIndicator = YES;
+    self.yearPicker.delegate = self;
+    self.yearPicker.dataSource = self;
+    self.yearPicker.frame = CGRectMake(0, 0, 0, 100);
+    [UIUtil addTextFildInputView:self.year inputView:self.yearPicker controller:self done:@selector(yearDoneTouch:) cancel:nil];
     
     UITextField * month = [UIUtil addTextFiledInView:inputView rect:year.frame tag:0];
     month.left = year.right + Default_View_Space;
     month.placeholder = @"请选择月份";
-    [view addSubview:inputView];
+    self.month = month;
+    //月份选择器
+    self.monthPicker = [[UIPickerView alloc] init];
+    self.monthPicker.showsSelectionIndicator = YES;
+    self.monthPicker.delegate = self;
+    self.monthPicker.dataSource = self;
+    self.monthPicker.frame = CGRectMake(0, 0, 0, 100);
+    [UIUtil addTextFildInputView:self.month inputView:self.monthPicker controller:self done:@selector(monthDoneTouch:) cancel:nil];
     
+    [view addSubview:inputView];
     
     UIButton * button = [UIUtil addButtonInView:view title:Submit rect:CGRectZero sel:@selector(setChartData) controller:self tag:0];
     button.top = inputView.bottom + Default_View_Space;
@@ -126,14 +152,13 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
 }
 
 - (void) setChartData{
-    int count = 3;
-    if(count==0){
-        self.chartView.data = nil;
-        return;
-    }
     CGFloat totalIn = 0;
     CGFloat totalOut = 0;
     [self.detailService search:self.user.user_id year:self.year.text.intValue month:self.month.text.intValue tin:&totalIn tout:&totalOut];
+    if(totalOut==0 && totalIn==0){
+        self.chartView.data = nil;
+        return;
+    }
     
     NSMutableArray * xVals = [[NSMutableArray alloc] init];
     [xVals addObject:[NSString stringWithFormat:@"收入:%@",[[NSString stringWithFormat:@"%f",totalIn] thousandNumber]]];
@@ -144,6 +169,42 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
     [yVals addObject:[[BarChartDataEntry alloc] initWithValue:totalOut xIndex:1]];
     
     [Chart showPieData:self.chartView xVals:xVals yVals:yVals];
+}
+
+/*
+ *  年份填充
+ */
+- (void) yearDoneTouch:(UIBarButtonItem *) sender{
+    self.year.text = [self.years objectAtIndex:[self.yearPicker selectedRowInComponent:0]];
+    [self.year resignFirstResponder];
+}
+/*
+ *  月份填充
+ */
+- (void) monthDoneTouch:(UIBarButtonItem *) sender{
+    self.month.text = [self.months objectAtIndex:[self.monthPicker selectedRowInComponent:0]];
+    [self.month resignFirstResponder];
+}
+
+#pragma mark sex picker
+- (NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    if(pickerView.tag == TagStatisticYearPicker){
+        return self.years.count;
+    }else{
+        return self.months.count;
+    }
+}
+
+- (NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+    if(pickerView.tag == TagStatisticYearPicker){
+        return self.years[row];
+    }else{
+        return self.months[row];
+    }
 }
 
 @end

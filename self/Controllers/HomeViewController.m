@@ -237,7 +237,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     NSArray * arr = @[@{name:@"add",select:@"add"},
                       @{name:@"search",select:@"search"},
                       @{name:@"refresh",select:@"totalData"},
-                      @{name:@"refresh",select:@"statistic"}];
+                      @{name:@"statistic",select:@"statistic"}];
     
     CGFloat left = 0;
     CGFloat top = imageLeft;
