@@ -116,8 +116,10 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     NSArray * fileds = @[Search_Begin_Time,Search_End_Time,Detail_Type];
     CGFloat maxLabelWidth = [UIUtil textMaxWidth:fileds font:Default_Font];
     
-    CGFloat viewHeight = 5*Default_View_Space + 4*Default_Label_Height +Default_View_Space;
-    CGFloat viewTop = self.top-viewHeight+Default_View_Space;
+    CGFloat btnHeight = 2*Default_View_Space;
+    
+    CGFloat viewHeight = 5*Default_View_Space + 4*Default_Label_Height + btnHeight;
+    CGFloat viewTop = self.top-viewHeight+btnHeight;
     CGFloat viewWidth = maxLabelWidth+Default_View_Space+Default_TextFiled_Width+2*Default_View_Space;
     CGFloat viewLeft = (Main_Screen_Width-viewWidth)/2;
     CGRect rect = CGRectMake(viewLeft, viewTop, viewWidth, viewHeight);
@@ -125,8 +127,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     self.topView.backgroundColor = [UIColor whiteColor];
     
     rect.origin.x= 0;
-    rect.origin.y = viewHeight-Default_View_Space;
-    rect.size.height = 2*Default_View_Space;
+    rect.origin.y = viewHeight-btnHeight;
+    rect.size.height = btnHeight;
     
     self.top += rect.size.height;
     //滑动按钮
@@ -501,11 +503,11 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     CGRect rect = self.topView.frame;
     NSString * imageName = @"";
     if(self.isShowTop){
-        rect.origin.y-=rect.size.height-Default_View_Space;
+        rect.origin.y-=rect.size.height-btn.height;
         imageName = @"down";
         self.coverView.hidden = YES;
     }else{
-        rect.origin.y+=rect.size.height-Default_View_Space;
+        rect.origin.y+=rect.size.height-btn.height;
         imageName = @"up";
         self.coverView.hidden = NO;
     }

@@ -15,6 +15,9 @@
 
 + (PieChartView*) initPieChart;
 
++ (void) setPieCenterMessage:(PieChartView *) chartView
+                         msg:(NSString *) msg;
+
 + (void) showPieData:(PieChartView *) chartView
                xVals:(NSArray*) xVals
                yVals:(NSArray*) yVals;

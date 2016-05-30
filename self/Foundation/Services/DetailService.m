@@ -194,5 +194,14 @@
     }
     return YES;
 }
+///获取最小发生时间
+- (NSString *) happenTimeMin:(NSNumber *) userId{
+    NSString * sql = [NSString stringWithFormat:@"select min(happen_time) as happen_time from detail where user_id = %@",userId];
+    NSArray<NSDictionary*> * result = [[super db] selectData:sql];
+    if(result.count>0){
+        return result[0].allValues[0];
+    }
+    return nil;
+}
 
 @end

@@ -23,17 +23,23 @@
     //是否显示中心部分
     chartView.drawHoleEnabled = YES;
     //中间孔占比
-    chartView.holeRadiusPercent = 0.58;
+    chartView.holeRadiusPercent = 0.4;
     //中间透明圆半径
-    chartView.transparentCircleRadiusPercent = 0.61;
-    NSMutableAttributedString *centerText = [[NSMutableAttributedString alloc] initWithString:@"IOS Pie Charts"];
-    chartView.centerAttributedText = centerText;
+    chartView.transparentCircleRadiusPercent = 0.45;
+    [self setPieCenterMessage:chartView msg:@"IOS Pie Charts"];
     //旋转
     chartView.rotationAngle = 0.0;
     chartView.rotationEnabled = YES;
     
     chartView.legend.enabled = NO;
     return chartView;
+}
+
++ (void) setPieCenterMessage:(PieChartView *) chartView msg:(NSString *) msg{
+    if(chartView.drawHoleEnabled){
+        NSMutableAttributedString *centerText = [[NSMutableAttributedString alloc] initWithString:msg];
+        chartView.centerAttributedText = centerText;
+    }
 }
 
 + (void) showPieData:(PieChartView *) chartView
@@ -44,14 +50,15 @@
     dataSet.sliceSpace = 2;
     //块的颜色数组，当块很多时颜色会重用
     dataSet.colors = @[[UIColor greenColor],[UIColor redColor],[UIColor blueColor]];
+    /*
     //指示线点在内容块上的位置1为外边上  0为内边
     dataSet.valueLinePart1OffsetPercentage = 1;
     //指示线第一条线长度比例
-    dataSet.valueLinePart1Length = 0.4;
+    dataSet.valueLinePart1Length = 0.7;
     //指示线第二条线长度比例
     dataSet.valueLinePart2Length = 0.4;
     //指示线位置
-    dataSet.yValuePosition = PieChartValuePositionOutsideSlice;
+    dataSet.yValuePosition = PieChartValuePositionOutsideSlice;*/
     
     PieChartData * data = [[PieChartData alloc] initWithXVals:xVals dataSet:dataSet];
     
@@ -66,7 +73,7 @@
     [data setValueFormatter:formatter];
     
     [data setValueFont:[UIFont systemFontOfSize:11]];
-    [data setValueTextColor:[UIColor grayColor]];
+    [data setValueTextColor:[UIColor whiteColor]];
     
     chartView.data = data;
 }

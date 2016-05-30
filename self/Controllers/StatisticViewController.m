@@ -12,17 +12,16 @@
 #import "AccountInfoManager.h"
 
 #define TagStatisticYearPicker 1000
+#define YearComponent 0
+#define MonthComponent 1
 
 @interface StatisticViewController ()<UIPickerViewDelegate,UIPickerViewDataSource>
 
-CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, year)
-CREATE_TYPE_PROPERTY_TO_VIEW(UIPickerView, yearPicker)
-CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, month)
-CREATE_TYPE_PROPERTY_TO_VIEW(UIPickerView, monthPicker)
+CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, date)
+CREATE_TYPE_PROPERTY_TO_VIEW(UIPickerView, datePicker)
+CREATE_TYPE_PROPERTY_TO_VIEW(NSMutableArray, data)
 CREATE_TYPE_PROPERTY_TO_VIEW(PieChartView, chartView)
 CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
-CREATE_TYPE_PROPERTY_TO_VIEW(NSMutableArray, years)
-CREATE_TYPE_PROPERTY_TO_VIEW(NSMutableArray, months)
 CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
 
 @end
@@ -33,26 +32,33 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
     return [AccountInfoManager sharedInstance].user;
 }
 
--(NSMutableArray *)years{
-    if(!_years){
-        _years = [[NSMutableArray alloc] init];
-        NSDate * date = [Util timeToDate:[self user].create_time];
+- (NSMutableArray *)data{
+    if(!_data){
+        _data = [[NSMutableArray alloc] init];
+        
+        NSMutableArray * years = [[NSMutableArray alloc] init];
+        [years addObject:@"所有"];
+        NSString * dateString = [self.detailService happenTimeMin:[self user].user_id];
+        NSNumber * dateNumber = [self user].create_time;
+        if(dateString.length>0){
+            dateNumber = [Util toNumber:dateString];
+        }
+        NSDate * date = [Util timeToDate:dateNumber];
         NSDate * now = [NSDate date];
-        for(int i=date.year;i<now.year+1;i++){
-            [_years addObject:@(i).stringValue];
+        for(NSInteger i=now.year;i>date.year-1;i--){
+            [years addObject:@(i).stringValue];
         }
-    }
-    return _years;
-}
-
-- (NSMutableArray *) months{
-    if(!_months){
-        _months = [[NSMutableArray alloc] init];
+        
+        NSMutableArray * months = [[NSMutableArray alloc] init];
+        [months addObject:@"所有"];
         for(int i=1;i<13;i++){
-            [_months addObject:@(i).stringValue];
+            [months addObject:@(i).stringValue];
         }
+        
+        [_data addObject:years];
+        [_data addObject:months];
     }
-    return _months;
+    return _data;
 }
 
 - (PieChartView *)chartView{
@@ -96,35 +102,38 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
     CGFloat left = 15;
     CGFloat top = Default_View_Space;
     
-    UIView * view = [[UIView alloc] initWithFrame:CGRectMake(left, top, topView.width-2*left, 0)];
+    UIView * view = [[UIView alloc] initWithFrame:CGRectMake(left, top, topView.width-2*left, 2*Default_Label_Height+3*Default_View_Space)];
+    
+    UIImage * leftImage = [UIImage imageNamed:@"left"];
+    CGFloat newHegiht = view.height/2;
+    CGFloat newWidth = leftImage.size.width*newHegiht/leftImage.size.height;
+    CGRect rect = CGRectMake(Default_View_Space, Default_View_Space, newWidth, newHegiht);
+    UIButton * leftButton = [UIUtil addButtonInView:view image:leftImage rect:rect sel:@selector(leftTap) controller:self tag:0];
+    [leftButton setBackgroundColor:[UIColor clearColor]];
+    leftButton.centerY = view.height/2;
+    
+    UIButton * rightButton =[UIUtil addButtonInView:view image:[UIImage imageNamed:@"right"] rect:leftButton.frame sel:@selector(rightTap) controller:self tag:0];
+    [rightButton setBackgroundColor:[UIColor clearColor]];
+    rightButton.right = view.width - Default_View_Space;
+    
+    left = leftButton.left + left + Default_View_Space;
     
     UIView * inputView = [[UIView alloc] initWithFrame:CGRectMake(left, top, view.width - 2*left, Default_Label_Height)];
     
-    UITextField * year = [UIUtil addTextFiledInView:inputView rect:CGRectZero tag:0];
-    year.width = (inputView.width - Default_View_Space)/2;
-    year.height = inputView.height;
-    year.placeholder = @"请选择年份";
-    self.year = year;
+    UITextField * date = [UIUtil addTextFiledInView:inputView rect:CGRectZero tag:0];
+    date.width = inputView.width;
+    date.height = inputView.height;
+    date.placeholder = @"请选择年份/月份";
+    date.textAlignment = NSTextAlignmentCenter;
+    self.date = date;
     //年份选择器
-    self.yearPicker = [[UIPickerView alloc] init];
-    self.yearPicker.tag = TagStatisticYearPicker;
-    self.yearPicker.showsSelectionIndicator = YES;
-    self.yearPicker.delegate = self;
-    self.yearPicker.dataSource = self;
-    self.yearPicker.frame = CGRectMake(0, 0, 0, 100);
-    [UIUtil addTextFildInputView:self.year inputView:self.yearPicker controller:self done:@selector(yearDoneTouch:) cancel:nil];
-    
-    UITextField * month = [UIUtil addTextFiledInView:inputView rect:year.frame tag:0];
-    month.left = year.right + Default_View_Space;
-    month.placeholder = @"请选择月份";
-    self.month = month;
-    //月份选择器
-    self.monthPicker = [[UIPickerView alloc] init];
-    self.monthPicker.showsSelectionIndicator = YES;
-    self.monthPicker.delegate = self;
-    self.monthPicker.dataSource = self;
-    self.monthPicker.frame = CGRectMake(0, 0, 0, 100);
-    [UIUtil addTextFildInputView:self.month inputView:self.monthPicker controller:self done:@selector(monthDoneTouch:) cancel:nil];
+    self.datePicker = [[UIPickerView alloc] init];
+    self.datePicker.tag = TagStatisticYearPicker;
+    self.datePicker.showsSelectionIndicator = YES;
+    self.datePicker.delegate = self;
+    self.datePicker.dataSource = self;
+    self.datePicker.frame = CGRectMake(0, 0, 0, 100);
+    [UIUtil addTextFildInputView:self.date inputView:self.datePicker controller:self done:@selector(dateDoneTouch:) cancel:nil];
     
     [view addSubview:inputView];
     
@@ -133,8 +142,6 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
     button.width = view.width/2;
     button.height = Default_Label_Height;
     button.centerX = button.width;
-    
-    view.height = button.bottom + Default_View_Space;
     
     view.layer.borderWidth = 1;
     view.layer.borderColor = [LINE_COLOR CGColor];
@@ -154,7 +161,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
 - (void) setChartData{
     CGFloat totalIn = 0;
     CGFloat totalOut = 0;
-    [self.detailService search:self.user.user_id year:self.year.text.intValue month:self.month.text.intValue tin:&totalIn tout:&totalOut];
+    [self.detailService search:self.user.user_id year:[self year].intValue month:[self month].intValue tin:&totalIn tout:&totalOut];
     if(totalOut==0 && totalIn==0){
         self.chartView.data = nil;
         return;
@@ -169,42 +176,93 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
     [yVals addObject:[[BarChartDataEntry alloc] initWithValue:totalOut xIndex:1]];
     
     [Chart showPieData:self.chartView xVals:xVals yVals:yVals];
+    
+    [self.chartView animateWithXAxisDuration:1.4 easingOption:ChartEasingOptionEaseOutBack];
+}
+
+- (NSString *) dateForIndex:(NSInteger ) index{
+    NSArray * arr = self.data[index];
+    return arr[[self.datePicker selectedRowInComponent:index]];
+}
+
+- (NSString*) year{
+    return [self dateForIndex:YearComponent];
+}
+
+- (NSString*) month{
+    return [self dateForIndex:MonthComponent];
 }
 
 /*
- *  年份填充
+ *  日期填充
  */
-- (void) yearDoneTouch:(UIBarButtonItem *) sender{
-    self.year.text = [self.years objectAtIndex:[self.yearPicker selectedRowInComponent:0]];
-    [self.year resignFirstResponder];
+- (void) dateDoneTouch:(UIBarButtonItem *) sender{
+    NSMutableString * text = [[NSMutableString alloc] init];
+    [text appendString:[self year]];
+    if([self year].intValue>0){
+        [text appendString:@"年"];
+    }
+    if([self month].intValue>0){
+        [text appendFormat:@"%@月",[self month]];
+    }
+    self.date.text = text;
+    [self.date resignFirstResponder];
 }
-/*
- *  月份填充
- */
-- (void) monthDoneTouch:(UIBarButtonItem *) sender{
-    self.month.text = [self.months objectAtIndex:[self.monthPicker selectedRowInComponent:0]];
-    [self.month resignFirstResponder];
+
+- (void) leftTap{
+    [self tapImage:-1];
+}
+
+- (void) rightTap{
+    [self tapImage:1];
+}
+
+- (void) tapImage:(NSInteger )dc{
+    int year = [self year].intValue;
+    if(year>0){
+        int month = [self month].intValue;
+        if(month>0){
+            month += dc;
+            if(month<=0){
+                month = 12;
+                year --;
+            }
+            if(month>12){
+                month = 1;
+                year++;
+            }
+        }else{
+            year+=dc;
+        }
+        NSArray * arr = self.data[YearComponent];
+        NSInteger row = [arr indexOfObject:[NSString stringWithFormat:@"%d",year]];
+        if(row!=NSNotFound){
+            [self.datePicker selectRow:row inComponent:YearComponent animated:YES];
+            if(month>0){
+                NSArray * months = self.data[MonthComponent];
+                row = [months indexOfObject:[NSString stringWithFormat:@"%d",month]];
+                if(row!=NSNotFound){
+                    [self.datePicker selectRow:row inComponent:MonthComponent animated:YES];
+                }
+            }
+            [self dateDoneTouch:nil];
+            [self setChartData];
+        }
+    }
 }
 
 #pragma mark sex picker
 - (NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    return 1;
+    return self.data.count;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-    if(pickerView.tag == TagStatisticYearPicker){
-        return self.years.count;
-    }else{
-        return self.months.count;
-    }
+    NSArray * array = self.data[component];
+    return array.count;
 }
 
 - (NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
-    if(pickerView.tag == TagStatisticYearPicker){
-        return self.years[row];
-    }else{
-        return self.months[row];
-    }
+    return self.data[component][row];
 }
 
 @end

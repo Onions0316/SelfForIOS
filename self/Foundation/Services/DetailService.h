@@ -23,6 +23,7 @@
 - (BOOL) mergeByIds:(NSArray *) ids;
 
 - (NSNumber *) count:(NSNumber *) userId;
+- (NSString *) happenTimeMin:(NSNumber *) userId;
 @end
 
 #endif /* DetailService_h */
