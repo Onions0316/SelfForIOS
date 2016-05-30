@@ -37,7 +37,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
         _data = [[NSMutableArray alloc] init];
         
         NSMutableArray * years = [[NSMutableArray alloc] init];
-        [years addObject:@"所有"];
+        [years addObject:Search_Type_All];
         NSString * dateString = [self.detailService happenTimeMin:[self user].user_id];
         NSNumber * dateNumber = [self user].create_time;
         if(dateString.length>0){
@@ -50,7 +50,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
         }
         
         NSMutableArray * months = [[NSMutableArray alloc] init];
-        [months addObject:@"所有"];
+        [months addObject:Search_Type_All];
         for(int i=1;i<13;i++){
             [months addObject:@(i).stringValue];
         }
@@ -71,7 +71,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
 }
 - (id) init{
     if(self=[super init]){
-        super.navTitle = @"收支统计图";
+        super.navTitle = Statistic;
         super.showBack = YES;
     }
     return self;
@@ -123,7 +123,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
     UITextField * date = [UIUtil addTextFiledInView:inputView rect:CGRectZero tag:0];
     date.width = inputView.width;
     date.height = inputView.height;
-    date.placeholder = @"请选择年份/月份";
+    date.placeholder = Statistic_Time_Memo;
     date.textAlignment = NSTextAlignmentCenter;
     self.date = date;
     //年份选择器
@@ -170,6 +170,10 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
     NSMutableArray * xVals = [[NSMutableArray alloc] init];
     [xVals addObject:[NSString stringWithFormat:@"收入:%@",[[NSString stringWithFormat:@"%f",totalIn] thousandNumber]]];
     [xVals addObject:[NSString stringWithFormat:@"支出:%@",[[NSString stringWithFormat:@"%f",totalOut] thousandNumber]]];
+    
+    CGFloat totalAll = totalIn- totalOut;
+    NSString * totalAllStr = [[NSString stringWithFormat:@"%f",totalAll] thousandNumber];
+    [Chart setPieCenterMessage:self.chartView msg:totalAllStr color:totalAll>0?[UIColor blueColor]:[UIColor redColor]];
     
     NSMutableArray * yVals = [[NSMutableArray alloc] init];
     [yVals addObject:[[BarChartDataEntry alloc] initWithValue:totalIn xIndex:0]];

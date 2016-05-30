@@ -36,8 +36,19 @@
 }
 
 + (void) setPieCenterMessage:(PieChartView *) chartView msg:(NSString *) msg{
+    [self setPieCenterMessage:chartView msg:msg color:nil];
+}
+
++ (void) setPieCenterMessage:(PieChartView *) chartView
+                         msg:(NSString *) msg
+                       color:(UIColor *) color{
     if(chartView.drawHoleEnabled){
         NSMutableAttributedString *centerText = [[NSMutableAttributedString alloc] initWithString:msg];
+        if(color){
+            [centerText addAttributes:@{
+                                        NSForegroundColorAttributeName: color
+                                        } range:NSMakeRange(0, centerText.length)];
+        }
         chartView.centerAttributedText = centerText;
     }
 }

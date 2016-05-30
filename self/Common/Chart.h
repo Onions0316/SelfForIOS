@@ -18,6 +18,10 @@
 + (void) setPieCenterMessage:(PieChartView *) chartView
                          msg:(NSString *) msg;
 
++ (void) setPieCenterMessage:(PieChartView *) chartView
+                         msg:(NSString *) msg
+                       color:(UIColor *) color;
+
 + (void) showPieData:(PieChartView *) chartView
                xVals:(NSArray*) xVals
                yVals:(NSArray*) yVals;
