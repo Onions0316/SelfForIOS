@@ -126,14 +126,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
     date.placeholder = Statistic_Time_Memo;
     date.textAlignment = NSTextAlignmentCenter;
     self.date = date;
-    //年份选择器
-    self.datePicker = [[UIPickerView alloc] init];
-    self.datePicker.tag = TagStatisticYearPicker;
-    self.datePicker.showsSelectionIndicator = YES;
-    self.datePicker.delegate = self;
-    self.datePicker.dataSource = self;
-    self.datePicker.frame = CGRectMake(0, 0, 0, 100);
-    [UIUtil addTextFildInputView:self.date inputView:self.datePicker controller:self done:@selector(dateDoneTouch:) cancel:nil];
+    //初始化时间选择器
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(initDatePicker:) userInfo:nil repeats:NO];
     
     [view addSubview:inputView];
     
@@ -150,6 +144,19 @@ CREATE_TYPE_PROPERTY_TO_VIEW(User, user)
     
     [topView addSubview:view];
     topView.height = view.bottom+ Default_View_Space;
+}
+
+- (void)initDatePicker:(NSTimer *) timer{
+    //年份选择器
+    self.datePicker = [[UIPickerView alloc] init];
+    self.datePicker.tag = TagStatisticYearPicker;
+    self.datePicker.showsSelectionIndicator = YES;
+    self.datePicker.delegate = self;
+    self.datePicker.dataSource = self;
+    self.datePicker.frame = CGRectMake(0, 0, 0, 100);
+    [UIUtil addTextFildInputView:self.date inputView:self.datePicker controller:self done:@selector(dateDoneTouch:) cancel:nil];
+    
+    [timer invalidate];
 }
 
 - (void) drawMain:(UIView*) mainView{

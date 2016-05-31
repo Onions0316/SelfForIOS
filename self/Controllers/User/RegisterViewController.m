@@ -94,6 +94,33 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
     self.sex.text = User_Sex_Man;
     self.sexData = @{User_Sex_Man:[NSNumber numberWithInt:Man],User_Sex_Woman:[NSNumber numberWithInt:Woman]};
     self.data = self.sexData.keyEnumerator.allObjects;
+    //[view addSubview:self.sexPicker];
+    //生日
+    self.birthday = [view viewWithTag:Register_Birthday_Tag];
+    //初始化时间选择器
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(initDatePicker:) userInfo:nil repeats:NO];
+    //提交按钮
+    CGFloat btnWidth = viewWidth/2;
+    viewRect.size.width = btnWidth;
+    viewRect.origin.x = btnWidth/2;
+    NSString * submitString = Register;
+    if(self.isUpdate){
+        submitString = Submit;
+    }
+    [UIUtil addButtonInView:view title:submitString rect:viewRect sel:@selector(submitRegister) controller:self tag:0];
+    
+    [self.view addSubview:view];
+}
+
+- (void)initDatePicker:(NSTimer *) timer{
+    //生日
+    NSDate * now = [Util nowDate];
+    self.birthdayDatePicker = [[UIDatePicker alloc] init];
+    self.birthdayDatePicker.frame = CGRectMake(0, 0, 0, 100);
+    self.birthdayDatePicker.date = now;
+    self.birthdayDatePicker.maximumDate = now;
+    self.birthdayDatePicker.datePickerMode = UIDatePickerModeDate;
+    [UIUtil addTextFildInputView:self.birthday inputView:self.birthdayDatePicker controller:self done:@selector(birthdayDoneTouch:) cancel:nil];
     //性别选择器
     self.sexPicker = [[UIPickerView alloc] init];
     self.sexPicker.showsSelectionIndicator = YES;
@@ -102,16 +129,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
     self.sexPicker.frame = CGRectMake(0, 0, 0, 100);
     //self.sex.userInteractionEnabled = NO;
     [UIUtil addTextFildInputView:self.sex inputView:self.sexPicker controller:self done:@selector(sexDoneTouch:) cancel:nil];
-    //[view addSubview:self.sexPicker];
-    //生日
-    self.birthday = [view viewWithTag:Register_Birthday_Tag];
-    NSDate * now = [Util nowDate];
-    self.birthdayDatePicker = [[UIDatePicker alloc] init];
-    self.birthdayDatePicker.frame = CGRectMake(0, 0, 0, 100);
-    self.birthdayDatePicker.date = now;
-    self.birthdayDatePicker.maximumDate = now;
-    self.birthdayDatePicker.datePickerMode = UIDatePickerModeDate;
-    [UIUtil addTextFildInputView:self.birthday inputView:self.birthdayDatePicker controller:self done:@selector(birthdayDoneTouch:) cancel:nil];
+    
     if(self.isUpdate){
         self.name.text = self.updateUser.name;
         [self.name setEnabled:NO];
@@ -125,17 +143,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
             self.birthdayDatePicker.date = birthdayDate;
         }
     }
-    //提交按钮
-    CGFloat btnWidth = viewWidth/2;
-    viewRect.size.width = btnWidth;
-    viewRect.origin.x = btnWidth/2;
-    NSString * submitString = Register;
-    if(self.isUpdate){
-        submitString = Submit;
-    }
-    [UIUtil addButtonInView:view title:submitString rect:viewRect sel:@selector(submitRegister) controller:self tag:0];
-    
-    [self.view addSubview:view];
+    [timer invalidate];
 }
 
 /*

@@ -144,24 +144,13 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     //开始时间
     self.start = [self.topView viewWithTag:Tag_Top_Begin_Time];
     self.start.clearButtonMode = UITextFieldViewModeAlways;
-    //开始时间选择器
-    NSDate * now = [Util nowDate];
-    self.startPciker = [[UIDatePicker alloc] init];
-    self.startPciker.frame = CGRectMake(0, 0, 0, 100);
-    self.startPciker.maximumDate = now;
-    self.startPciker.datePickerMode = UIDatePickerModeDate;
-    [UIUtil addTextFildInputView:self.start inputView:self.startPciker controller:self done:@selector(startDoneTouch:) cancel:nil];
 
     //结束时间
     self.end = [self.topView viewWithTag:Tag_Top_End_Time];
     self.end.clearButtonMode = UITextFieldViewModeAlways;
-    //结束时间选择器
-    self.endPicker = [[UIDatePicker alloc] init];
-    self.endPicker.frame = CGRectMake(0, 0, 0, 100);
-    self.endPicker.date = now;
-    self.endPicker.maximumDate = now;
-    self.endPicker.datePickerMode = UIDatePickerModeDate;
-    [UIUtil addTextFildInputView:self.end inputView:self.endPicker controller:self done:@selector(endDoneTouch:) cancel:nil];
+    //初始化时间选择器
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(initDatePicker:) userInfo:nil repeats:NO];
+    
     //收支类型
     UIView * typeView = [self.topView viewWithTag:Tag_Top_Type];
     CGRect typeRect = typeView.frame;
@@ -171,7 +160,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     self.type.frame = typeRect;
     self.type.selectedSegmentIndex = 1;
     [self.topView addSubview:self.type];
-    
+     
     //搜索按钮
     CGFloat searchLeft = 3*Default_View_Space;
     rect.origin.x = searchLeft;
@@ -181,6 +170,26 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
     [super addTitleButton:@"bi" sel:@selector(toggleTool)];
     //self.top+=Default_View_Space;
 }
+
+- (void)initDatePicker:(NSTimer *) timer{
+    //开始时间选择器
+    NSDate * now = [Util nowDate];
+    self.startPciker = [[UIDatePicker alloc] init];
+    self.startPciker.frame = CGRectMake(0, 0, 0, 100);
+    self.startPciker.maximumDate = now;
+    self.startPciker.datePickerMode = UIDatePickerModeDate;
+    [UIUtil addTextFildInputView:self.start inputView:self.startPciker controller:self done:@selector(startDoneTouch:) cancel:nil];
+    //结束时间选择器
+    self.endPicker = [[UIDatePicker alloc] init];
+    self.endPicker.frame = CGRectMake(0, 0, 0, 100);
+    self.endPicker.date = now;
+    self.endPicker.maximumDate = now;
+    self.endPicker.datePickerMode = UIDatePickerModeDate;
+    [UIUtil addTextFildInputView:self.end inputView:self.endPicker controller:self done:@selector(endDoneTouch:) cancel:nil];
+    
+    [timer invalidate];
+}
+
 //查看详细
 - (void) drawDetailInfo{
     self.detailInfoView = [[UIView alloc] init];

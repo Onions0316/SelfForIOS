@@ -81,15 +81,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     //发生时间
     self.happenTime = [view viewWithTag:Tag_Detail_Happen_Time];
     self.happenTime.clearButtonMode = UITextFieldViewModeNever;
-    //发生时间选择器
-    NSDate * now = [Util nowDate];
-    self.happenTime.text = [Util dateToString:now format:Default_Date_Time_Format];
-    self.datePicker = [[UIDatePicker alloc] init];
-    self.datePicker.frame = CGRectMake(0, 0, 0, 100);
-    self.datePicker.date = now;
-    self.datePicker.maximumDate = now;
-    self.datePicker.datePickerMode = UIDatePickerModeDateAndTime;
-    [UIUtil addTextFildInputView:self.happenTime inputView:self.datePicker controller:self done:@selector(happenTimeDoneTouch:) cancel:nil];
+    //初始化时间选择器
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(initDatePicker:) userInfo:nil repeats:NO];
     
     UIView * beforeMemo = [view viewWithTag:Tag_Detail_Memo];
     viewRect = beforeMemo.frame;
@@ -111,6 +104,20 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
     [UIUtil addButtonInView:view title:Submit rect:viewRect sel:@selector(submitAdd) controller:self tag:0];
 
     [super.view addSubview:view];
+}
+
+- (void)initDatePicker:(NSTimer *) timer{
+    //发生时间选择器
+    NSDate * now = [Util nowDate];
+    self.happenTime.text = [Util dateToString:now format:Default_Date_Time_Format];
+    self.datePicker = [[UIDatePicker alloc] init];
+    self.datePicker.frame = CGRectMake(0, 0, 0, 100);
+    self.datePicker.date = now;
+    self.datePicker.maximumDate = now;
+    self.datePicker.datePickerMode = UIDatePickerModeDateAndTime;
+    [UIUtil addTextFildInputView:self.happenTime inputView:self.datePicker controller:self done:@selector(happenTimeDoneTouch:) cancel:nil];
+    
+    [timer invalidate];
 }
 
 - (void)clickBack{
