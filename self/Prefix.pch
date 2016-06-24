@@ -11,6 +11,7 @@
 #import "NSString+.h"
 #import "NSDate+.h"
 #import "Util.h"
+#import "Single.h"
 
 //定义屏幕宽度
 #define Main_Screen_Width [UIScreen mainScreen].bounds.size.width
@@ -39,6 +40,8 @@
 #define Detail_Create_Time @"创建时间"
 #define Login @"登录"
 #define Register @"注册"
+#define ResetData @"重置数据"
+#define DownloadData @"下载数据"
 #define Logout @"注销"
 #define Add @"添加"
 #define Submit @"提交"

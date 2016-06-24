@@ -9,7 +9,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods.xcscheme</key>
+		<key>Pods-self.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -32,7 +37,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E5B23A76A0178A28573F957B16E087AB</key>
+		<key>26D99CBF20C02B929101B420F92F666D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6F03B9CC6DF02B58D4C0AC4DE9094A6D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

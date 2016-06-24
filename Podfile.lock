@@ -21,13 +21,20 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - iOS-Slide-Menu (1.5)
+  - SDWebImage (3.7.2):
+    - SDWebImage/Core (= 3.7.2)
+  - SDWebImage/Core (3.7.2)
 
 DEPENDENCIES:
   - AFNetworking (= 2.5.1)
   - iOS-Slide-Menu
+  - SDWebImage (= 3.7.2)
 
 SPEC CHECKSUMS:
   AFNetworking: 10e85a00bb0f475124e4ff2677bf15693b2c1523
   iOS-Slide-Menu: 40b0cbd8916c42afc755f0869793cd09e7a32102
+  SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: e6655a03280229b4873f1fd666c2d763cfe2f541
+
+COCOAPODS: 1.0.1

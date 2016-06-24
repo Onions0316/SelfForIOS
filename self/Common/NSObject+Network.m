@@ -83,7 +83,7 @@
                                              error:&error];
     if (error) {
         NSLog(@"你妹，什么破 json: %@", jsonStr);
-        return nil;
+        return @{@"msg":jsonStr};
     }
     
     return v;

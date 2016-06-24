@@ -12,10 +12,17 @@
 
 @interface ApiManager : NSObject
 @property (nonatomic, strong) AFHTTPRequestOperationManager *operationManager;
+- (id)getRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params;
 - (void)asynGetRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params success:(void (^)(ApiResponse *response))success failure:(void (^)(NSError *error))failure;
 
 //异步post请求
 - (void)asynPostRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params success:(void (^)(ApiResponse *response))success failure:(void (^)(NSError *error))failure;
+//异步post json请求
+- (void)asynPostRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params json:(BOOL) isJson success:(void (^)(ApiResponse *response))success failure:(void (^)(NSError *error))failure;
+//异步下载图片
+- (void)asynDownloadImage:(NSString *)urlString tag:(NSInteger)tag success:(void (^)(UIImage *image, NSInteger tag))success failure:(void (^)(NSError *error, NSInteger tag))failure;
+
+- (void)asynPostImageRequestWithMethodName:(NSString *)methodName data:(NSData *) data success:(void (^)(ApiResponse *response))success failure:(void (^)(NSError *error))failure;
 
 //取消请求
 - (void)cancelAllRequest;

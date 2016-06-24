@@ -12,8 +12,12 @@
 #import "UserService.h"
 #import "AccountInfoManager.h"
 #import "HomeViewController.h"
+#import "DownloadDataViewController.h"
 
-@interface LoginViewController()
+#define TagLoginResetData 1001
+#define TagLoginDownloadData 1002
+
+@interface LoginViewController()<UIAlertViewDelegate>
 
 CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, name)
 CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, password)
@@ -61,11 +65,16 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
     //登录按钮坐标
     viewRect.origin.y+=Default_Label_Height+Default_View_Space;
     viewRect.size.width = (viewWidth-Default_View_Space)/2;
-    [UIUtil addButtonInView:view title:Login rect:viewRect sel:@selector(login) controller:self tag:0];
+    UIButton * login = [UIUtil addButtonInView:view title:Login rect:viewRect sel:@selector(login) controller:self tag:0];
     //注册按钮坐标
     viewRect.origin.x += viewRect.size.width+Default_View_Space;
-    [UIUtil addButtonInView:view title:Register rect:viewRect sel:@selector(goRegister) controller:self tag:0];
-    
+    UIButton * registerBtn = [UIUtil addButtonInView:view title:Register rect:viewRect sel:@selector(goRegister) controller:self tag:0];
+    //重置数据
+    UIButton * resetData = [UIUtil addButtonInView:view title:ResetData rect:login.frame sel:@selector(resetDataTap) controller:self tag:TagLoginResetData];
+    resetData.top = login.bottom + Default_View_Space;
+    //下载数据
+    UIButton * downloadData = [UIUtil addButtonInView:view title:DownloadData rect:registerBtn.frame sel:@selector(downLoadDataTap) controller:self tag:TagLoginDownloadData];
+    downloadData.top = registerBtn.bottom + Default_View_Space;
     [UIUtil addViewInView:self.view subview:view tag:0];
 }
 
@@ -99,6 +108,30 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
  */
 - (void) goRegister{
     [super goControllerByClass:[RegisterViewController class]];
+}
+
+- (void) resetDataTap{
+    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"重置数据不可逆,请慎重使用" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重置", nil];
+    [alertView show];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    [self.view showLoading];
+    if(buttonIndex==1){
+        NSError * error;
+        NSFileManager * fileManager = [NSFileManager defaultManager];
+        SQLiteOperation * db = [[Single sharedInstance] db];
+        //删除原数据库
+        BOOL success = [fileManager removeItemAtPath:db.path error:&error];
+        NSAssert1(success, @"Failed remove database file with message '%@'.", [error localizedDescription]);
+        [db readyDatabase];
+    }
+    [self.view hideLoading];
+}
+
+- (void) downLoadDataTap{
+    DownloadDataViewController * vc = [[DownloadDataViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

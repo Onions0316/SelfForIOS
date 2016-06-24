@@ -41,7 +41,7 @@
     return self;
 }
 
-- (void) readyDatabase{
+- (BOOL) readyDatabase{
     NSError * error;
     NSFileManager * fileManager = [NSFileManager defaultManager];
     BOOL success = [fileManager fileExistsAtPath:self.path];
@@ -56,8 +56,10 @@
         for(NSString * str in [self.dbInitSql componentsSeparatedByString:@";"]){
             [self eval:str params:nil];
         }
+        success = YES;
         //NSLog(@"%@",self.dbInitSql);
     }
+    return success;
 }
 
 - (NSArray<NSDictionary *> *)selectData:(NSString *) sql{
