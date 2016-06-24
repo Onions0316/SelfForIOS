@@ -51,8 +51,10 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, name)
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     [self.view showLoading];
     if(buttonIndex==1){
-        NSData * data = [[[Single sharedInstance] apiManager] getRequestWithMethodName:self.name.text params:nil];
-        if(data){
+        AFHTTPRequestOperation * operation = [[[Single sharedInstance] apiManager] getRequestWithMethodName:self.name.text params:nil];
+        NSString * message = operation.responseString;
+        if(message.length==0){
+            NSData * data = operation.responseData;
             NSString * path = [[[Single sharedInstance] db] path];
             NSError * error;
             NSFileManager * fileManager = [NSFileManager defaultManager];
@@ -65,6 +67,8 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, name)
                 [[[Single sharedInstance] db] readyDatabase];
                 [self showAlert:@"" message:@"保存失败" controller:self];
             }
+        }else{
+            [self showAlert:@"" message:@"下载失败" controller:self];
         }
     }
     [self.view hideLoading];

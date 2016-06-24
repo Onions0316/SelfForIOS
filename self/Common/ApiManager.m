@@ -51,7 +51,7 @@
     return self;
 }
 //同步
-- (id)getRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params
+- (AFHTTPRequestOperation*)getRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params
 {
     NSString *resultMethodName = @"";
     if ([methodName hasPrefix:@"http"]) {
@@ -61,7 +61,7 @@
     AFHTTPRequestOperation *requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [requestOperation start];
     [requestOperation waitUntilFinished];
-    return [requestOperation responseObject];
+    return requestOperation;
 }
 //异步
 - (void)asynGetRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params success:(void (^)(ApiResponse *response))success failure:(void (^)(NSError *error))failure

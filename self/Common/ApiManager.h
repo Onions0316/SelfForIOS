@@ -12,7 +12,7 @@
 
 @interface ApiManager : NSObject
 @property (nonatomic, strong) AFHTTPRequestOperationManager *operationManager;
-- (id)getRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params;
+- (AFHTTPRequestOperation*)getRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params;
 - (void)asynGetRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params success:(void (^)(ApiResponse *response))success failure:(void (^)(NSError *error))failure;
 
 //异步post请求
