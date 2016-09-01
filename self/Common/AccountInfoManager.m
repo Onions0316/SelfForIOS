@@ -89,7 +89,7 @@
 - (void) logout:(UIViewController *) controller{
     [self removeLoginFile];
     self.user = nil;
-    [controller.navigationController pushViewController:[[LoginViewController alloc] init] animated:YES];
+    [controller.navigationController setViewControllers:@[[[LoginViewController alloc] init]]];
 }
 
 

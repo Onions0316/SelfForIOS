@@ -47,7 +47,6 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
         super.navTitle = Register;
         super.showBack = YES;
         super.checkLogin = NO;
-        
     }
     return self;
 }
@@ -193,24 +192,24 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
                             if(self.isUpdate){
                                 [AccountInfoManager sharedInstance].user = user;
                             }
-                            [super showAlert:Alert_Info message:@"成功,请点击确定返回" controller:nil sel:@selector(clickBack)];
+                            [super showAlert:Alert_Info message:@"成功,请点击确定返回" sel:@selector(clickBack)];
                         }else{
-                            [super showAlert:Alert_Error message:@"失败,请重新检查参数" controller:nil];
+                            [self.view showMessage:@"失败,请重新检查参数"];
                         }
                     }else{
-                        [super showAlert:Alert_Warning message:@"2次密码不同,请重新输入" controller:nil];
+                        [self.view showMessage:@"2次密码不同,请重新输入"];
                     }
                 }else{
-                    [super showAlert:Alert_Warning message:@"请输入确认密码" controller:nil];
+                    [self.view showMessage:@"请输入确认密码"];
                 }
             }else{
-                [super showAlert:Alert_Warning message:@"请输入密码" controller:nil];
+                [self.view showMessage:@"请输入密码"];
             }
         }else{
-            [super showAlert:Alert_Warning message:@"用户名被占用,请换一个用户名" controller:nil];
+            [self.view showMessage:@"用户名被占用,请换一个用户名"];
         }
     }else{
-        [super showAlert:Alert_Warning message:@"请输入用户名" controller:nil];
+        [self.view showMessage:@"请输入用户名"];
     }
 }
 /*

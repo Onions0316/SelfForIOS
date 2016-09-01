@@ -286,7 +286,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
  */
 - (void) toggleTool{
     if(self.data.count==0 && !self.isShowTool){
-        [super showAlert:Alert_Warning message:@"无数据,无法编辑" controller:nil];
+        [super showAlert:Alert_Warning message:@"无数据,无法编辑" sel:nil];
     }else{
         // 开始设置动画
         [UIView beginAnimations:nil context:nil];
@@ -364,10 +364,10 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
             }
         }
         if(ids.count==0){
-            [super showAlert:Alert_Warning message:@"请选择数据" controller:nil];
+            [super showAlert:Alert_Warning message:@"请选择数据" sel:nil];
         }
     }else{
-        [super showAlert:Alert_Warning message:@"请先查询数据" controller:nil];
+        [super showAlert:Alert_Warning message:@"请先查询数据" sel:nil];
     }
     return ids;
 }
@@ -462,7 +462,7 @@ CREATE_TYPE_PROPERTY_TO_VIEW(NSNumber, userId)
         endNumber =[NSNumber numberWithInt:[Util stringToDate:endString format:Default_Date_Format].timeIntervalSince1970+24*60*60-1];
     }
     if(startNumber && endNumber && startNumber.integerValue>endNumber.integerValue){
-        [super showAlert:Alert_Error message:@"开始时间不能大于结束时间" controller:nil];
+        [super showAlert:Alert_Error message:@"开始时间不能大于结束时间" sel:nil];
         return NO;
     }else{
         NSInteger typeIndex = [self.type selectedSegmentIndex];

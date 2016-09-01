@@ -80,6 +80,9 @@
     if(rect.size.width<size.width){
         rect.size.width = size.width;
     }
+    if(rect.size.height<size.height){
+        rect.size.height = size.height;
+    }
     UILabel * label = [[UILabel alloc] initWithFrame:rect];
     if(text){
         label.text = text;

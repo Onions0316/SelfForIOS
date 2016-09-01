@@ -93,14 +93,14 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
             if([[AccountInfoManager sharedInstance] login:nameString password:passwrodString]){
                 [super goController:[[HomeViewController alloc] init]];
             }else{
-                [super showAlert:Alert_Error message:@"用户名或密码错误,请重试" controller:nil];
+                [self.view showMessage:@"用户名或密码错误,请重试"];
             }
         }
         else{
-            [super showAlert:Alert_Warning message:@"请输入密码" controller:nil];
+            [self.view showMessage:@"请输入密码"];
         }
     }else{
-        [super showAlert:Alert_Warning message:@"请输入用户名" controller:nil];
+        [self.view showMessage:@"请输入用户名"];
     }
 }
 /*
@@ -111,27 +111,30 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
 }
 
 - (void) resetDataTap{
-    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"重置数据不可逆,请慎重使用" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重置", nil];
-    [alertView show];
+    [super showAlert:@"" message:@"重置数据不可逆,请慎重使用" sel:@selector(alertViewClickedButtonAtIndex:) leftText:@"取消" rightText:@"重置"];
 }
 
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+-(void)alertViewClickedButtonAtIndex:(NSNumber*)buttonIndex{
     [self.view showLoading];
-    if(buttonIndex==1){
+    if(buttonIndex.integerValue==1){
         NSError * error;
         NSFileManager * fileManager = [NSFileManager defaultManager];
         SQLiteOperation * db = [[Single sharedInstance] db];
         //删除原数据库
         BOOL success = [fileManager removeItemAtPath:db.path error:&error];
         NSAssert1(success, @"Failed remove database file with message '%@'.", [error localizedDescription]);
-        [db readyDatabase];
+        if([db readyDatabase]){
+            [self.view showMessage:@"重置成功"];
+        }
+        else{
+            [self.view showMessage:@"重置失败"];
+        }
     }
     [self.view hideLoading];
 }
 
 - (void) downLoadDataTap{
-    DownloadDataViewController * vc = [[DownloadDataViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    [super goControllerByClass:DownloadDataViewController.class];
 }
 
 @end

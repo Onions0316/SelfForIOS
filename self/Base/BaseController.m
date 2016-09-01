@@ -8,6 +8,7 @@
 
 #import "BaseController.h"
 #import "AccountInfoManager.h"
+#import "UIAlertViewTool.h"
 
 #define TitleTag 9001
 
@@ -32,23 +33,19 @@
 
 - (id) init{
     if(self=[super init]){
-        self.logName = @"Base";
-        self.showBack = YES;
-        self.checkLogin = YES;
-        self.showLogout = [[AccountInfoManager sharedInstance] hasLogin];
-        self.showState = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0");
-        self.isOld = SYSTEM_VERSION_LESS_THAN(@"9.0");
-        self.titleButtonCount = 0;
+        logName = @"Base";
+        _showBack = YES;
+        _checkLogin = YES;
+        _showLogout = [[AccountInfoManager sharedInstance] hasLogin];
+        _showState = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0");
+        _titleButtonCount = 0;
     }
     return self;
 }
 
 -(void) viewDidLoad{
     [super viewDidLoad];
-    self.view = [[BaseView alloc] initWithFrame:self.view.frame];
     self.view.backgroundColor = [UIColor whiteColor];
-    // [[UIColor alloc] initWithRed:1 green:1 blue:1 alpha:1];
-    
     if (self.showState){
         self.topSize = 20;
     }else{
@@ -163,10 +160,6 @@
     NSLog(@"%@ log :%@",self.logName,logStr);
 }
 
-- (void) showAlert:(NSString *)title message:(NSString *)message controller:(UIViewController *)controller{
-    [self showAlert:title message:message controller:controller sel:nil];
-}
-
 //设置金额
 - (void) setDetailAmount:(UILabel *) label amount:(float) amount{
     label.text = [Util numberToString:fabsf(amount)];
@@ -176,90 +169,16 @@
         label.textColor =[UIColor redColor];
     }
 }
-#pragma mark ~9.0 alert
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(buttonIndex==0){//确定
-        if(self.oldSel && [self respondsToSelector:self.oldSel]){
-            [self performSelector:self.oldSel];
-            self.oldSel = nil;
-        }
-    }
-}
-
-- (void) showAlertOld:(NSString *)title
-              message:(NSString *)message
-           controller:(UIViewController *)controller
-                  sel:(SEL) sel{
-    if(!controller){
-        controller = self;
-    }
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:controller cancelButtonTitle:@"ok" otherButtonTitles: nil];
-    self.oldSel = sel;
-    [alert show];
-}
-
-#pragma mark 9.0~ alert
 - (void) showAlert:(NSString *)title
-           message:(NSString *)message
-        controller:(UIViewController *)controller
+            message:(NSString *)message
                sel:(SEL) sel{
-    if(self.isOld){
-        [self showAlertOld:title message:message controller:controller sel:sel];
-    }else{
-        UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction * action = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action){
-            if(sel && [self respondsToSelector:sel]){
-                [self performSelector:sel];
-            }
-        }];
-        [alert addAction:action];
-        [self showBase:alert actions:controller];
-    }
+    UIAlertViewTool * alert = [[UIAlertViewTool alloc] initWithDelegate:self];
+    [alert showAlert:title message:message sel:sel];
 }
 
-- (void) showConfirm:(NSString *) title
-             message:(NSString *) message
-          controller:(UIViewController *) controller
-               okSel:(SEL) okSel
-           cancelSel:(SEL) cancelSel{
-    UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction * okAction = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action){
-        if(okSel && [self respondsToSelector:okSel]){
-            [self performSelector:okSel];
-        }
-    }];
-    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action){
-        if(cancelSel && [self respondsToSelector:cancelSel]){
-            [self performSelector:cancelSel];
-        }
-    }];
-    [alert addAction:cancelAction];
-    [alert addAction:okAction];
-    [self showBase:alert actions:controller];
-}
-
-- (void) showMessage:(NSString *)title
-             message:(NSString *)message
-          controller:(UIViewController *)controller
-             actions:(NSMutableDictionary *) actions{
-    UIAlertController * alert =[UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
-    [alert addAction:[UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:nil]];
-    if(actions!=nil){
-        for(id key in actions.allKeys){
-            id value = [actions objectForKey:key];
-            UIAlertAction * action = [UIAlertAction actionWithTitle:key style:UIAlertActionStyleDestructive handler:value];
-            [alert addAction:action];
-        }
-    }
-    [self showBase:alert actions:controller];
-}
-
-- (void) showBase:(UIAlertController *) alert
-          actions:(UIViewController *) controller{
-    if(controller==nil){
-        controller = self;
-    }
-    [controller presentViewController:alert animated:true completion:nil];
+- (void)showAlert:(NSString *)title message:(NSString *)message sel:(SEL)sel leftText:(NSString *)leftText rightText:(NSString *)rightText{
+    UIAlertViewTool * alert = [[UIAlertViewTool alloc] initWithDelegate:self];
+    [alert showAlert:title message:message sel:sel leftText:leftText rightText:rightText];
 }
 
 @end

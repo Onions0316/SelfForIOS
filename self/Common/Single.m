@@ -12,9 +12,10 @@
 
 - (id) init{
     if(self=[super init]){
-        self.db = [[SQLiteOperation alloc] init];
-        self.apiManager = [[ApiManager alloc] init];
-        self.isTotal = YES;
+        _db = [[SQLiteOperation alloc] init];
+        _apiManager = [[ApiManager alloc] init];
+        _isTotal = YES;
+        _lessThanIOS9 = SYSTEM_VERSION_LESS_THAN(@"9.0");
     }
     return self;
 }

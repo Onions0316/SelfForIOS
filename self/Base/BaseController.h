@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BaseView.h"
 #import "ApiManager.h"
 #import "UIUtil.h"
 
@@ -32,7 +31,6 @@
 @property (nonatomic,assign) BOOL showLogout;
 @property (nonatomic,assign) BOOL checkLogin;
 @property (nonatomic,strong) NSString * navTitle;
-@property (nonatomic,assign) BOOL isOld;
 
 - (void) goControllerByClass:(Class) goClass;
 
@@ -44,30 +42,19 @@
 
 - (void) setDetailAmount:(UILabel *) label amount:(float) amount;
 
-- (void) showAlert:(NSString *) title
-           message:(NSString *) message
-        controller:(UIViewController *) controller;
-
-- (void) showAlert:(NSString *)title
-           message:(NSString *)message
-        controller:(UIViewController *)controller
-               sel:(SEL) sel;
-
-- (void) showConfirm:(NSString *) title
-             message:(NSString *) message
-          controller:(UIViewController *) controller
-               okSel:(SEL) okSel
-           cancelSel:(SEL) cancelSel;
-
-- (void) showMessage:(NSString *)title
-             message:(NSString *)message
-          controller:(UIViewController *)controller
-             actions:(NSMutableDictionary *) actions;
-- (void) showBase:(UIAlertController *) alert
-          actions:(UIViewController *) controller;
 - (void) clickBack;
 - (void) drawContent;
 - (void) addTitleButton:(NSString*) imageName sel:(SEL) sel;
+
+- (void) showAlert:(NSString *)title
+           message:(NSString *)message
+               sel:(SEL) sel;
+
+- (void) showAlert:(NSString *)title
+           message:(NSString *)message
+               sel:(SEL) sel
+          leftText:(NSString *)leftText
+         rightText:(NSString *)rightText;
 @end
 
 #endif /* BaseController_h */

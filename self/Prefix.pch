@@ -17,6 +17,8 @@
 #define Main_Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Main_Screen_Height [UIScreen mainScreen].bounds.size.height
 
+#define ShowException NO
+
 //描述
 #define User_Name @"用户名"
 #define User_Name_Memo @"请输入用户名"
@@ -52,6 +54,8 @@
 #define Statistic @"收支统计图"
 #define Statistic_Time_Memo @"请选择年份/月份"
 
+/**文件上传时文件名字段*/
+#define File_Name_Param @"File_Name_Param"
 // 消息
 #define NotificationHomeUpdate @"NotificationHomeUpdate"
 
@@ -73,7 +77,6 @@
 #define DETAIL_COLOR [UIColor colorWithHex:0xa3a3a3 alpha:1]
 ///分隔线颜色
 #define LINE_COLOR [UIColor colorWithHex:0xeaeaea alpha:1]
-
 /*
  *  默认字体大小
  */

@@ -62,13 +62,13 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UITextField, name)
             BOOL success = [fileManager removeItemAtPath:path error:&error];
             NSAssert1(success, @"Failed remove database file with message '%@'.", [error localizedDescription]);
             if([data writeToFile:path atomically:YES]){
-                [self showAlert:@"" message:@"保存成功" controller:self];
+                [self showAlert:@"" message:@"保存成功" sel:nil];
             }else{
                 [[[Single sharedInstance] db] readyDatabase];
-                [self showAlert:@"" message:@"保存失败" controller:self];
+                [self showAlert:@"" message:@"保存失败" sel:nil];
             }
         }else{
-            [self showAlert:@"" message:@"下载失败" controller:self];
+            [self showAlert:@"" message:@"保存失败" sel:nil];
         }
     }
     [self.view hideLoading];

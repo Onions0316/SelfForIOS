@@ -20,4 +20,6 @@
 + (NSNumber *) toNumber:(id) obj;
 + (NSString *) numberToString:(float) number;
 + (NSString *) numberToString:(float) number formatter:(NSNumberFormatterStyle) formatter;
+/**获取路径文件的minitype*/
++ (NSString *)mimeTypeForPath:(NSString *)path;
 @end

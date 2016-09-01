@@ -7,7 +7,6 @@
 //
 
 #import "ApiManager.h"
-#import "Reachability.h"
 #import "GTMBase64.h"
 #import "SDWebImageManager.h"
 #import "NSObject+Network.h"
@@ -51,7 +50,7 @@
     return self;
 }
 //同步
-- (AFHTTPRequestOperation*)getRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params
+- (ApiResponse*)getRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params
 {
     NSString *resultMethodName = @"";
     if ([methodName hasPrefix:@"http"]) {
@@ -61,7 +60,107 @@
     AFHTTPRequestOperation *requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [requestOperation start];
     [requestOperation waitUntilFinished];
-    return requestOperation;
+    return [self formatResponseString:requestOperation];
+}
+
+- (ApiResponse*)postRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params
+{
+    NSString *resultMethodName = @"";
+    if ([methodName hasPrefix:@"http"]) {
+        resultMethodName = methodName;
+    }
+    NSMutableURLRequest *request = [self requestByParams:params resultMethodName:resultMethodName];
+    AFHTTPRequestOperation *requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [requestOperation start];
+    [requestOperation waitUntilFinished];
+    return [self formatResponseString:requestOperation];
+}
+
+- (NSMutableURLRequest*) requestByParams:(NSDictionary*) params resultMethodName:(NSString *)resultMethodName{
+    BOOL isUpload = NO;
+    if (params && [params allValues].count > 0) {
+        for (id value in [params allValues]) {
+            if (value){
+                if ([value isKindOfClass:[NSData class]]){
+                    isUpload = YES;
+                    break;
+                }
+            }
+        }
+    }
+    if(isUpload){
+        //创建Request对象
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setURL:[NSURL URLWithString:resultMethodName]];
+        [request setHTTPMethod:@"POST"];
+        NSMutableData *body = [NSMutableData data];
+        
+        //设置表单项分隔符
+        NSString *boundary = @"---------------------------14737809831466499882746641449";
+        
+        //设置内容类型
+        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+        [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+        for(NSString * key in [params allKeys]){
+            id value = params[key];
+            if([key isEqualToString:File_Name_Param]){
+                continue;
+            }
+            if([value isKindOfClass:[NSData class]]){
+                NSString * path = params[File_Name_Param];
+                //写入图片的内容
+                [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n",key,[path lastPathComponent]] dataUsingEncoding:NSUTF8StringEncoding]];
+                [body appendData:[[NSString stringWithFormat:@"Content-Type: %@\r\n\r\n",[Util mimeTypeForPath:path]] dataUsingEncoding:NSUTF8StringEncoding]];
+                [body appendData:value];
+                [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+                
+            }else{
+                //写入INFO的内容
+                [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",key] dataUsingEncoding:NSUTF8StringEncoding]];
+                [body appendData:[value dataUsingEncoding:NSUTF8StringEncoding]];
+                [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                
+            }
+        }
+        //写入尾部内容
+        [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        [request setHTTPBody:body];
+        return request;
+    }
+    else{
+        return [self.operationManager.requestSerializer requestWithMethod:@"POST" URLString:resultMethodName parameters:params error:nil];
+    }
+}
+
+- (ApiResponse*) formatResponseString:(AFHTTPRequestOperation *)requestOperation{
+    ApiResponse *response = [[ApiResponse alloc] init];
+    NSString *responseString = [requestOperation.responseString stringByReplacingOccurrencesOfString:@"0000-00-00 00:00" withString:@"2000-01-01 00:00"];
+    NSDictionary *result = (NSDictionary *)[NSObject jsonObjectWithString:responseString];
+    if (result) {
+        NSString * err = [result[@"error_description"] description];
+        if ([result isKindOfClass:[NSArray class]] || ![err hasValue]) {
+            response.isSuccess = YES;
+            if (result) {
+                response.result = result;
+            }
+        } else {
+            response.isSuccess = NO;
+            response.failCode = @"";//result[@"failCode"];
+            if ([err hasValue]) {
+                response.failMessage = err;
+            } else {
+                response.failMessage = @"";
+            }
+        }
+    } else {
+        response.isSuccess = NO;
+        response.failCode = @"";
+        response.failMessage = @"";
+    }
+    return response;
 }
 //异步
 - (void)asynGetRequestWithMethodName:(NSString *)methodName params:(NSDictionary *)params success:(void (^)(ApiResponse *response))success failure:(void (^)(NSError *error))failure
@@ -71,9 +170,6 @@
         resultMethodName = methodName;
     }
     NSMutableURLRequest *request = [self.operationManager.requestSerializer requestWithMethod:@"GET" URLString:resultMethodName parameters:params error:nil];
-    //    if ([AccountInfoManager sharedInstance].userToken) {
-    //        [request addValue:[AccountInfoManager sharedInstance].userToken forHTTPHeaderField:@"token"];
-    //    }
     AFHTTPRequestOperation *operation = [self.operationManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSString *responseString = [operation.responseString stringByReplacingOccurrencesOfString:@"0000-00-00 00:00" withString:@"2000-01-01 00:00"];
@@ -88,10 +184,6 @@
                 if (result) {
                     response.result = result;
                 }
-                //log
-                //                NSString *eventId = [NSString stringWithFormat:@"api_%@_success",[methodName stringByReplacingOccurrencesOfString:@"/" withString:@"_"]];
-                //            DLog(@"success eventId is %@",eventId);
-                //                [MobClick event:eventId];
             } else {
                 response.isSuccess = NO;
                 response.failCode = @"";//result[@"failCode"];
@@ -100,26 +192,11 @@
                 } else {
                     response.failMessage = @"";
                 }
-                
-                //log
-                //                NSString *eventId = [NSString stringWithFormat:@"api_%@_fail",[methodName stringByReplacingOccurrencesOfString:@"/" withString:@"_"]];
-                //                NSDictionary *dictionary = @{@"failCode" : response.failCode, @"failMessage" : response.failMessage};
-                //            DLog(@"fail eventId is %@",eventId);
-                //                [MobClick event:eventId attributes:dictionary];
             }
         } else {
             response.isSuccess = NO;
             response.failCode = @"";
             response.failMessage = @"请求失败";
-            
-            //log
-            //            NSString *eventId = [NSString stringWithFormat:@"api_%@_fail",[methodName stringByReplacingOccurrencesOfString:@"/" withString:@"_"]];
-            //            NSDictionary *dictionary = @{@"failCode" : response.failCode, @"failMessage" : response.failMessage};
-            //            [MobClick event:eventId attributes:dictionary];
-        }
-        if ([response.failCode isEqualToString:@"1001"]) {
-            //token 失效
-            //token无效需要重新登录
         }
         success(response);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -155,22 +232,12 @@
             }
         }
     }
-    
-    //    if ([[NSUserDefaults standardUserDefaults] objectForKey:UserDefaultDeviceToken]) {
-    //        NSString *deviceToken = [[NSUserDefaults standardUserDefaults]objectForKey:UserDefaultDeviceToken];
-    //        [mutableDictionary setObject:deviceToken forKey:@"deviceToken"];
-    //    }
-    
     AFHTTPRequestSerializer * requestSerializer = self.operationManager.requestSerializer;
     if(isJson){
         requestSerializer =[AFJSONRequestSerializer serializer];
     }
     
     NSMutableURLRequest *request = [requestSerializer requestWithMethod:@"POST" URLString:resultMethodName parameters:mutableDictionary error:nil];
-    //    if ([AccountInfoManager sharedInstance].token) {
-    //        [request addValue:[AccountInfoManager sharedInstance].token forHTTPHeaderField:@"token"];
-    //    }
-    
     AFHTTPRequestOperation *operation = [self.operationManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSString *responseString = [operation.responseString stringByReplacingOccurrencesOfString:@"0000-00-00 00:00" withString:@"2000-01-01 00:00"];
@@ -185,10 +252,6 @@
                 if (result) {
                     response.result = result;
                 }
-                //log
-                //                NSString *eventId = [NSString stringWithFormat:@"api_%@_success",[methodName stringByReplacingOccurrencesOfString:@"/" withString:@"_"]];
-                //                //            DLog(@"success eventId is %@",eventId);
-                //                [MobClick event:eventId];
             } else {
                 response.isSuccess = NO;
                 response.failCode = @"";//result[@"failCode"];
@@ -197,22 +260,11 @@
                 } else {
                     response.failMessage = @"";
                 }
-                
-                //log
-                //                NSString *eventId = [NSString stringWithFormat:@"api_%@_fail",[methodName stringByReplacingOccurrencesOfString:@"/" withString:@"_"]];
-                //                NSDictionary *dictionary = @{@"failCode" : response.failCode, @"failMessage" : response.failMessage};
-                //                //            DLog(@"fail eventId is %@",eventId);
-                //                [MobClick event:eventId attributes:dictionary];
             }
         } else {
             response.isSuccess = NO;
             response.failCode = @"";
             response.failMessage = @"请求失败";
-            
-            //log
-            //            NSString *eventId = [NSString stringWithFormat:@"api_%@_fail",[methodName stringByReplacingOccurrencesOfString:@"/" withString:@"_"]];
-            //            NSDictionary *dictionary = @{@"failCode" : response.failCode, @"failMessage" : response.failMessage};
-            //            [MobClick event:eventId attributes:dictionary];
         }
         success(response);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -253,10 +305,6 @@
             if (result) {
                 response.result = result;
             }
-            //log
-            //            NSString *eventId = [NSString stringWithFormat:@"api_%@_success",[methodName stringByReplacingOccurrencesOfString:@"/" withString:@"_"]];
-            //            //            DLog(@"success eventId is %@",eventId);
-            //            [MobClick event:eventId];
         } else {
             response.isSuccess = NO;
             response.failCode = @"";//result[@"failCode"];
@@ -265,25 +313,7 @@
             } else {
                 response.failMessage = @"";
             }
-            
-            //log
-            //            NSString *eventId = [NSString stringWithFormat:@"api_%@_fail",[methodName stringByReplacingOccurrencesOfString:@"/" withString:@"_"]];
-            //            NSDictionary *dictionary = @{@"failCode" : response.failCode, @"failMessage" : response.failMessage};
-            //            //            DLog(@"fail eventId is %@",eventId);
-            //            [MobClick event:eventId attributes:dictionary];
         }
-        //        response.rawResult = result;
-        //        if ([result[@"status"] isEqualToString:@"OK"]) {
-        //            response.isSuccess = YES;
-        //            response.result = result[@"filename"];
-        //            if (result[@"msg"]) {
-        //                response.message = result[@"msg"];
-        //            }
-        //        } else {
-        //            response.isSuccess = NO;
-        //            response.failCode = result[@"code"];
-        //            response.failMessage = result[@"msg"];
-        //        }
         success(response);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
@@ -304,7 +334,7 @@
 
 + (BOOL)hasNetwork
 {
-    return [[Reachability reachabilityForInternetConnection] currentReachabilityStatus]!=NotReachable;
+    return [[AFNetworkReachabilityManager sharedManager] networkReachabilityStatus] !=AFNetworkReachabilityStatusNotReachable;
 }
 
 @end

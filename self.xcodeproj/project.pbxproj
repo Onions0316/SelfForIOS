@@ -7,17 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C717FD11D77B8C0008C461B /* UIAlertViewTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */; };
 		B004AF501C7C4E1200908576 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF4F1C7C4E1200908576 /* main.m */; };
 		B004AF531C7C4E1200908576 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF521C7C4E1200908576 /* AppDelegate.m */; };
 		B004AF5B1C7C4E1200908576 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B004AF5A1C7C4E1200908576 /* Assets.xcassets */; };
 		B004AF6C1C7C5C2500908576 /* BaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF681C7C5C2500908576 /* BaseController.m */; };
-		B004AF6E1C7C5C2500908576 /* BaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF6B1C7C5C2500908576 /* BaseView.m */; };
 		B004AF841C7C5C3D00908576 /* ApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF711C7C5C3D00908576 /* ApiManager.m */; };
 		B004AF851C7C5C3D00908576 /* ApiResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF731C7C5C3D00908576 /* ApiResponse.m */; };
 		B004AF861C7C5C3D00908576 /* NSObject+Network.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF751C7C5C3D00908576 /* NSObject+Network.m */; };
 		B004AF871C7C5C3D00908576 /* SQLiteOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF771C7C5C3D00908576 /* SQLiteOperation.m */; };
 		B004AF881C7C5C3D00908576 /* UIUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF791C7C5C3D00908576 /* UIUtil.m */; };
-		B004AF8A1C7C5C3D00908576 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF7F1C7C5C3D00908576 /* Reachability.m */; };
 		B004AF8B1C7C5C3D00908576 /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF821C7C5C3D00908576 /* GTMBase64.m */; };
 		B004AF8F1C7C5E3600908576 /* head.png in Resources */ = {isa = PBXBuildFile; fileRef = B004AF8E1C7C5E3600908576 /* head.png */; };
 		B004AF921C7C600700908576 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF911C7C600700908576 /* HomeViewController.m */; };
@@ -76,6 +75,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C717FCF1D77B8C0008C461B /* UIAlertViewTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertViewTool.h; sourceTree = "<group>"; };
+		0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewTool.m; sourceTree = "<group>"; };
 		460E55A3F9C91839A0824E8C /* Pods-self.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-self.release.xcconfig"; path = "Pods/Target Support Files/Pods-self/Pods-self.release.xcconfig"; sourceTree = "<group>"; };
 		682F9DA97F86B4C81B09CCB0 /* libPods-self.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-self.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B004AF4B1C7C4E1200908576 /* self.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = self.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,8 +87,6 @@
 		B004AF5F1C7C4E1200908576 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B004AF671C7C5C2500908576 /* BaseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseController.h; sourceTree = "<group>"; };
 		B004AF681C7C5C2500908576 /* BaseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseController.m; sourceTree = "<group>"; };
-		B004AF6A1C7C5C2500908576 /* BaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseView.h; sourceTree = "<group>"; };
-		B004AF6B1C7C5C2500908576 /* BaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseView.m; sourceTree = "<group>"; };
 		B004AF701C7C5C3D00908576 /* ApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiManager.h; sourceTree = "<group>"; };
 		B004AF711C7C5C3D00908576 /* ApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiManager.m; sourceTree = "<group>"; };
 		B004AF721C7C5C3D00908576 /* ApiResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiResponse.h; sourceTree = "<group>"; };
@@ -98,8 +97,6 @@
 		B004AF771C7C5C3D00908576 /* SQLiteOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteOperation.m; sourceTree = "<group>"; };
 		B004AF781C7C5C3D00908576 /* UIUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIUtil.h; sourceTree = "<group>"; };
 		B004AF791C7C5C3D00908576 /* UIUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIUtil.m; sourceTree = "<group>"; };
-		B004AF7E1C7C5C3D00908576 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		B004AF7F1C7C5C3D00908576 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		B004AF811C7C5C3D00908576 /* GTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMBase64.h; sourceTree = "<group>"; };
 		B004AF821C7C5C3D00908576 /* GTMBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMBase64.m; sourceTree = "<group>"; };
 		B004AF831C7C5C3D00908576 /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
@@ -270,8 +267,6 @@
 			children = (
 				B004AF671C7C5C2500908576 /* BaseController.h */,
 				B004AF681C7C5C2500908576 /* BaseController.m */,
-				B004AF6A1C7C5C2500908576 /* BaseView.h */,
-				B004AF6B1C7C5C2500908576 /* BaseView.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -279,6 +274,8 @@
 		B004AF6F1C7C5C3D00908576 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				0C717FCF1D77B8C0008C461B /* UIAlertViewTool.h */,
+				0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */,
 				B004AF701C7C5C3D00908576 /* ApiManager.h */,
 				B004AF711C7C5C3D00908576 /* ApiManager.m */,
 				B004AF731C7C5C3D00908576 /* ApiResponse.m */,
@@ -323,19 +320,9 @@
 		B004AF7C1C7C5C3D00908576 /* Third */ = {
 			isa = PBXGroup;
 			children = (
-				B004AF7D1C7C5C3D00908576 /* ASI */,
 				B004AF801C7C5C3D00908576 /* GTMBase64 */,
 			);
 			path = Third;
-			sourceTree = "<group>";
-		};
-		B004AF7D1C7C5C3D00908576 /* ASI */ = {
-			isa = PBXGroup;
-			children = (
-				B004AF7E1C7C5C3D00908576 /* Reachability.h */,
-				B004AF7F1C7C5C3D00908576 /* Reachability.m */,
-			);
-			path = ASI;
 			sourceTree = "<group>";
 		};
 		B004AF801C7C5C3D00908576 /* GTMBase64 */ = {
@@ -568,7 +555,6 @@
 				B07791A41C867EA700FD950C /* LoginViewController.m in Sources */,
 				B07ED4941CF7EB1700EFF32D /* NSDate+.m in Sources */,
 				B07E6B651C87DD630071812F /* NSString+.m in Sources */,
-				B004AF8A1C7C5C3D00908576 /* Reachability.m in Sources */,
 				B03274901D1CC3D600DD7146 /* DownloadDataViewController.m in Sources */,
 				B05AF88C1C7EE4E900EE0607 /* Util.m in Sources */,
 				B04CBB961C8539180028EFE4 /* Detail.m in Sources */,
@@ -577,6 +563,7 @@
 				B004AF871C7C5C3D00908576 /* SQLiteOperation.m in Sources */,
 				B04CBB9D1C853D2C0028EFE4 /* DomainFactory.m in Sources */,
 				B07791A61C86CAB400FD950C /* RegisterViewController.m in Sources */,
+				0C717FD11D77B8C0008C461B /* UIAlertViewTool.m in Sources */,
 				B01385461CF6F1FC0066A65C /* Chart.m in Sources */,
 				B04CBBA71C859EBF0028EFE4 /* Single.m in Sources */,
 				B004AF881C7C5C3D00908576 /* UIUtil.m in Sources */,
@@ -586,7 +573,6 @@
 				B05490C11C896974006977D6 /* AddDetailViewController.m in Sources */,
 				B04CBBA21C8546E20028EFE4 /* UserService.m in Sources */,
 				B004AF921C7C600700908576 /* HomeViewController.m in Sources */,
-				B004AF6E1C7C5C2500908576 /* BaseView.m in Sources */,
 				B004AF6C1C7C5C2500908576 /* BaseController.m in Sources */,
 				B004AF501C7C4E1200908576 /* main.m in Sources */,
 			);

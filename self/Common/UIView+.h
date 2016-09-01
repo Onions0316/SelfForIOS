@@ -22,9 +22,16 @@
 @property (nonatomic,assign) CGFloat centerX;
 @property (nonatomic,assign) CGFloat centerY;
 
+/**显示加载中*/
 - (void) showLoading;
 - (void) hideLoading;
-
+/**显示自动隐藏的消息*/
+- (void) showMessage:(NSString *) msg;
+/**显示层*/
+- (void) showView:(UIView *) view;
+- (void) showView:(UIView *) view bgColor:(UIColor*) bgColor;
+- (void) showView:(UIView *) view bgColor:(UIColor*) bgColor isCenter:(BOOL) isCenter;
+- (void) hideView;
 @end
 
 #endif /* UIView__h */

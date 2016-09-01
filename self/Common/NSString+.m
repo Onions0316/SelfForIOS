@@ -21,7 +21,7 @@
  *  字符串判空
  */
 - (BOOL) hasValue{
-    return self && [self stringByCutEmpty].length>0;
+    return self && ![[NSNull null] isEqual:self] && [self stringByCutEmpty].length>0;
 }
 
 /*

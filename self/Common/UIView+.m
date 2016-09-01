@@ -7,8 +7,11 @@
 //
 
 #import "UIView+.h"
+#import "UIUtil.h"
 
 #define LoadTag 9999
+#define MessageTag 9998
+#define ViewTag 9997
 
 @implementation UIView(ext)
 #pragma mark frame
@@ -94,41 +97,86 @@
 
 
 #pragma mark loading
-///显示统计遮罩
+///显示loading遮罩
 - (void) showLoading{
     //
-    UIView *view = (UIView*)[self viewWithTag:LoadTag];
-    if(view==nil){
-        CGSize size = self.frame.size;
-        //创建半透明层
-        view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-        [view setTag:LoadTag];
-        [view setBackgroundColor:[UIColor grayColor]];
-        [view setAlpha:0.3];
-        
-        UIActivityIndicatorView * activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
-        [activityIndicator setCenter:view.center];
-        [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-        [view addSubview:activityIndicator];
-        
-        [self addSubview:view];
-    }
-    view.hidden = NO;
-    UIActivityIndicatorView * ai = view.subviews.firstObject;
-    if(ai){
-        [ai startAnimating];
-    }
+    [self hideLoading];
+    CGSize size = self.frame.size;
+    //创建半透明层
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    [view setTag:LoadTag];
+    [view setBackgroundColor:[UIColor grayColor]];
+    [view setAlpha:0.3];
+    
+    UIActivityIndicatorView * activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
+    [activityIndicator setCenter:view.center];
+    [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+    [activityIndicator startAnimating];
+    [view addSubview:activityIndicator];
+    
+    [self addSubview:view];
 }
 ///影藏遮罩
 - (void) hideLoading{
-    UIView *view = (UIView*)[self viewWithTag:LoadTag];
-    if(view){
-        UIActivityIndicatorView * ai = view.subviews.firstObject;
-        if(ai){
-            [ai stopAnimating];
-        }
-        view.hidden = YES;
+    [[self viewWithTag:LoadTag] removeFromSuperview];
+}
+
+///显示
+- (void) showMessage:(NSString *) msg{
+    //
+    [[self viewWithTag:MessageTag] removeFromSuperview];
+    CGSize size = self.frame.size;
+    //创建透明层
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    [view setTag:MessageTag];
+    [view setBackgroundColor:[UIColor clearColor]];
+    //消息显示view
+    UIView * back = [[UIView alloc] init];
+    UILabel * label = [UIUtil addLableInView:back text:msg font:[UIFont systemFontOfSize:[UIFont systemFontSize]] rect:CGRectZero tag:0];
+    label.textColor = [UIColor whiteColor];
+    back.width = label.width+20;
+    back.height = label.height+10;
+    label.center = CGPointMake(back.width/2, back.height/2);
+    back.center = CGPointMake(view.width/2, view.height/2);
+    back.backgroundColor = [UIColor blackColor];
+    back.layer.cornerRadius = 5;
+    back.layer.masksToBounds = YES;
+    [view addSubview:back];
+    [self addSubview:view];
+    [UIView animateWithDuration:0.5 delay:0.5 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        back.alpha = 0;
+    } completion:^(BOOL finished) {
+        [view removeFromSuperview];
+    }];
+}
+
+- (void) showView:(UIView *) view{
+    [self showView:view bgColor:[UIColor clearColor]];
+}
+
+- (void) showView:(UIView *) view bgColor:(UIColor*) bgColor{
+    [self showView:view bgColor:bgColor isCenter:YES];
+}
+
+- (void) showView:(UIView *) view bgColor:(UIColor*) bgColor isCenter:(BOOL) isCenter{
+    //
+    [self hideView];
+    CGSize size = self.frame.size;
+    //创建透明层
+    UIView * backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    backView.tag = ViewTag;
+    backView.backgroundColor = bgColor;
+    if(isCenter){
+        view.center = CGPointMake(backView.width/2, backView.height/2);
     }
+    [backView addSubview:view];
+    [self addSubview:backView];
+}
+
+
+- (void) hideView{
+    //
+    [[self viewWithTag:ViewTag] removeFromSuperview];
 }
 
 @end

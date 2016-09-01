@@ -156,25 +156,25 @@ CREATE_TYPE_PROPERTY_TO_VIEW(DetailService, detailService)
                         detail.memo = self.memo.text;
                         detail.user_id = [[AccountInfoManager sharedInstance] user].user_id;
                         if([self.detailService add:detail]){
-                            [super showAlert:Alert_Info message:@"添加成功" controller:nil sel:@selector(backHome)];
+                            [super showAlert:Alert_Info message:@"添加成功" sel:@selector(backHome)];
                         }
                         else{
-                            [super showAlert:Alert_Error message:@"添加失败,请重新检查参数" controller:nil];
+                            [self.view showMessage:@"添加失败,请重新检查参数"];
                         }
                     }else{
-                        [super showAlert:Alert_Warning message:@"日期格式错误" controller:nil];
+                        [self.view showMessage:@"日期格式错误"];
                     }
                 }else{
-                    [super showAlert:Alert_Warning message:@"请选择发生时间" controller:nil];
+                    [self.view showMessage:@"请选择发生时间"];
                 }
             }else{
-                [super showAlert:Alert_Warning message:@"金额格式错误" controller:nil];
+                [self.view showMessage:@"金额格式错误"];
             }
         }else{
-            [super showAlert:Alert_Warning message:@"请输入金额" controller:nil];
+            [self.view showMessage:@"请输入金额"];
         }
     }else{
-        [super showAlert:Alert_Warning message:@"请选择收支类型" controller:nil];
+        [self.view showMessage:@"请选择收支类型"];
     }
 }
 

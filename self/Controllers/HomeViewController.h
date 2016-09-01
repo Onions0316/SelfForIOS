@@ -7,7 +7,6 @@
 //
 
 #import "BaseController.h"
-#import "SlideNavigationController.h"
 #import "AccountInfoManager.h"
 
 @interface HomeViewController : BaseController

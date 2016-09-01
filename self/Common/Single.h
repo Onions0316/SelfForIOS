@@ -18,6 +18,7 @@
 @property (nonatomic,strong) ApiManager * apiManager;
 @property (nonatomic,strong) SQLiteOperation * db;
 @property (nonatomic,assign) BOOL isTotal;
+@property (nonatomic,assign) BOOL lessThanIOS9;
 
 + (Single *) sharedInstance;
 

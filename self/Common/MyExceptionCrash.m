@@ -8,6 +8,7 @@
 #import "MyExceptionCrash.h"
 #include <libkern/OSAtomic.h>
 #include <execinfo.h>
+#import "UIAlertViewTool.h"
 
 //http://www.cocoachina.com/newbie/tutorial/2012/0829/4672.html
 NSString * const UncaughtExceptionHandlerSignalExceptionName = @"UncaughtExceptionHandlerSignalExceptionName";
@@ -43,8 +44,9 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
     return backtrace;
 }
 
-- (void)alertView:(UIAlertView *)anAlertView clickedButtonAtIndex:(NSInteger)anIndex
+- (void)alertViewButtonAtIndex:(NSNumber *)index
 {
+    NSInteger anIndex = index.integerValue;
     if (anIndex == 0)
     {
         dismissed = YES;
@@ -61,15 +63,26 @@ const NSInteger UncaughtExceptionHandlerReportAddressCount = 5;
 - (void)handleException:(NSException *)exception
 {
     [self validateAndSaveCriticalApplicationData];
-    
-    UIAlertView *alert =
-    [[UIAlertView alloc]
-     initWithTitle:NSLocalizedString(@"抱歉，程序出现了异常", nil)
-     message:[NSString stringWithFormat:NSLocalizedString(@"如果点击继续，程序有可能会出现其他的问题，建议您还是点击退出按钮并重新打开\n\n"@"异常原因如下:\n%@\n%@", nil),[exception reason],[[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey]]
-     delegate:self
-     cancelButtonTitle:NSLocalizedString(@"退出", nil)
-     otherButtonTitles:NSLocalizedString(@"继续", nil), nil];
-    [alert show];
+    NSString * errorMsg = [NSString stringWithFormat:@"异常原因如下:\n%@\n%@",[exception reason],[[exception userInfo] objectForKey:UncaughtExceptionHandlerAddressesKey]];
+    if(ShowException){
+        UIAlertViewTool * alert = [[UIAlertViewTool alloc] initWithDelegate:self];
+        [alert showAlert:@"抱歉，程序出现了异常"
+                 message:[NSString stringWithFormat:@"如果点击继续，程序有可能会出现其他的问题，建议您还是点击退出按钮并重新打开\n\n%@",errorMsg]
+                     sel:@selector(alertViewButtonAtIndex:)
+                leftText:NSLocalizedString(@"退出", nil)
+               rightText:NSLocalizedString(@"继续", nil)];
+        /*
+         UIAlertView *alert =[[UIAlertView alloc]
+         initWithTitle:NSLocalizedString(@"抱歉，程序出现了异常", nil)
+         message:[NSString stringWithFormat:@"如果点击继续，程序有可能会出现其他的问题，建议您还是点击退出按钮并重新打开\n\n%@",errorMsg]
+         delegate:self
+         cancelButtonTitle:NSLocalizedString(@"退出", nil)
+         otherButtonTitles:NSLocalizedString(@"继续", nil), nil];
+         [alert show];*/
+    }else{
+        NSLog(@"%@",errorMsg);
+        dismissed = YES;
+    }
     
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
     CFArrayRef allModes = CFRunLoopCopyAllModes(runLoop);
