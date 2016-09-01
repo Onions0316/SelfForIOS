@@ -76,11 +76,4 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-/*
- *  禁止横屏
- */
-- (UIInterfaceOrientationMask) application:(UIApplication *) application supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window{
-    return UIInterfaceOrientationMaskPortrait;
-}
-
 @end
