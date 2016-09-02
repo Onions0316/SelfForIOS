@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0C717FD11D77B8C0008C461B /* UIAlertViewTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */; };
-		0C71808B1D77DC96008C461B /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01385361CF6D2E60066A65C /* Charts.framework */; };
-		0C71808C1D77DC9B008C461B /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01385361CF6D2E60066A65C /* Charts.framework */; };
-		0C71808D1D77DC9B008C461B /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B01385361CF6D2E60066A65C /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0CE2B9A11D7954AA004EF6FF /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE2B9A01D7954AA004EF6FF /* Charts.framework */; };
+		0CE2B9A21D7954B0004EF6FF /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE2B9A01D7954AA004EF6FF /* Charts.framework */; };
+		0CE2B9A31D7954B0004EF6FF /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE2B9A01D7954AA004EF6FF /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B004AF501C7C4E1200908576 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF4F1C7C4E1200908576 /* main.m */; };
 		B004AF531C7C4E1200908576 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF521C7C4E1200908576 /* AppDelegate.m */; };
 		B004AF5B1C7C4E1200908576 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B004AF5A1C7C4E1200908576 /* Assets.xcassets */; };
@@ -61,13 +61,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		0C71808E1D77DC9B008C461B /* Embed Frameworks */ = {
+		0CE2B9A41D7954B0004EF6FF /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0C71808D1D77DC9B008C461B /* Charts.framework in Embed Frameworks */,
+				0CE2B9A31D7954B0004EF6FF /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,6 +77,7 @@
 /* Begin PBXFileReference section */
 		0C717FCF1D77B8C0008C461B /* UIAlertViewTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertViewTool.h; sourceTree = "<group>"; };
 		0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewTool.m; sourceTree = "<group>"; };
+		0CE2B9A01D7954AA004EF6FF /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = self/Third/ChartsPie/Charts.framework; sourceTree = "<group>"; };
 		460E55A3F9C91839A0824E8C /* Pods-self.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-self.release.xcconfig"; path = "Pods/Target Support Files/Pods-self/Pods-self.release.xcconfig"; sourceTree = "<group>"; };
 		682F9DA97F86B4C81B09CCB0 /* libPods-self.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-self.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B004AF4B1C7C4E1200908576 /* self.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = self.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,7 +106,6 @@
 		B004AF911C7C600700908576 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeViewController.m; path = Controllers/HomeViewController.m; sourceTree = "<group>"; };
 		B004AF931C7C632F00908576 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		B004AF951C7C635300908576 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		B01385361CF6D2E60066A65C /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = self/Third/Charts.framework; sourceTree = "<group>"; };
 		B013853B1CF6D8830066A65C /* UIView+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+.h"; sourceTree = "<group>"; };
 		B013853C1CF6D8D40066A65C /* UIView+.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+.m"; sourceTree = "<group>"; };
 		B013853E1CF6DF450066A65C /* StatisticViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StatisticViewController.h; path = Controllers/StatisticViewController.h; sourceTree = "<group>"; };
@@ -169,9 +169,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C71808B1D77DC96008C461B /* Charts.framework in Frameworks */,
+				0CE2B9A11D7954AA004EF6FF /* Charts.framework in Frameworks */,
 				B004AF961C7C635300908576 /* SystemConfiguration.framework in Frameworks */,
-				0C71808C1D77DC9B008C461B /* Charts.framework in Frameworks */,
+				0CE2B9A21D7954B0004EF6FF /* Charts.framework in Frameworks */,
 				B004AF941C7C632F00908576 /* libsqlite3.tbd in Frameworks */,
 				BD12FB3F1B9BA991DFE2A6AB /* libPods-self.a in Frameworks */,
 			);
@@ -183,7 +183,7 @@
 		039C85409CEB9E9F106776B6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B01385361CF6D2E60066A65C /* Charts.framework */,
+				0CE2B9A01D7954AA004EF6FF /* Charts.framework */,
 				B004AF951C7C635300908576 /* SystemConfiguration.framework */,
 				B004AF931C7C632F00908576 /* libsqlite3.tbd */,
 				682F9DA97F86B4C81B09CCB0 /* libPods-self.a */,
@@ -423,7 +423,7 @@
 				B004AF491C7C4E1200908576 /* Resources */,
 				F4C5395E25A0910D6EAAB42E /* [CP] Embed Pods Frameworks */,
 				14C9B9466E394C95B09662DC /* [CP] Copy Pods Resources */,
-				0C71808E1D77DC9B008C461B /* Embed Frameworks */,
+				0CE2B9A41D7954B0004EF6FF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -673,6 +673,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/self/Third",
 					"$(PROJECT_DIR)/self/Third/PieCharts",
+					"$(PROJECT_DIR)/self/Third/ChartsPie",
 				);
 				GCC_PREFIX_HEADER = self/Prefix.pch;
 				INFOPLIST_FILE = self/Info.plist;
@@ -696,6 +697,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/self/Third",
 					"$(PROJECT_DIR)/self/Third/PieCharts",
+					"$(PROJECT_DIR)/self/Third/ChartsPie",
 				);
 				GCC_PREFIX_HEADER = self/Prefix.pch;
 				INFOPLIST_FILE = self/Info.plist;
