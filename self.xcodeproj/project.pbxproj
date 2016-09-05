@@ -9,10 +9,12 @@
 /* Begin PBXBuildFile section */
 		0C2907EA1D7D590A0015D48A /* PublicNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2907E91D7D590A0015D48A /* PublicNavigationViewController.m */; };
 		0C2907ED1D7D5C2B0015D48A /* UIImage+.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2907EC1D7D5C2B0015D48A /* UIImage+.m */; };
+		0C2907F71D7D6FDD0015D48A /* ARCodeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2907F61D7D6FDD0015D48A /* ARCodeTool.m */; };
+		0C2907F91D7D73E80015D48A /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C2907F81D7D73E80015D48A /* CoreImage.framework */; };
+		0C2907FB1D7D749B0015D48A /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C2907FA1D7D749B0015D48A /* Charts.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		0C2907FC1D7D749E0015D48A /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C2907FA1D7D749B0015D48A /* Charts.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		0C2907FD1D7D749E0015D48A /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C2907FA1D7D749B0015D48A /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0C717FD11D77B8C0008C461B /* UIAlertViewTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */; };
-		0CE2B9A11D7954AA004EF6FF /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE2B9A01D7954AA004EF6FF /* Charts.framework */; };
-		0CE2B9A21D7954B0004EF6FF /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE2B9A01D7954AA004EF6FF /* Charts.framework */; };
-		0CE2B9A31D7954B0004EF6FF /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE2B9A01D7954AA004EF6FF /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B004AF501C7C4E1200908576 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF4F1C7C4E1200908576 /* main.m */; };
 		B004AF531C7C4E1200908576 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B004AF521C7C4E1200908576 /* AppDelegate.m */; };
 		B004AF5B1C7C4E1200908576 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B004AF5A1C7C4E1200908576 /* Assets.xcassets */; };
@@ -63,13 +65,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		0CE2B9A41D7954B0004EF6FF /* Embed Frameworks */ = {
+		0C2907FE1D7D749F0015D48A /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0CE2B9A31D7954B0004EF6FF /* Charts.framework in Embed Frameworks */,
+				0C2907FD1D7D749E0015D48A /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,10 +83,12 @@
 		0C2907E91D7D590A0015D48A /* PublicNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicNavigationViewController.m; sourceTree = "<group>"; };
 		0C2907EB1D7D5C1C0015D48A /* UIImage+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+.h"; sourceTree = "<group>"; };
 		0C2907EC1D7D5C2B0015D48A /* UIImage+.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+.m"; sourceTree = "<group>"; };
-		0C2907EE1D7D63B30015D48A /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		0C2907F51D7D6FB20015D48A /* ARCodeTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCodeTool.h; sourceTree = "<group>"; };
+		0C2907F61D7D6FDD0015D48A /* ARCodeTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCodeTool.m; sourceTree = "<group>"; };
+		0C2907F81D7D73E80015D48A /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		0C2907FA1D7D749B0015D48A /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = self/Third/Charts.framework; sourceTree = "<group>"; };
 		0C717FCF1D77B8C0008C461B /* UIAlertViewTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertViewTool.h; sourceTree = "<group>"; };
 		0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewTool.m; sourceTree = "<group>"; };
-		0CE2B9A01D7954AA004EF6FF /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = self/Third/ChartsPie/Charts.framework; sourceTree = "<group>"; };
 		460E55A3F9C91839A0824E8C /* Pods-self.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-self.release.xcconfig"; path = "Pods/Target Support Files/Pods-self/Pods-self.release.xcconfig"; sourceTree = "<group>"; };
 		682F9DA97F86B4C81B09CCB0 /* libPods-self.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-self.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B004AF4B1C7C4E1200908576 /* self.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = self.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,9 +180,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CE2B9A11D7954AA004EF6FF /* Charts.framework in Frameworks */,
+				0C2907FB1D7D749B0015D48A /* Charts.framework in Frameworks */,
+				0C2907F91D7D73E80015D48A /* CoreImage.framework in Frameworks */,
 				B004AF961C7C635300908576 /* SystemConfiguration.framework in Frameworks */,
-				0CE2B9A21D7954B0004EF6FF /* Charts.framework in Frameworks */,
+				0C2907FC1D7D749E0015D48A /* Charts.framework in Frameworks */,
 				B004AF941C7C632F00908576 /* libsqlite3.tbd in Frameworks */,
 				BD12FB3F1B9BA991DFE2A6AB /* libPods-self.a in Frameworks */,
 			);
@@ -190,8 +195,8 @@
 		039C85409CEB9E9F106776B6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0C2907EE1D7D63B30015D48A /* CoreImage.framework */,
-				0CE2B9A01D7954AA004EF6FF /* Charts.framework */,
+				0C2907FA1D7D749B0015D48A /* Charts.framework */,
+				0C2907F81D7D73E80015D48A /* CoreImage.framework */,
 				B004AF951C7C635300908576 /* SystemConfiguration.framework */,
 				B004AF931C7C632F00908576 /* libsqlite3.tbd */,
 				682F9DA97F86B4C81B09CCB0 /* libPods-self.a */,
@@ -316,6 +321,8 @@
 				B07ED4931CF7EB1700EFF32D /* NSDate+.m */,
 				0C2907EB1D7D5C1C0015D48A /* UIImage+.h */,
 				0C2907EC1D7D5C2B0015D48A /* UIImage+.m */,
+				0C2907F51D7D6FB20015D48A /* ARCodeTool.h */,
+				0C2907F61D7D6FDD0015D48A /* ARCodeTool.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -435,7 +442,7 @@
 				B004AF491C7C4E1200908576 /* Resources */,
 				F4C5395E25A0910D6EAAB42E /* [CP] Embed Pods Frameworks */,
 				14C9B9466E394C95B09662DC /* [CP] Copy Pods Resources */,
-				0CE2B9A41D7954B0004EF6FF /* Embed Frameworks */,
+				0C2907FE1D7D749F0015D48A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -581,6 +588,7 @@
 				B004AF881C7C5C3D00908576 /* UIUtil.m in Sources */,
 				B03E84371CCA0C03003D6E4F /* MyExceptionCrash.m in Sources */,
 				B004AF8B1C7C5C3D00908576 /* GTMBase64.m in Sources */,
+				0C2907F71D7D6FDD0015D48A /* ARCodeTool.m in Sources */,
 				B004AF841C7C5C3D00908576 /* ApiManager.m in Sources */,
 				B05490C11C896974006977D6 /* AddDetailViewController.m in Sources */,
 				B04CBBA21C8546E20028EFE4 /* UserService.m in Sources */,
@@ -682,6 +690,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -706,6 +715,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
