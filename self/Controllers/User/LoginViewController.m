@@ -13,6 +13,7 @@
 #import "AccountInfoManager.h"
 #import "HomeViewController.h"
 #import "DownloadDataViewController.h"
+#import "UIImage+.h"
 
 #define TagLoginResetData 1001
 #define TagLoginDownloadData 1002
@@ -43,6 +44,9 @@ CREATE_TYPE_PROPERTY_TO_VIEW(UserService, userService)
     self.userService = [[UserService alloc] init];
     
     CGFloat top = super.topSize;
+    //UIImageView * image = [[UIImageView alloc] initWithImage:[UIImage createARCode:@"https://www.baidu.com"]];
+    //image.top = top;
+    //[self.view addSubview:image];
     CGFloat viewTop = (Main_Screen_Height-top)/3+top;
     //label最大宽度
     CGFloat maxLableWidth = [UIUtil textMaxWidth:@[User_Name,User_Password] font:Default_Font];

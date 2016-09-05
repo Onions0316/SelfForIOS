@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C2907EA1D7D590A0015D48A /* PublicNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2907E91D7D590A0015D48A /* PublicNavigationViewController.m */; };
+		0C2907ED1D7D5C2B0015D48A /* UIImage+.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2907EC1D7D5C2B0015D48A /* UIImage+.m */; };
 		0C717FD11D77B8C0008C461B /* UIAlertViewTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */; };
 		0CE2B9A11D7954AA004EF6FF /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE2B9A01D7954AA004EF6FF /* Charts.framework */; };
 		0CE2B9A21D7954B0004EF6FF /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE2B9A01D7954AA004EF6FF /* Charts.framework */; };
@@ -78,6 +79,9 @@
 /* Begin PBXFileReference section */
 		0C2907E81D7D590A0015D48A /* PublicNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicNavigationViewController.h; sourceTree = "<group>"; };
 		0C2907E91D7D590A0015D48A /* PublicNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicNavigationViewController.m; sourceTree = "<group>"; };
+		0C2907EB1D7D5C1C0015D48A /* UIImage+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+.h"; sourceTree = "<group>"; };
+		0C2907EC1D7D5C2B0015D48A /* UIImage+.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+.m"; sourceTree = "<group>"; };
+		0C2907EE1D7D63B30015D48A /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		0C717FCF1D77B8C0008C461B /* UIAlertViewTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertViewTool.h; sourceTree = "<group>"; };
 		0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewTool.m; sourceTree = "<group>"; };
 		0CE2B9A01D7954AA004EF6FF /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = self/Third/ChartsPie/Charts.framework; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 		039C85409CEB9E9F106776B6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0C2907EE1D7D63B30015D48A /* CoreImage.framework */,
 				0CE2B9A01D7954AA004EF6FF /* Charts.framework */,
 				B004AF951C7C635300908576 /* SystemConfiguration.framework */,
 				B004AF931C7C632F00908576 /* libsqlite3.tbd */,
@@ -309,6 +314,8 @@
 				B01385451CF6F1FC0066A65C /* Chart.m */,
 				B07ED4921CF7EAEE00EFF32D /* NSDate+.h */,
 				B07ED4931CF7EB1700EFF32D /* NSDate+.m */,
+				0C2907EB1D7D5C1C0015D48A /* UIImage+.h */,
+				0C2907EC1D7D5C2B0015D48A /* UIImage+.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -579,6 +586,7 @@
 				B04CBBA21C8546E20028EFE4 /* UserService.m in Sources */,
 				0C2907EA1D7D590A0015D48A /* PublicNavigationViewController.m in Sources */,
 				B004AF921C7C600700908576 /* HomeViewController.m in Sources */,
+				0C2907ED1D7D5C2B0015D48A /* UIImage+.m in Sources */,
 				B004AF6C1C7C5C2500908576 /* BaseController.m in Sources */,
 				B004AF501C7C4E1200908576 /* main.m in Sources */,
 			);
