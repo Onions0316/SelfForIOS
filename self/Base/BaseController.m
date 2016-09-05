@@ -43,8 +43,40 @@
     return self;
 }
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate{
+    return YES;
+}
+
 -(void) viewDidLoad{
     [super viewDidLoad];
+    if(self.needChangeView){
+        [[UIDevice currentDevice] setValue:
+         [NSNumber numberWithInteger: [Single sharedInstance].uiOrientation]
+                                    forKey:@"orientation"];
+        UIInterfaceOrientationMask mark = [self supportedInterfaceOrientations];
+        CGFloat max = MAX(self.view.height, self.view.width);
+        CGFloat min = MIN(self.view.height, self.view.width);
+        //横屏
+        if(mark==UIInterfaceOrientationMaskLandscapeRight || mark == UIInterfaceOrientationMaskLandscapeLeft){
+            self.view.width = max;
+            self.view.height = min;
+        }
+        //竖屏
+        if(mark==UIInterfaceOrientationMaskPortrait){
+            self.view.width = min;
+            self.view.height = max;
+        }
+        //同步硬件旋转方向
+        [UIViewController attemptRotationToDeviceOrientation];
+    }
     self.view.backgroundColor = [UIColor whiteColor];
     if (self.showState){
         self.topSize = 20;

@@ -18,7 +18,10 @@
 @property (nonatomic,strong) ApiManager * apiManager;
 @property (nonatomic,strong) SQLiteOperation * db;
 @property (nonatomic,assign) BOOL isTotal;
+/**版本是否低于ios9*/
 @property (nonatomic,assign) BOOL lessThanIOS9;
+/**屏幕方向*/
+@property (nonatomic,assign) UIInterfaceOrientation uiOrientation;
 
 + (Single *) sharedInstance;
 

@@ -31,6 +31,8 @@
 @property (nonatomic,assign) BOOL showLogout;
 @property (nonatomic,assign) BOOL checkLogin;
 @property (nonatomic,strong) NSString * navTitle;
+/**需要屏幕切换*/
+@property (nonatomic,assign) BOOL needChangeView;
 
 - (void) goControllerByClass:(Class) goClass;
 

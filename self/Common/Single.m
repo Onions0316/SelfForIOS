@@ -16,6 +16,7 @@
         _apiManager = [[ApiManager alloc] init];
         _isTotal = YES;
         _lessThanIOS9 = SYSTEM_VERSION_LESS_THAN(@"9.0");
+        _uiOrientation = UIInterfaceOrientationLandscapeRight;
     }
     return self;
 }

@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "HomeViewController.h"
 #import "AccountInfoManager.h"
+#import "PublicNavigationViewController.h"
 #import "Single.h"
 #import "MyExceptionCrash.h"
 
@@ -38,7 +39,7 @@
     //home.enableShadow = NO;
     */
     HomeViewController * home = [[HomeViewController alloc] init] ;
-    UINavigationController * main = [[UINavigationController alloc] initWithRootViewController:home];
+    UINavigationController * main = [[PublicNavigationViewController alloc] initWithRootViewController:home];
     main.navigationBarHidden = YES;
     self.window.rootViewController = main;
     

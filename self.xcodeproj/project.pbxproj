@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C2907EA1D7D590A0015D48A /* PublicNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2907E91D7D590A0015D48A /* PublicNavigationViewController.m */; };
 		0C717FD11D77B8C0008C461B /* UIAlertViewTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */; };
 		0CE2B9A11D7954AA004EF6FF /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE2B9A01D7954AA004EF6FF /* Charts.framework */; };
 		0CE2B9A21D7954B0004EF6FF /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE2B9A01D7954AA004EF6FF /* Charts.framework */; };
@@ -75,6 +76,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C2907E81D7D590A0015D48A /* PublicNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicNavigationViewController.h; sourceTree = "<group>"; };
+		0C2907E91D7D590A0015D48A /* PublicNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicNavigationViewController.m; sourceTree = "<group>"; };
 		0C717FCF1D77B8C0008C461B /* UIAlertViewTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertViewTool.h; sourceTree = "<group>"; };
 		0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewTool.m; sourceTree = "<group>"; };
 		0CE2B9A01D7954AA004EF6FF /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = self/Third/ChartsPie/Charts.framework; sourceTree = "<group>"; };
@@ -274,6 +277,8 @@
 		B004AF6F1C7C5C3D00908576 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				0C2907E81D7D590A0015D48A /* PublicNavigationViewController.h */,
+				0C2907E91D7D590A0015D48A /* PublicNavigationViewController.m */,
 				0C717FCF1D77B8C0008C461B /* UIAlertViewTool.h */,
 				0C717FD01D77B8C0008C461B /* UIAlertViewTool.m */,
 				B004AF701C7C5C3D00908576 /* ApiManager.h */,
@@ -572,6 +577,7 @@
 				B004AF841C7C5C3D00908576 /* ApiManager.m in Sources */,
 				B05490C11C896974006977D6 /* AddDetailViewController.m in Sources */,
 				B04CBBA21C8546E20028EFE4 /* UserService.m in Sources */,
+				0C2907EA1D7D590A0015D48A /* PublicNavigationViewController.m in Sources */,
 				B004AF921C7C600700908576 /* HomeViewController.m in Sources */,
 				B004AF6C1C7C5C2500908576 /* BaseController.m in Sources */,
 				B004AF501C7C4E1200908576 /* main.m in Sources */,
