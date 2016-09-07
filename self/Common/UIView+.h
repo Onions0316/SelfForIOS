@@ -32,6 +32,8 @@
 - (void) showView:(UIView *) view bgColor:(UIColor*) bgColor;
 - (void) showView:(UIView *) view bgColor:(UIColor*) bgColor isCenter:(BOOL) isCenter;
 - (void) hideView;
+/**切图*/
+- (UIImage *) screenShot;
 @end
 
 #endif /* UIView__h */

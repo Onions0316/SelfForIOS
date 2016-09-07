@@ -179,4 +179,13 @@
     [[self viewWithTag:ViewTag] removeFromSuperview];
 }
 
+/**切图*/
+- (UIImage *) screenShot{
+    UIGraphicsBeginImageContextWithOptions(self.frame.size, false, 0);
+    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
 @end
